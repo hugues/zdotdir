@@ -1,0 +1,5 @@
+
+## Paranoid specifics aliases
+
+a mailstat='\mailstat -o ~/.procmail/procmail.log'
+a mails='\mailstat -k ~/.procmail/procmail.log ; cat ~/.procmail/procmail.log >> ~/.procmail/procmail.log.old ; echo -n > ~/.procmail/procmail.log'
