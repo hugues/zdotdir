@@ -42,7 +42,7 @@ a gnus='emacs -f gnus'
 
 #a make='make -j'
 
-if [ -f "$ZDOTDIR/*_Aliases.`hostname`" ]
+if [ -f $ZDOTDIR/*_Aliases.`hostname` ]
 then
 	source $ZDOTDIR/*_Aliases.`hostname`
 fi
