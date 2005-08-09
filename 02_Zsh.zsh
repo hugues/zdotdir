@@ -70,7 +70,7 @@ RPS1="%(?;;%{[1;32m%}%?%{[0m%}) %{[0;%(!."$C_ROOT"."$C_USER")m%}%D{%a%d%b|%H:
 
 PS2="%{[33m%}%B%_%b%{[36m%}%B>%b%{[0m%} "
 
-SPROMPT="zsh: %{[34m%}%B«%R»%b%{[0m%} ? Ce ne serait pas plutôt %{[35m%}%B«%r»%b%{[0m%} ? [nyae] "
+SPROMPT="zsh: %{[34m%}%BÂ«%RÂ»%b%{[0m%} ? Ce ne serait pas plutÃ´t %{[35m%}%BÂ«%rÂ»%b%{[0m%} ? [nyae] "
 
 ##
 # PS3="?# "
@@ -160,7 +160,7 @@ chpwd()
 
 precmd ()
 {
-#    print -nP "%(?,,%{[35;1m%}Foirage n°%{[38;1;45m%}%?\n)%{[0m%}"
+#    print -nP "%(?,,%{[35;1m%}Foirage nÂ°%{[38;1;45m%}%?\n)%{[0m%}"
 }
 
 ##
