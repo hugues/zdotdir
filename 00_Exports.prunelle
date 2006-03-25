@@ -1,6 +1,8 @@
 
 if ( [ "`uname -s`" = "Darwin" ] )
 then
+	export DISPLAY=:0
+
 	## Fink / DarwinPorts
 
 	PATH=/bin:/usr/bin:/sbin:/usr/sbin
@@ -13,4 +15,9 @@ then
 		export INFOPATH=$INFOPATH:/$i/share/info
 	done
 
+	alias aless='open -a /Applications/DarwinPorts/AquaLess.app'
 fi
+
+PS1_USER="1"
+PS1_USER_SSH="$PS1_USER"
+PS1_ROOT="31;1"

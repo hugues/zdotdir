@@ -56,17 +56,17 @@ SAVEHIST=42000
 #  For more info on PROMPT expansion, see 'man zshmisc'
 ##
 
-C_ROOT="31"
+PS1_ROOT=${PS1_ROOT:-31}
 if ( [ "$SSH_TTY" = "" ] )
 then
-	C_USER="34"
+	PS1_USER=${PS1_USER:-34}
 else
-	C_USER="35"
+	PS1_USER=${PS1_USER_SSH:-35}
 fi
 
-PS1="%{[%(!."$C_ROOT"."$C_USER")m%}%n%{[1;%(!."$C_ROOT"."$C_USER")m%}@%{[0;%(!."$C_ROOT"."$C_USER")m%}%m%{[0m%} (%{[36m%}%y%{[0m%}) [%(!.%{["$C_ROOT"m%}%d%{[0m%}.%{["$C_USER"m%}%(5~:../:)%4~%{[0m%})]"${LD_PRELOAD:t:s/lib//:r}" %h%{[%(!."$C_ROOT";1."$C_USER")m%}#%{[0m%} "
+PS1="%{[%(!."$PS1_ROOT"."$PS1_USER")m%}%n%{[1;%(!."$PS1_ROOT"."$PS1_USER")m%}@%{[0;%(!."$PS1_ROOT"."$PS1_USER")m%}%m%{[0m%} (%{[36m%}%y%{[0m%}) [%(!.%{["$PS1_ROOT"m%}%d%{[0m%}.%{["$PS1_USER"m%}%(5~:../:)%4~%{[0m%})]"${LD_PRELOAD:t:s/lib//:r}" %h%{[%(!."$PS1_ROOT";1."$PS1_USER")m%}#%{[0m%} "
 
-RPS1="%(?;;%{[1;32m%}%?%{[0m%}) %{[0;%(!."$C_ROOT"."$C_USER")m%}%D{%a%d%b|%H:%M'%S}%{[0m%}"
+RPS1="%(?;;%{[1;32m%}%?%{[0m%}) %{[0;%(!."$PS1_ROOT"."$PS1_USER")m%}%D{%a%d%b|%H:%M'%S}%{[0m%}"
 
 PS2="%{[33m%}%B%_%b%{[36m%}%B>%b%{[0m%} "
 

@@ -41,8 +41,3 @@ a dosbox='dosbox -c "mount c \"`pwd`\"" -c "mount d /cdrom -t cdrom" -c "c:" '
 a gnus='emacs -f gnus'
 
 #a make='make -j'
-
-for local_aliases in $(find $ZDOTDIR -name "*_Aliases.`hostname`")
-do
-	source $local_aliases
-done
