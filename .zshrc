@@ -11,9 +11,9 @@ if [ "`whoami`" = "root" ]
 then
 	if [ "`pwd`" = ~ ]
 	then
-		cd /root
+		cd ~root
 	fi
-	export HOME=/root
+	export HOME=~root
 fi
 #cd ~
 
