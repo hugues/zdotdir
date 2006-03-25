@@ -1,3 +1,4 @@
+export EDITOR="vim"
 export HISTFILE=".zsh/.history.zsh"
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/libs
 eval $(dircolors ~/.dir_colors)
