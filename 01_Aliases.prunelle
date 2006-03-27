@@ -1,3 +1,4 @@
 a emacs='emacs21'
 a port='sudo port'
 a ls='ls -FG'
+a aless='open -a /Applications/DarwinPorts/AquaLess.app'
