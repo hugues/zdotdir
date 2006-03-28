@@ -16,4 +16,5 @@ export PATH=$PATH:~/.pr0n
 # Set locales only if they are undefined
 export LC_ALL=${LC_ALL:-fr_FR.UTF-8}
 export LC_MESSAGES=${LC_MESSAGES:-fr_FR}
+export MANPATH=$MANPATH:~/man
 unset LANG # Unuseful
