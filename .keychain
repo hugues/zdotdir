@@ -1,0 +1,3 @@
+KEYCHAIN=~/.keychain/$(hostname)-sh
+[ -f $KEYCHAIN ] && source $KEYCHAIN
+[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
