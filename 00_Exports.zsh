@@ -9,9 +9,8 @@ export PRINTER=Berthe
 export TIME_STYLE="+%Y-%b-%d %H:%M"
 export TZ="Europe/Paris"
 KEYCHAIN=~/.keychain/$(hostname)-sh
-if ( [ -f $KEYCHAIN ] ); then
-	source $KEYCHAIN
-fi
+[ -f $KEYCHAIN ] && source $KEYCHAIN
+[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
 export PATH=$PATH:~/.pr0n
 # Set locales only if they are undefined
 export LC_ALL=${LC_ALL:-fr_FR.UTF-8}
