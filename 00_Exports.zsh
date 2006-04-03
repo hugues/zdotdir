@@ -8,10 +8,8 @@ export PKG_CONFIG_PATH=/usr/X11R6/lib/pkgconfig
 export PRINTER=Berthe
 export TIME_STYLE="+%Y-%b-%d %H:%M"
 export TZ="Europe/Paris"
-KEYCHAIN=~/.keychain/$(hostname)-sh
-[ -f $KEYCHAIN ] && source $KEYCHAIN
-[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
 export PATH=$PATH:~/.pr0n
+source $ZDOTDIR/.keychain
 # Set locales only if they are undefined
 export LC_ALL=${LC_ALL:-fr_FR.UTF-8}
 export LC_MESSAGES=${LC_MESSAGES:-fr_FR}
