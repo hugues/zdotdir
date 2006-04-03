@@ -9,5 +9,5 @@ echo "[0m"
 
 source $ZDOTDIR/.keychain
 
-keychain --quiet --quick id_dsa
-keychain --quiet --quick 593F1F92
+keychain --inherit any --quiet --quick id_dsa
+keychain --inherit any --quiet --quick 593F1F92
