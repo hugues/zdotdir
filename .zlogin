@@ -8,6 +8,6 @@ for i in {1..$COLUMNS} ; do echo -n "_" ; done
 echo "[0m"
 
 source $ZDOTDIR/.keychain
-
-keychain --inherit any --quiet --quick id_dsa
-keychain --inherit any --quiet --quick 593F1F92
+keychain --quiet --stop others --inherit any
+keychain --quiet --quick id_dsa
+keychain --quiet --quick 593F1F92

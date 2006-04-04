@@ -5,21 +5,14 @@ if [ -d $ZDOTDIR ]; then
 	do
 		source $script
 		local_script="${script:r}.`hostname -s`"
-
-		if ( [ -f $local_script ] )
-		then
-			source $local_script
-		fi
+		[ -f $local_script ] && source $local_script
 	done
 fi
 
 if [ "`whoami`" = "root" ]
 then
-	if [ "`pwd`" = ~ ]
-	then
-		cd ~root
-	fi
+	[ "`pwd`" = ~ ] && cd ~root
 	export HOME=~root
+	HISTFILE=$HISTFILE.root
 fi
-#cd ~
 
