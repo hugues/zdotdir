@@ -1,3 +1,4 @@
+#!/bin/zsh
 a port='sudo port'
 a ls='ls -FG'
 a aless='open -a /Applications/DarwinPorts/AquaLess.app'

@@ -1,6 +1,9 @@
+#!/bin/zsh
 alias a='alias'
 
 a una=unalias
+
+a ...='cd ../..'
 
 a e='emacs'
 a ne='emacs -nw'
@@ -18,8 +21,10 @@ a rt='find . -type f \( -name "*~" -o -name ".*~" -o -name "#*#" \) -exec rm -vf
 
 a eg=egrep
 
-a hg='< $HISTFILE egrep'
-a lg='ls -lap | egrep'
+a hg='< $HISTFILE cat -n | grep'
+##'hc' stands for something like 'fc' and 'hg'##
+a hc='history 0| grep'
+a lg='ls -lap | grep'
 
 a s='cd ..' 
 a so='cd ${OLDPWD}'

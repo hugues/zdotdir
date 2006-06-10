@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+PATH+=:~/souche/tools/bin:/usr/local/urd2/bin:/usr/local/urd2/openrg2_6/mips-linux-uclibc/bin/
+MANPATH+=:/usr/local/urd2/man:~/souche/tools/man
+
+__PREFIX=/filer1/dev_users/hiegel/souche/tools/
+
+# Modification de la couleur du prompt par défaut
+PS1_USER_SSH=33

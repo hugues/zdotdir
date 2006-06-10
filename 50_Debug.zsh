@@ -1,14 +1,17 @@
+#!/bin/zsh
 
 cd_back() {
-	for folder in $@
-	do
-		cd $(echo $folder | sed "s:[^/]\+:..:g")
-	done
+#	for folder in $@
+#	do
+#		cd $(echo $folder | sed "s:[^/]\+:..:g")
+#	done
+	cd $1 ""
 }
 
 ldd()
 {
-	LDD=$(dlocate ldd | egrep "bin/ldd$" | head -n1 | cut -d' ' -f2)
+	#LDD=$(dlocate ldd | egrep "bin/ldd$" | head -n1 | cut -d' ' -f2)
+	LDD=/usr/bin/ldd
 	$LDD $@ | sed "s/\(.*local.*\)/[34m\1[0m/;s/\(.*not found.*\)/[34;1m\1[0m/" | tr -d '	'
 }
 
@@ -38,11 +41,17 @@ exports()
 	done
 }
 
+preexec()
+{
+    if ( [ "$DEBUG_MODE" = "yes" ] )
+    then
+    fi
+}
+
 precmd()
 {
     if ( [ "$DEBUG_MODE" = "yes" ] )
     then
-    	exports
+		exports
     fi
 }
-

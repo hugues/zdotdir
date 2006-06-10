@@ -1,3 +1,4 @@
+#!/bin/zsh
 # Fichier de conf pour la personnalisation de la complétion automagique :-)
 # Hugues HIEGEL <hugues@nullpart.net>
 # jeu mar  3 10:00:44 CET 2005
