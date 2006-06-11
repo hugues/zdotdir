@@ -18,8 +18,8 @@ setopt Auto_PushD
 unsetopt Cd_Able_Vars
 setopt Complete_Aliases
 setopt Complete_in_Word
-#setopt Correct
-setopt Correct_All
+setopt Correct
+unsetopt Correct_All
 #setopt Equals
 #setopt Extended_Glob
 unsetopt Extended_History
