@@ -22,7 +22,7 @@ export PAGER=less
 ## Quelle commande utiliser par défaut ?
 export NULLCMD=cat
 
-[ `which dircolors` ] && eval $(dircolors ~/.dir_colors 2>&-)
+which dircolors 2>&1 >/dev/null && eval $(dircolors ~/.dir_colors 2>&-)
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M"
 
