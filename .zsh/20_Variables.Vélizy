@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+export PATH=${PATH:+$PATH:}~/souche/tools/bin:/usr/local/urd2/bin:/usr/local/urd2/openrg2_6/mips-linux-uclibc/bin/
+export MANPATH=${MANPATH:+$MANPATH:}/usr/local/urd2/man:~/souche/tools/man:~/souche/tools/share/man
+typeset -gU PATH MANPATH
+
+__PREFIX=/filer1/dev_users/hiegel/souche/tools/
+
+# Couleur principale du prompt : jaune.
+PS1_USER_SSH=33

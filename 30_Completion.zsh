@@ -15,7 +15,6 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 #zstyle ':completion:*:(ssh|scp):*:my-accounts' hosts ${${${${(f)"$(<$HOME/.ssh/known_hosts)"}:#[0-9]*}%%\ *}%%,*}
 
 
-
 # http://www.michael-prokop.at/computer/config/.zsh/zsh_completition
 
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'

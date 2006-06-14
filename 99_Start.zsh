@@ -1,6 +1,4 @@
 #!/bin/zsh
 
-##
-## misc commands
-##
+## Hop on rafraîchit le titre de la fenêtre
 chpwd

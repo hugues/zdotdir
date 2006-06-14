@@ -3,8 +3,6 @@ alias a='alias'
 
 a una=unalias
 
-a ...='cd ../..'
-
 a e='emacs'
 a ne='emacs -nw'
 

@@ -14,6 +14,8 @@ then
 		export MANPATH=$MANPATH:/$i/share/man
 		export INFOPATH=$INFOPATH:/$i/share/info
 	done
+
+	typeset -gU PATH MANPATH INFOPATH
 fi
 
 PS1_USER="1"

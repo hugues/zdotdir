@@ -1,0 +1,1054 @@
+su gagnaire
+which chpwd
+run-help chpwd
+run-help lsls
+bindkey "h"
+bindkey| grep rehash
+bindkey| grep -i rehash
+bindkey| less
+echo "teststeestes			fdhsqjfkldhsqfjdsklfhdjfhdsqjkl			fdjsqklfmdsjqfksdqlm
+echo "teststeestes			fdhsqjfkldhsqfjdsklfhdjfhdsqjkl			fdjsqklfmdsjqfksdqlm"
+echo "teststeestes	fdsqfsdq"
+echo "jfkldsfjdskljfdksl"
+echo -e "jfkldsfjdskljfdksl"
+echo -e "jfkldsfjdskl			jfdksl"
+echo -e "jfkldsfjdskl			jfdksl"
+echo -E "jfkldsfjdskl			jfdksl"
+echo -E "jfkldsfjdskl			jfdksl"
+cat 02_Aliases.paranoid 02_Aliases.prunelle 02_Aliases.zsh 02_Options.zsh
+vim 02_Aliases.paranoid
+vim 04_KeyBindings.zsh
+vim 05_Functions.zsh
+cat 03_Completion.zsh
+cat .openwin-init
+ln -s /filer1_vol5/dev_projets2/souche_linux_pl
+mv souche_linux_pl SoucheLinuxPl
+mv SoucheLinuxPl SoucheLinuxPL
+cd doc
+mkdir Doc_Hugues
+la tools
+la tmp
+mkdir hugues
+la ../guillaume
+cp ../guillaume/soft_rg_v2/*.tar.bz2 .
+cd dev/hugues
+la /dev/pt12
+la /dev/pts/12
+finger -m aube
+finger -m kochoedo
+finger -m gagnaire
+vim ~/.zshrc\
+
+echo %n@%m:%\~\>\ 
+la ~gaudonvi/.zshrc
+cp ~gaudonvi/.zshr~.
+cp ~gaudonvi/.zshrc ~/.
+vim ~/.zshrc
+cd kernel
+cat sagem.config > .config
+make menuconfig
+cat /proc/cpuinfo | grep process
+make -j4 2>&1 > make.log &!
+find ~/SoucheLinuxPL -name mips-linux-gcc
+find ~/SoucheLinuxPL/. -name mips-linux-gcc
+cat .login
+more .login
+cp .login .zlogin
+zsh -l
+rm -fr .zlogin
+grep comp .zshrc
+grep compctl .zshrc
+grep load .zshrc
+find ~/SoucheLinuxPL/. -name "mips-linux-*"
+mv SoucheLinuxPL souche
+autoconf
+./sagem-mips-linux-config
+df
+df -h
+screen
+cd toolchain-linux-mips
+cd -
+grep -i prefix Makefile
+grep -i prefix sagem.config
+grep -i prefix .config
+grep -i prefix Config.in
+ls 
+cd SoucheLinuxPL
+cd dev
+la hugues
+cd hugues
+for i in *.tar.bz2 ; do tar xvjf $i ; done
+screen 
+screen -r
+screen -x
+vim .zsh/02_Options.zsh
+fc - lessclose.sh
+fc ls
+man fc
+fc -P
+fc -o
+fc -p
+for i in /filer1/dev_users/hiegel/.zsh/02_Options.zsh /filer1/dev_users/hiegel/.zsh/04_KeyBindings.zsh ; do source $i ; done
+cat ~/.zsh/04_KeyBindings.zsh
+test $TERM = "xterm"
+ok
+echo ok
+cat > micro_inetd.h
+cat micro_inetd.h
+less ../busybox/shell/ash.c
+la ..
+cat ../telnet/telnets.c
+../telnet/telnets.c
+$NULLCMD ../telnet/telnets.c
+< ../telnet/telnets.c
+v ../telnet/telnets.c
+vim ../telnet/telnets.c
+vim ../telnet/telnets.h
+cat ../telnet/telnets.h
+man vim
+setopt globsubst
+cd $PWD
+unsetopt globsubst
+setopt pushdignoredups
+cd -4
+setopt pushdtohome
+unsetopt pushdtohome
+setopt printexitvalue
+true
+false
+cat fdqsjklm
+setopt chaselinks
+pushd
+pushd +1
+cd -2
+cd souche/..
+cd souche/../souche_linux_pl
+cd dev/hugues/current
+unsetopt chaselinks
+cd current
+cd rg
+vim micro_inetd.?
+find ../..
+find ../.. -type f -name "*.c"
+find ../.. -type f -name "*.c" -exec grep -l main
+find ../.. -type f -name "*.c" -exec grep -l main '{}' ';'
+find ../.. -type f -name "*.c" -exec grep -L main '{}' ';'
+run-help find
+find ../.. -type f -name "*.c" -exec grep -H main '{}' ';'
+find ../.. holename "*/os/*" -type f -name "*.c" -exec grep -H "main(int" '{}' ';'
+find ../.. ! -wholename "*/os/*" -type f -name "*.c" -exec grep -H "main(int" '{}' ';'
+cd rg/pkg/micro_inetd main
+cd rg/pkg/micro_inetd
+cd rg/pkg/micro_inetd" "
+cd rg/pkg/micro_inetd " "
+cd rg/pkg/micro_inetd ""
+cd_back current
+cd_back hugues/current
+powersave
+tree -C /proc/bus/pci | less -R
+cat /proc/bus/pci/00/00.0
+cat /proc/devices
+cat /proc/dma
+cat /proc/filesystems
+cat /proc/self/cmdline
+la /proc/self
+cd rg/
+cd micro_inetd main
+touch micro_inetd.c
+editdiff --help
+ping localhost
+ping localhost:8023
+cd os/linux-2.6/usr
+less gen_init_cpio.c
+man less
+cat > /dev/null
+find . -name micro_inetd_module.o
+cd build/pkg
+cd micro_inetd
+cat micro_inetd.d
+file micro_inetd.d
+file *
+find . -name lb√_livebox.gif
+ls -aU
+ls -lst
+ls -lt
+ls -cl
+ls -c
+ls -l
+ls -lacdtrux
+ls -laCdtrux
+ls -lacDtrux
+ls -laC
+ls -lam
+ls -lac
+ls -la -lc
+l --full-time
+l -c --full-time
+echo $PATH|tr ':' ''
+echo $PATH|tr ':' '\
+'
+echo $PATH|tr ':' '\
+' | uniq
+cat .distribution
+echo $PATH | tr ':' '\
+'
+echo $PATH | tr ':' '\
+' | uniq
+echo $PATH | tr ':' '\
+' | sort
+echo $PATH | tr ':' '\
+' | sort -u
+echo $path
+PATH+=:/test
+zsh -ls
+cd pkg/busybox
+find ../.. ! -path "*/os/*" -type f -name "*.c" -exec grep -H "main(int" '{}' ';'
+find ../.. -type f -name "*.c" -exec grep -H "main(int" '{}' ';'
+find -type f -name "*.c" -exec grep -H "main(int" '{}' ';'
+find -type f -name "*.c" -exec grep -H " main(int" '{}' ';'
+find ../../build -name busybox\*
+find ../../build -name busybox
+find ../../build -name "*busybox*"
+find ../../build.FAST3202 -name "*.o"
+find ../../build/ -name busybox
+la busybox
+file micro_inetd/*
+cd ../../build/pkg
+chmod +x micro_inetd
+chmod +x micro_inetd/micro_inetd
+la micro_inetd
+file micro_inetd/micro_inetd
+file micro_inetd/micro_inetd busybox/busybox
+rm -fr micro_inetd
+cd rg/pkg rg/build/pkg
+file micro_inetd
+la ${PWD/rg/rg\/build}
+make clean
+la ../../build/pkg/micro_inetd
+cd ../../
+la build/pkg/micro_inetd
+less ../busybox/Makefile
+cd ../busybox/
+less Makefile
+find . -name busybox.links
+vim +set\ readonly Makefile
+find . -name sdpd
+cd bluetooth
+$PAGER Makefile
+grep -r sdpd .
+cd sdpd
+cd ../
+cd ../micro_inetd
+find build/ -name micro_inetd
+run-help egrep
+a hg
+vim ~/.zsh/02_Aliases.zsh
+run-help grep
+grep compinit .zshrc
+find ../../build -name "*.o"
+fc -43
+cd ../../pkg/micro_inetd
+fc -432 -5
+\:
+run-help history
+< $HISTFILE
+cat -n < $HISTFILE
+source ~/.zsh/02_Aliases.zsh
+-
++
+fc 318
+hg test
+cat _viminfo
+rm _viminfo
+cat /proc/net/tcp
+cat /proc/net/netlink
+cat /proc/net/netstat
+netstat
+cat /proc/net/udp
+cat /proc/net/vlan/config
+l /proc
+ls /proc
+ls /proc/net
+mkdir hello_world
+cp ../micro_inetd/Makefile .
+touch hello_world.c
+gcc hello_world.c -o hello_world
+./hello_world
+./hello_world fjdsklqf fjdsqk lfsqdj fklsdqm fjfsdqkl
+./hello_world Test ceci est un
+hg make config
+hg testr
+'hg 'make config"
+hg "make config"
+vim $ZDOTDIR/02_Aliases.zsh
+source $ZDOTDIR/02_Aliases.zsh
+hg config
+vim hello_world.c
+ln -s ~/souche/dev/hugues/current/rg/build/
+la build/openrg.img .
+la build/openrg.img . | grep hiegel
+la build/os/openrg.img . | grep hiegel
+unset LD_LIBRARY_PATH
+unset PKG_CONFIG_PATH
+exports
+hostname
+cat /etc/hosts
+ping compilsuse1
+ping compilsuse2
+ping compilsuse3
+cat
+unsetopt longlistjobs
+setopt longlistjobs
+jobs
+ln -fs ../souche/dev/hugues/current/rg/build
+la build/os/openrg.img openrg.img
+unsetopt braceexpand
+setopt braceexpand
+grep MICRO Makefile
+cd hello_world
+cat > ~/tftpd/LOAD
+make distclean
+echo fdsjkflds\ fds fqds
+touch toto\ tata
+rm toto\ tata
+touch "$(cat LOAD )"
+ps fax
+ps fux
+watch -n1 ps\ fux
+watch -n1 ps\ fx
+run-help watch
+top
+cat LOAD
+\
+
+lastlog
+lastlog|sort
+finger -m maia
+cd utils
+cd dev/hugues/current/rg
+find . -name Makefile -exec grep -Hi "(micro_inetd|hello_world)" '{}' ';'
+find . -name Makefile -exec egrep -Hi "(micro_inetd|hello_world)" '{}' ';'
+vim pkg/Makefile
+cp build/os/openrg.img ~/tftpd/
+make config DIST=FAST3202 LIC=../license/jpkg_fast3202.lic
+make distclean && make config DIST=FAST3202 LIC=../license/jpkg_fast3202.lic && make && cp ~/tftpd/{build/os,}/openrg.img
+watch -n1 "ps fax -W $COLS"
+watch -n1 "ps faxW $COLS"
+man ps
+watch -n1 "ps fax --widtg $COLS"
+watch -n1 "ps fax --width $COLS"
+watch -n1 ps\ fax\ --width\ $COLUMNS
+watch -n1 ps\ fux\ --width\ $COLUMNS
+watch -n1 ps\ fx\ --width\ $COLUMNS
+cd pkg
+vim build/config_opt.c
+grep -r { "CONFIG_RG_MICRO_INETD", NULL, OPT_NOSTRIP | OPT_HC },
+grep -r CONFIG_RG_MICRO_INETD .
+vim build/feature_config.c
+cp ~/tftpd/{build/os,}/openrg.img
+cat ~/tftpd/LOAD
+make config DIST=FAST3202 LIC=../license/jpkg_fast3202.lic && make && cp ~/tftpd/{build/os,}/openrg.img && cat ~/tftpd/LOAD
+make distclean && make config DIST=FAST3202 LIC=../license/jpkg_fast3202.lic && make && cp ~/tftpd/{build/os,}/openrg.img && cat ~/tftpd/LOAD
+echo $PS1
+echo -e $PS1
+echo -E $PS1
+echo -b $PS1
+echo -n $PS1
+bindkey|grep reh
+cat /proc/cpuinfo
+cat /proc/bus/pci
+cat /proc/bus/pci/devices
+bindkey|grep correct
+run-help fdqs
+fdqs jkfldqs fjdsq klfmfdsqfdsqhlhlhl\
+fdsqhfjkdslqfhdsjk
+echo hello world;\
+echo essai ...\
+echo test;
+less /tmp/zsh32564ec1 ;: 'ec'
+less /tmp/zsh32564echo2 ;: 'echo'
+less /tmp/zsh32564echo3 ;: 'echo'
+less /tmp/zsh32564echo4 ;: 'echo'
+less /tmp/zsh32564echo5 ;: 'echo '
+less /tmp/zsh32564echo6 ;: 'echo '
+less /tmp/zsh32564echo7 ;: 'echo '
+less /tmp/zsh32564echo8 ;: 'echo'
+less /tmp/zsh325649 ;: ''
+less /tmp/zsh3256410 ;: ''
+less /tmp/zsh3256411 ;: ''
+less /tmp/zsh32564echo12 ;: 'echo'
+less /tmp/zsh32564ech13 ;: 'ech'
+less /tmp/zsh32564echo14 ;: 'echo'
+cat /tmp/zsh32564echo14
+rm /tmp/zsh32564ec1 /tmp/zsh32564ech13 /tmp/zsh32564echo2 /tmp/zsh32564echo3 /tmp/zsh32564echo4 /tmp/zsh32564echo5 /tmp/zsh32564echo6 /tmp/zsh32564echo7 /tmp/zsh32564echo8 /tmp/zsh32564echo12 /tmp/zsh32564echo14 /tmp/zsh325649 /tmp/zsh3256410 /tmp/zsh3256411
+bindkey|less
+cd pkg/hello_world
+file hello_world
+rm hello_world
+file hello_world.c
+echo {toto,tata,tutu}
+echo ~/tftpd/{build/os,}/openrg.img .zsh/
+cd kochoedo
+setopt cdablevars
+vim ~/.zsh/02_Options.zsh
+touch test
+rm test
+echo toto tata tutu
+touch tata toto tutu
+rm tutu
+rm tata
+'echo' tests'\'''
+echo ''\''tests'\'''
+echo toto
+echo "------------------------------------------"
+which-command echo
+echo
+echo test
+run-help echo
+echo tes
+bindkey "u"
+bindkey ""
+bindkey "^_"
+watch -n1 ps\ fx\ --cols $COLUMNS
+cd gagnaire
+cd hiegel
+echo essai
+telnet localhost 8024
+cd tftpd
+cp {build/os/,}openrg.img
+emacs
+gvim
+echo $DISPLAY
+exit
+cat .zshrc
+du -h *
+du -hS *
+du -hs *
+du -hsc *
+du -sc *
+du -c *
+vim 03_Completion.zsh
+grep completion ~gaudonvi/.zshrc
+grep completion ../HappyConf/ZshRC_Gagnaire
+vim 03_Completion.zsh +wv
+vim 03_Completion.zsh +splitv
+vim 03_Completion.zsh +vsplit
+vim 03_Completion.zsh +vsplit ../HappyConf/ZshRC_Gagnaire
+vim 03_Completion.zsh +vsplit ../HappyConf/ZshRC_Gagnaire +bnext
+bindkey -s "" "rehash\n"
+bindkey ""
+bindkey "	"
+bindkey "r"
+bindkey "R"
+bindkey "R" -s "rehash\n"
+bindkey "R" "rehash\n"
+bindkey -s "R" "rehash\n"
+cp .zshrc _zshrc
+mv .zshrc _zshrc_sources
+source _zshrc_sources
+source _zshrc_sources > .zshrc
+vim .zshrc
+vim .zshrc +vsplit ../HappyConf/ZshRC_Gagnaire +bnext
+vim .zshrc +vsplit HappyConf/ZshRC_Gagnaire +bnext
+mv .zshrc √_zshrc_allinone
+cp _zshrc .zshrc
+vim * +vsplit ../HappyConf/ZshRC_Gagnaire +bnext
+vim * +vsplit ../HappyConf/ZshRC_Gagnaire +bp
+typeset
+typeset PATH
+typeset -g
+typeset -gU
+man typeset
+less /tmp/zsh10189typeset1 ;: 'typeset'
+which-command typeset
+run-help typeset
+watch
+ls .
+sleep 2 ; ls .
+ls -r /
+ls -r /*
+cat > /tmp/test
+rm /tmp/test
+time echo poeut
+unset REPORTTIME
+time echo pouet
+REPORTTIME=1
+time ls
+export PATH
+echo $REPORTTIME
+cat /etc/passwd
+less micro_inetd.c
+man execv
+telnet localhost 8022
+cat micro_inetd.c
+vim +readonly micro_inetd.c
+vim +set\ readonly micro_inetd.c
+run-help less
+less /tmp/zsh10189apt-get2 ;: 'apt-get '
+which-command sudo
+less /tmp/zsh10189apt-get3 ;: 'apt-get '
+cat /tmp/zsh10189apt-get3
+bindkey -e
+bindkey -v
+mmv *Exports* *Environment*
+mmv *Environment*
+mmv *Environment* *Environement*
+ln -fs 01_Environement.V√©lizy 01_Environement.VZY08001
+rm 01_Environment.VZY08001
+chmod -x *
+dircolors
+cat 01_Environement.zsh
+cat 01_Environement.prunelle
+mmv 05* 50*
+mmv 04* 40*
+mmv 03* 30*
+mmv 02* 20*
+mmv 02* 10*
+mmv 01* 10*
+ln -fs 10_Environement.V√©lizy 10_Environement.VZY08001
+mmv 20_Aliases* 70√√_Aliases*
+mmv 70√√_Aliases.* 70_Aliases*
+mmv 70_Aliases* 70_Aliases.*
+cat 10_Environement.zsh > 11_Prompts.zsh
+vim 11_Prompts.zsh
+vim ../.zshrc
+cat 30_Completion.zsh
+cat 00_Preambule.zsh
+ulimit
+ulimit -c
+ulimit -l
+ulimit -a
+chmod +x *
+./00_Preambule.zsh
+la .zshrc
+chmod +x .zshrc
+./.zshrc
+cat _zshrc
+cat _zshrc_sources
+rm _zshrc _zshrc_sources
+rm √_zshrc_allinone
+chmod a-x *
+chmod a-x ../.zshrc
+man echo
+sl
+_grep
+vim *
+-t
+[[ -t ]]
+[[ -t 1 ]]
+man [
+man test
+vim 50_Functions.zsh
+grep PATH *
+cat 10_Environement.*
+cat 10_Environement.zsh
+cat 70_Aliases.zsh
+alias=unalias
+a alias=unalias
+alias
+\alias
+alias ls
+\unalias
+vim 10_Environement.V√©lizy
+vim 10_Environement.zsh
+cat 11_Prompts.zsh
+mmv 10_Environement.* 10_Variables.*
+ln -fs 10_Variables.V√©lizy 10_Variables.VZY08001
+la
+cat 20_Options.zsh
+man zshoptions
+unsetopt aliases
+setopt aliases
+export
+echo $SHLVL
+unsetopt alwayslastprompt
+unsetopt alwaystoend
+setopt noalwaystoend
+setopt
+unsetopt completealiases
+setopt nocompletealiases
+setopt completealiases
+less /tmp/zsh17546set1 ;: 'set'
+bindkey "	"
+bindkey "?"
+bindkey "?"
+bindkey "s"
+bindkey "s"
+which-command get
+less /tmp/zsh17546get2 ;: 'get'
+bindkey "	" expand-or-complete-prefix
+cd .ssh
+vim ~/.zsh/*Opt*
+la tftpd
+cd os
+less /tmp/zsh23379l1 ;: 'l'
+cat \?bldorg\?rg_version.txt
+less /tmp/zsh23379l2 ;: 'l'
+which-command ls
+less /tmp/zsh23379l3 ;: 'l'
+less /tmp/zsh23379l4 ;: 'l'
+run-help ls
+less /tmp/zsh23379l5 ;: 'l'
+less /tmp/zsh23379l6 ;: 'l'
+less /tmp/zsh23379l7 ;: 'l'
+man bindkey
+run-help bindkey
+man zshzle
+bindkey -s "r" "rehash"
+bindkey -s "r" "rehash\n"
+echo rehash
+l:
+bindkey -s "r" " rehash\n"
+ls -√la
+lm
+lc
+man ls
+vim pkg/main/run_ext_proc.c
+cp ~/tftpd/{build/os,}/openrg.img && cat ~/tftpd/LOAD
+telnet localhost 8023
+emacs&
+info makefile
+info Makefile
+cat .zsh_history
+rm .zsh_history
+mv zshpower.tbz2 HappyConf
+la HappyConf
+umask
+tree -C | less -R
+tree -C | cut -c-$COLUMNS | less -R
+tftpd/
+...
+a
+una ..
+cat ~vitoux/toto.txt
+cd souche/dev/hugues/current/rg
+cd pkg/micro_inetd
+vim micro_inetd.c
+cd /
+vim tmp/Sagem3202_ft1.Rax27374
+vim tmp/ccqVEgN1.s
+la opt
+la /tmp/ccRMb1GC.s
+la /tmp/Sagem3202_ft1.Rax27374
+finger -m hiegel
+finger -m gaudonvi
+la vimfiles
+tree vimfiles
+cat vimfiles/colors
+rmdir vimfiles/* vimfiles
+la sbin
+cat sbin/rip-3-passes.sh
+emacs Makefile&
+la ../patches
+echo $CDPATH
+CDPATH=.:~:..
+CDPATH=.:~:..:/
+cd tmp
+pwd
+cd +7
+CDPATH=.
+cd souche
+CDPATH=..
+CDPATH=~
+cd +6
+VISUAL=$EDITOR
+quilt new
+quilt new Make_builds_only_√necessary.patch
+quilt pop
+quilt new Make_builds_only_necessary.patch
+quilt appliedd
+quilt applied
+QUILT_EDITOR=emacs
+find ~/souche/tools -name quilt
+export MANPATH=$MANPATH:~/souche/tools/share/man
+echo $MANPATH
+vim ~/.zsh/10_Variables.V√©lizy
+vim ~/.zsh/40_KeyBindings.zsh
+export EDITOR
+unset EDITOR VISUAL FCEDIT
+EDITOR=emacs
+cat ~/.quiltrc
+vim ~/.quiltrc
+EDITOR=emacs quilt edit Makefile
+cat path_up_recursive.mak
+cat \#Makefile\#
+echo "\vtoto"
+echo "test\vtoto"
+echo "test\vtoto"
+echo "test\vtoto"
+echo "test\v\_ toto"
+echo "test\v\_ toto\v\_ tata"
+echo "test\r\v	\_ toto\v\_ tata"
+echo "test\r\v  \_ toto\r\v    \_ tata"
+echo %\{\[%\(\!.31.33\)m%\}%n%\{\[1\;%\(\!.31.33\)m%\}@%\{\[0\;%\(\!.31.33\)m%\}%m%\{\[0m%\}\ \(%\{\[36m%\}%y%\{\[0m%\}\)\ \[%\(\!.%\{\[31m%\}%d%\{\[0m%\}.%\{\[33m%\}%\(5~:...\v/:\)%4~%\{\[0m%\}\)\]\ %h%\{\[%\(\!.31\;1.33\)m%\}\#%\{\[0m%\}\ 
+export EDITOR=emacs
+tar cvjf zshpower.tbz2 .zsh*
+cd +
+cd +0
+wc -l .zshrc .zsh/*.???*
+wc -l .zshrc .zsh/??_*.???*
+wc -l .zshrc .zsh/??_*.???
+wc -l .zshrc .zsh/??_*.*
+du -sch .zshrc .zsh/??_*.*
+du -c .zshrc .zsh/??_*.*
+du -s .zshrc .zsh/??_*.*
+du -ck .zshrc .zsh/??_*.*
+du -cks .zshrc .zsh/??_*.*
+du -sckh .zshrc .zsh/??_*.*
+l ~gaudonvi/.zshrc
+la .zsh
+fg
+man quilt
+echo $LOGCHECK
+screen -DDRx
+screen -DDR
+exec screen -DDR
+tftpd
+souche
+cd tools
+LC_ALL=fr_FR vim 10_Variables.zsh
+WORDCHARS='*?-._~&;!#$%^<>'
+vim 10_Variables.zsh
+vim 10_Variables.paranoid
+LC_ALL=fr_FR.utf8 vim 10_Variables.zsh
+mmv 20* 10*
+mmv 10_Variables.* 20_Variables.*
+ln -fs 20_Variables.V√©lizy 20_Variables.VZY08001
+echo $LC_ALL
+export LC_MESSAGES
+export LC_ALL
+vim 10_Options.zsh
+rehash
+vim 20_Variables.V√©lizy
+cat 20_Variables.VZY08001
+echo $PATH
+vim 20_Variables.VZY08001
+mv 11_* 21_*
+mmv 11_* 21_*
+mmv 21_* 25_*
+ll .zsh
+.zsh
+mmv 0√_√*
+mmv 50* 80*
+mv 80_Debug.zsh 85_Debug.zsh
+cat 99_Start.zsh
+vim 99_Start.zsh
+cat 85_Debug.zsh
+cat 80_Functions.zsh
+emacs *
+bg
+disown
+souche/dev/hugues/current/rg
+dc
+vd
+quilt edit Makefile
+vim Makefile
+sed
+sed "1$p;h"
+sed '1!G;$p;h'
+ed
+cd /tmp
+touch tmp.hiegel
+cat > tmp.hiegel
+< tmp.hiegel sed '2G'
+< tmp.hiegel sed '0!G'
+< tmp.hiegel sed 'g'
+< tmp.hiegel sed '$'
+< tmp.hiegel sed '$p'
+< tmp.hiegel sed '1!G;h'
+< tmp.hiegel sed '1! '
+< tmp.hiegel sed '1! h'
+< tmp.hiegel sed '1! p'
+< tmp.hiegel sed '1! $'
+< tmp.hiegel sed "1
+< tmp.hiegel sed '3!G'
+< tmp.hiegel sed '='
+< tmp.hiegel sed '=;1!G'
+< tmp.hiegel sed '=;1!G;:test;'
+< tmp.hiegel sed '=;:test;1!G;b test'
+< tmp.hiegel sed '=;:test;1!G;q'
+< tmp.hiegel sed '=;:test;1!G;a TEST'
+< tmp.hiegel sed '1!G;a TEST'
+< tmp.hiegel sed 'G;a TEST'
+< tmp.hiegel sed '1!a TEST'
+< tmp.hiegel sed '1!a '
+< tmp.hiegel sed '1!a " "'
+< tmp.hiegel sed '1!a\ '
+< tmp.hiegel sed '1!a _____'
+< tmp.hiegel sed '1!i _____'
+< tmp.hiegel sed '1!a <<<'
+< tmp.hiegel sed '1!a +++'
+less /tmp/zsh20109sed1 ;: 'sed ''1!a '''
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<;$p'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\;$p'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\\
+;$p'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\
+;$p'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\n'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\
+'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\
+test'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\
+$ <<<<<<<<<<<<<<<<<<<<<<<<<<<p'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\
+$ p'
+< tmp.hiegel sed '1!a <<<<<<<<<<<<<<<<<<<<<<<<<<<\
+$ p;h'
+< tmp.hiegel sed '1!a $ p;h'
+< tmp.hiegel sed '1!G;$ p;h'
+< tmp.hiegel sed '1!G;$p '
+< tmp.hiegel sed '1!G;$c '
+< tmp.hiegel sed '1!c '
+< tmp.hiegel sed '1!c \'
+vim tmp.hiegel
+< tmp.hiegel sed '2!G'
+< tmp.hiegel sed '2!5!G'
+< tmp.hiegel sed '2,5!G'
+< tmp.hiegel sed '5G'
+< tmp.hiegel sed 'G'
+< tmp.hiegel sed 'G;'
+< tmp.hiegel sed 'G;$p'
+< tmp.hiegel sed 'G;h'
+< tmp.hiegel sed 'G;h' | less
+< tmp.hiegel sed ''
+< tmp.hiegel sed ';'
+< tmp.hiegel sed 'h;'
+< tmp.hiegel sed '$p;h'
+< tmp.hiegel sed '^p'
+< tmp.hiegel tr '\n' ' ' ; echo
+vim ~/.zsh/10_Options.zsh
+unsetopt cdablevars
+< tmp.hiegel tr '\n' ' '
+< tmp.hiegel sed 't/\n/ /'
+< tmp.hiegel sed 'y/\n/ /'
+run-help sed
+< tmp.hiegel sed 'y/t/ /'
+man sed
+< tmp.hiegel sed 'h;y/t_/ :/'
+< tmp.hiegel sed 'h;y/t_/ :/;g'
+< tmp.hiegel sed 'h;y/t_/ :/;G'
+< tmp.hiegel sed '$h;y/t_/ :/;1g'
+< tmp.hiegel sed '$h;1g'
+< tmp.hiegel sed 'H;1;g'
+< tmp.hiegel sed 'H;1:;g'
+< tmp.hiegel sed 'H;1g'
+< tmp.hiegel sed 'H;'
+preexec { }
+< tmp.hiegel sed 'h'
+< tmp.hiegel sed 'h;G'
+< tmp.hiegel sed 'h;tG'
+< tmp.hiegel sed 'h;t;G'
+< tmp.hiegel sed 'h;T;G'
+< tmp.hiegel sed '2h;;G'
+unsetopt autolist
+unsetopt automenu
+unsetopt menucomplete
+setopt menucomplete
+setopt autolist
+< tmp.hiegel
+< tmp.hiegel uniq
+< tmp.hiegel sed '1! G;$p'
+< tmp.hiegel sed '1! G;$p;h'
+< tmp.hiegel sed '1! G;$ p;h'
+< tmp.hiegel sed '1! G'
+< tmp.hiegel sed '1!G'
+< tmp.hiegel sed '1!G;'
+< tmp.hiegel sed '1!G;$G'
+< tmp.hiegel sed '1!G;$p'
+< tmp.hiegel sed '1!G;$p;H'
+< tmp.hiegel sed '1!G;$p;h'
+< tmp.hiegel sed '1!G;$p;h'>toto
+rm toto
+sed '1!G;$p;h'>toto
+sed '1!G;$p;h;G'>toto
+cat toto
+sed '1!G;$p;h;G'
+sed '1!G;$p;h;g'
+sed -nf '1!G;$p;h;g'
+sed -n '1!G;$p;h;g'
+tmp
+/tmp
+< tmp.hiegel sed 'y/t_/ :/'
+cd -1
+la livraison_sagem/2006-06-12_input-plateau
+cdpath=..
+cd guillaume hugues
+cd hugues guillaume
+cp ../guillaume/livraison_sagem/2006-06-12_input-plateau.tar .
+cp -a ../guillaume/livraison_sagem/2006-06-12_input-plateau.tar .
+cd souc
+cd souche/dev/hugues
+file 2006-06-12_input-plateau.tar
+tar xv 2006-06-12_input-plateau.tar
+tar xf 2006-06-12_input-plateau.tar
+mmv *.tgz *
+find . -iname cmvs.txt
+find . -iname cmv
+find . -iname cmv\*
+find * -iname cmv\*
+tree
+ToOTO=test
+echo $ToOTO
+unset ToOTO
+unzip LBV2_Milestone3.3_CodeDrop_March17_2006.zip
+tar xvjf milestone3.3.tar.bz2
+rm LBV2_Milestone3.3_CodeDrop_March17_2006.zip
+cd 20060403_release_sdk3.3
+for i in *tar.bz2 ; do tar xjf $i ; done
+rm *.tar.bz2
+20060518_sdk_cd_dir.4.0.21.3.3.1.23
+tar xzf sdk_cd_dir.4.0.21.3.3.1.23.tgz
+rm sdk_cd_dir.4.0.21.3.3.1.23.tgz
+cd ./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/fusiv_src/user/sysutil/
+cd ~
+mkdir tests
+cd tests
+unset preexec
+unset precmd
+touch continue.c
+killall continue
+gcc -o continue continue.c
+vim continue.c
+./continue
+cat continue
+strip continue
+nm continue
+objdump continue
+objdump -s continue
+objdump -d continue
+bindkey -s "l" "l\n"
+bindkey -s "l" ""
+bindkey -s "l" "l"
+bindkey
+bindkey "l" "l"
+bindkey "l" ""
+bindkey "l" " "
+bindkey "l" "undefined"
+bindkey "l"
+bindkey o
+bindkey "l" "self-insert"
+bindkey -s "l" "ls\n"
+bindkey -s "l" "l\n"
+bindkey -s "l" " l\n"
+bindkey -s "l" " l\n"
+bindkey -s "l" " ls -lh\n"
+cat continue.c
+uptime
+uname -a
+LC_ALL=C uptime
+echo $TIMEFMT
+echo $TIME_STYLE
+time test
+time true
+time false
+time sleep 0,1 ; cat ; true
+unset TIMEFMT
+time (sleep 0,1 ; cat ; true)
+vim ~/.zsh/20_Variables.zsh
+~/.zsh
+rt
+vim 00_Preambule.zsh
+cat pouet
+time cat
+time (ls √√-ls | sed 'y/ 	/:_/' )
+time (ls -ls | sed 'y/ 	/:_/' )
+time (ls -ls | tr -s ' ' | sed 'y/ 	/:_/' )
+ls
+vim 20_Variables.zsh
+REPORTTIME=0
+ls -la
+souche/dev/hugues
+cd 2006-06-12_input-plateau
+cd 20060518_sdk_cd_dir.4.0.21.3.3.1.23
+s
+find . -name cmvs.txt
+cscope
+make sysutils
+automake
+cd ../../../..
+cd /filer1/dev_users/hiegel/souche/dev/hugues/2006-06-12_input-plateau/20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/fusiv_src/user/sysutil/../../../../../../../
+cd /filer1/dev_users/hiegel/souche/dev/hugues/2006-06-12_input-plateau/20060317_milestone3.3/
+find . -name "atm.h"
+cd +2
+./configure $OLDPWD/./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/linux-mips-2.6.12/include/linux/atm.h
+./configure $OLDPWD/./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/linux-mips-2.6.12/include/linux/atm.h test
+cat Makefile
+./configure $OLDPWD/./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/linux-mips-2.6.12/include/linux/atm.h gcc
+./configure -I$OLDPWD/./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/linux-mips-2.6.12/include/linux/atm.h gcc
+./configure -i$OLDPWD/./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/linux-mips-2.6.12/include/linux/atm.h gcc
+cd souche/dev/hugues/2006-06-12_input-plateau/
+man gcc
+./configure -include\ $OLDPWD/./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/linux-mips-2.6.12/include/linux/atm.h gcc
+./configure -include\ /filer1/dev_users/hiegel/souche/dev/hugues/2006-06-12_input-plateau/20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/linux-mips-2.6.12/include/linux/atm.h gcc
+setopt GLoBDoTs
+cat Milestone3_3ReleaseNote.txt
+cd LBV2_Milestone3.3_CodeDrop_March17_2006
+cat pppox_patch.txt
+cd milestone3.3
+unset CDPATH
+./mkbootimg
+cd buildroot
+./buildroot_sampcfg
+make
+cd ../..
+tar xvf 2006-06-12_input-plateau.tar
+cd 2006-06-12_input-plateau/.
+k
+cd 20060403_release_sdk3.3/
+cd binaries/
+cd ../.;
+..
+fc
+which-command cd
+less /tmp/zsh67721 ;: ''
+less /tmp/zsh6772cd2 ;: 'cd '
+\: 'test cat '
+rm -fr 20060518_sdk_cd_dir.4.0.21.3.3.1.23
+LL
+cd 20060317_milestone3.3
+cd LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3
+so
+cd ...
+cd ..
+find -name sysutils -type d
+find -name sysutils
+find -name sysutil
+cd ./20060317_milestone3.3/LBV2_Milestone3.3_CodeDrop_March17_2006/milestone3.3/fusiv_src/user/sysutil
+cat ./1
+rm ./1
+l
+cat cmvs.h
+hexdump -C CMV
+cat cmvs.txt
+./configure
+vim configure
+vim Makefile.in
+cat configure
+cat Makefile.in
+cd
+tar cvjf HappyConf/zshpower.tbz2 .zsh*
+tar xvjf zshpower.tbz
+cd .zsh
+zsh
+cat 40_KeyBindings.zsh
+bindkey >> 40_KeyBindings.zsh
+ll
+exec zsh
+ll
+cd ..
+mv _zsh/.svn .zsh
+cd .zsh
+svn staus
+svn status
+for i in $( svn status | grep '^!' | cut -c2- ) ; do echo svn delete $i ; done
+for i in $( svn status | grep '^!' | cut -c2- ) ; do svn delete $i ; done
+for i in $( svn status | grep '^?' | cut -c2- ) ; do svn add $i ; done
+ll
+svn status
+cd ..
+svn status .zshrc
+svn diff .zshrc
+svn commit .zsh .zshrc
