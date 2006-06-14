@@ -41,58 +41,58 @@ test $TERM = "xterm" &&
 # npo : quote-region est sur ESC-" par defaut
 # npo : which-command est sur ESC-? par defaut
 # Lancez ``bindkey'' pour en savoir plus !!
-"^A"-"^C" self-insert
-"^D" list-choices
-"^E"-"^F" self-insert
-"^G" list-expand
-"^H" vi-backward-delete-char
-"^I" expand-or-complete
-"^J" accept-line
-"^K" self-insert
-"^L" clear-screen
-"^M" accept-line
-"^N"-"^P" self-insert
-"^Q" vi-quoted-insert
-"^R" redisplay
-"^S"-"^T" self-insert
-"^U" vi-kill-line
-"^V" vi-quoted-insert
-"^W" vi-backward-kill-word
-"^X" self-insert
-"^X^R" _read_comp
-"^X?" _complete_debug
-"^XC" _correct_filename
-"^Xa" _expand_alias
-"^Xc" _correct_word
-"^Xd" _list_expansions
-"^Xe" _expand_word
-"^Xh" _complete_help
-"^Xm" _most_recent_file
-"^Xn" _next_tags
-"^Xt" _complete_tag
-"^X~" _bash_list-choices
-"^Y"-"^Z" self-insert
-"^[" vi-cmd-mode
-"^[^[[3~" kill-region
-"^[^[[A" history-search-backward
-"^[^[[B" history-search-forward
-"^[^[[C" forward-word
-"^[^[[D" backward-word
-"^[," _history-complete-newer
-"^[/" _history-complete-older
-"^[OA" vi-up-line-or-history
-"^[OB" vi-down-line-or-history
-"^[OC" vi-forward-char
-"^[OD" vi-backward-char
-"^[R" "rehash^J"
-"^[[2~" overwrite-mode
-"^[[3~" delete-char
-"^[[A" up-line-or-history
-"^[[B" down-line-or-history
-"^[[C" vi-forward-char
-"^[[D" vi-backward-char
-"^[r" "rehash^J"
-"^[~" _bash_complete-word
-"^\\\\"-"~" self-insert
-"^?" vi-backward-delete-char
-"\M-^@"-"\M-^?" self-insert
+bindkey "^A"-"^C" self-insert
+bindkey "^D" list-choices
+bindkey "^E"-"^F" self-insert
+bindkey "^G" list-expand
+bindkey "^H" vi-backward-delete-char
+bindkey "^I" expand-or-complete
+bindkey "^J" accept-line
+bindkey "^K" self-insert
+bindkey "^L" clear-screen
+bindkey "^M" accept-line
+bindkey "^N"-"^P" self-insert
+bindkey "^Q" vi-quoted-insert
+bindkey "^R" redisplay
+bindkey "^S"-"^T" self-insert
+bindkey "^U" vi-kill-line
+bindkey "^V" vi-quoted-insert
+bindkey "^W" vi-backward-kill-word
+bindkey "^X" self-insert
+bindkey "^X^R" _read_comp
+bindkey "^X?" _complete_debug
+bindkey "^XC" _correct_filename
+bindkey "^Xa" _expand_alias
+bindkey "^Xc" _correct_word
+bindkey "^Xd" _list_expansions
+bindkey "^Xe" _expand_word
+bindkey "^Xh" _complete_help
+bindkey "^Xm" _most_recent_file
+bindkey "^Xn" _next_tags
+bindkey "^Xt" _complete_tag
+bindkey "^X~" _bash_list-choices
+bindkey "^Y"-"^Z" self-insert
+bindkey "^[" vi-cmd-mode
+bindkey "^[^[[3~" kill-region
+bindkey "^[^[[A" history-search-backward
+bindkey "^[^[[B" history-search-forward
+bindkey "^[^[[C" forward-word
+bindkey "^[^[[D" backward-word
+bindkey "^[," _history-complete-newer
+bindkey "^[/" _history-complete-older
+bindkey "^[OA" vi-up-line-or-history
+bindkey "^[OB" vi-down-line-or-history
+bindkey "^[OC" vi-forward-char
+bindkey "^[OD" vi-backward-char
+bindkey "^[R" "rehash^J"
+bindkey "^[[2~" overwrite-mode
+bindkey "^[[3~" delete-char
+bindkey "^[[A" up-line-or-history
+bindkey "^[[B" down-line-or-history
+bindkey "^[[C" vi-forward-char
+bindkey "^[[D" vi-backward-char
+bindkey "^[r" "rehash^J"
+bindkey "^[~" _bash_complete-word
+bindkey "^\\\\"-"~" self-insert
+bindkey "^?" vi-backward-delete-char
+bindkey "\M-^@"-"\M-^?" self-insert
