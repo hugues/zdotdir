@@ -5,6 +5,9 @@
 # Lancez un chtit bindkey dans votre zsh pour voir... 
 #
 
+bindkey "" backward-delete-word
+bindkey "" backward-delete-char
+
 bindkey "\e[3~" delete-char			# delete
 bindkey "\e[2~" overwrite-mode			# insert
 bindkey "\e[A" up-line-or-history		# up
@@ -35,6 +38,17 @@ test $TERM = "xterm" &&
     bindkey "\eOH" beginning-of-line	# home
     bindkey "\eOF" end-of-line		# end-of-line
 }
+
+bindkey "[8~" end-of-line
+bindkey "[7~" beginning-of-line
+bindkey "[6~" down-line-or-history
+bindkey "[5~" up-line-or-history
+bindkey "[3~" delete-char
+bindkey "[2~" undefined-key
+bindkey "[3~" delete-word
+bindkey "" backward-delete-char
+bindkey "" backward-delete-word
+
 #bindkey "\C-t" gosmacs-transpose-chars	# J, ca c'est un truc pour toi
 # ne pas oublier de s'en servir :
 # vi-match-bracket est sur ^X^B par defaut
@@ -96,3 +110,9 @@ bindkey "^[~" _bash_complete-word
 bindkey "^\\\\"-"~" self-insert
 bindkey "^?" vi-backward-delete-char
 bindkey "\M-^@"-"\M-^?" self-insert
+bindkey "^D" delete-char
+bindkey "^H" vi-backward-delete-char
+bindkey "^[[3~" delete-char
+bindkey "^[d" delete-word
+bindkey "^[^?" backward-delete-word
+bindkey "^?" vi-backward-delete-char
