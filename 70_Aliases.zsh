@@ -21,6 +21,7 @@ a rm='rm -i'
 a mv='mv -i'
 autoload zmv
 a mmv='noglob zmv -W'
+a cp='cp -a'
 
 a apt-get='sudo apt-get'
 
