@@ -1,12 +1,23 @@
 #!/bin/zsh
-# Fichier de conf pour la personnalisation de la complÈtion automagique :-)
+##
+## Part of configuration files for Zsh 4
+## by Hugues Hiegel <hugues@nullpart.net>
+## 
+## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
+##
+## You are encouraged to use, modify, and redistribute
+## these files with or without this notice.
+## 
+# Fichier de conf pour la personnalisation de la compl√tion automagique :-)
 # Hugues HIEGEL <hugues@nullpart.net>
 # jeu mar  3 10:00:44 CET 2005
 
 autoload -U compinit 2> /dev/null
 compinit -i
 
+## Affiche le menu de s√lection si au moins 2 entr√es sont possibles
 zstyle ':completion:*' menu select=2
+## Utilise les couleurs d√©finies avec dircolors
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # Premiers essais...

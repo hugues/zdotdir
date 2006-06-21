@@ -1,4 +1,13 @@
 #!/bin/zsh
+##
+## Part of configuration files for Zsh 4
+## by Hugues Hiegel <hugues@nullpart.net>
+## 
+## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
+##
+## You are encouraged to use, modify, and redistribute
+## these files with or without this notice.
+## 
 
 ##
 ## NDLA: 
@@ -22,7 +31,7 @@ export PAGER=less
 ## Quelle commande utiliser par défaut ?
 export NULLCMD=cat
 
-which dircolors 2>&1 >/dev/null && eval $(dircolors ~/.dir_colors 2>&-)
+[ `which dircolors` ] && eval $(dircolors ~/.dir_colors 2>&-)
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M"
 

@@ -1,8 +1,17 @@
 #!/bin/zsh
+##
+## Part of configuration files for Zsh 4
+## by Hugues Hiegel <hugues@nullpart.net>
+## 
+## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
+##
+## You are encouraged to use, modify, and redistribute
+## these files with or without this notice.
+## 
 
 ## Zsh options
 #
-# zshoptions(1)
+# see man zshoptions(1) for more details ;-)
 #
 
 # J'ai pas très bien compris mais en gros ça va me permettre
@@ -19,6 +28,7 @@ unsetopt All_Export
 ## ``cd'' automatique
 # Si la commande n'existe pas et qu'elle correspond à
 # un dossier, zsh fait automatiquement un ``cd'' dessus.
+# Pour les fainéants qui ont la flemme de taper "cd " :-)
 setopt Auto_Cd
 
 ## Envoie le signal CONT aux jobs passés en arrière-plan. 
@@ -26,8 +36,11 @@ setopt Auto_Continue
 
 ## Complétion automatique
 setopt Auto_List
-unsetopt Auto_Menu
-setopt Menu_Complete
+setopt Auto_Menu
+# Ces trucs sont pénibles car ils n'autorisent pas une
+# complétion "petit à petit".
+unsetopt Menu_Complete
+unsetopt Rec_Exact
 
 setopt Auto_Param_Keys
 unsetopt Auto_Param_Slash
@@ -61,3 +74,4 @@ setopt No_Prompt_Cr
 setopt Numeric_Glob_Sort
 unsetopt Prompt_Cr
 setopt Pushd_Ignore_Dups
+setopt Glob
