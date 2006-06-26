@@ -25,8 +25,8 @@ bindkey "[D" backward-word			# ESC left
 bindkey "[3~" kill-region			# ESC del
 
 # Pratique pour rehasher rapidement
-bindkey -s "r" "rehash\n"
-bindkey -s "R" "rehash\n"
+bindkey -s "r" " rehash\n"
+bindkey -s "R" " rehash\n"
 
 test $TERM = "rxvt" -o $TERM = "xterm" -o $TERM = "aterm" &&
 {
