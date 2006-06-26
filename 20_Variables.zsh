@@ -54,8 +54,8 @@ unset LANG # Unuseful
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}~/libs
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}/usr/X11R6/lib/pkgconfig
 export PATH=${PATH:+$PATH:}~/sbin:~/bin
-export MANPATH=${MANPATH:+$MANPATH:}~/man
-export INFOPATH=${INFOPATH:+$INFOPATH:}~/info
+export MANPATH=${MANPATH:+$MANPATH:}/usr/share/man:/usr/local/share/man:~/man
+export INFOPATH=${INFOPATH:+$INFOPATH:}/usr/share/info:/usr/local/share/info:~/info
 ## Nettoyage des précédentes variables pour supprimer les duplicata
 typeset -gU PATH MANPATH INFOPATH PKG_CONFIG_PATH LD_LIBRARY_PATH
 
