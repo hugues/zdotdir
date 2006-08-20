@@ -31,7 +31,7 @@ export PAGER=less
 ## Quelle commande utiliser par défaut ?
 export NULLCMD=cat
 
-[ `which dircolors` ] && eval $(dircolors ~/.dir_colors 2>&-)
+[ `which dircolors` >/dev/null 2>&1 ] && eval $(dircolors ~/.dir_colors 2>&-)
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M"
 
@@ -53,9 +53,9 @@ unset LANG # Unuseful
 #
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}~/libs
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}/usr/X11R6/lib/pkgconfig
-export PATH=${PATH:+$PATH:}~/sbin:~/bin
-export MANPATH=${MANPATH:+$MANPATH:}/usr/share/man:/usr/local/share/man:~/man
-export INFOPATH=${INFOPATH:+$INFOPATH:}/usr/share/info:/usr/local/share/info:~/info
+export PATH=$PATH:~/sbin:~/bin
+export MANPATH=$MANPATH:~/man
+export INFOPATH=${INFOPATH:+$INFOPATH:}~/info
 ## Nettoyage des précédentes variables pour supprimer les duplicata
 typeset -gU PATH MANPATH INFOPATH PKG_CONFIG_PATH LD_LIBRARY_PATH
 
@@ -66,16 +66,16 @@ TIMEFMT='`%J` -- %P cpu
    User	%U
  System	%S
   Total	%E'
-#WATCHFMT=$COLOR_BLUECLAIR"%n"$COLOR_END
-#WATCHFMT=$WATCHFMT" has "$COLOR_YELLOW"%a[0m %l from %M"
-#WATCH=notme
 
-WORDCHARS='*?-._~=&;!#$%^'					# délimiteurs de mots
-								# '()[]{}/' y ont été supprimés
+WATCHFMT=$COLOR_BLUECLAIR"%n"$COLOR_END
+WATCHFMT=$WATCHFMT" has "$COLOR_YELLOW"%a[0m %l from %M"
+WATCH=notme
 
+WORDCHARS='*?-_~!#$%^.' ## Caractères faisant partie des mots
+                        ## J'ai viré les  '/()[]{}'
 
 ## Gestion de l'historique
 # Voir le fichier d'Options pour plus de contrôle là-dessus
-HISTFILE=$ZDOTDIR/.history
+HISTFILE=$ZDOTDIR/.history.$USER.$HOSTNAME # Pour éviter les conflits de conf
 HISTSIZE=42000
 SAVEHIST=42000

@@ -9,25 +9,36 @@
 ## these files with or without this notice.
 ## 
 
-[[ -t 1 ]] &&
-chpwd()
+term_title()
 {
+  [[ -t 1 ]] &&
     case $TERM in
       sun-cmd)
-		print -Pn "\e]l%n@%m %~\e\\" ;;
+        print -Pn "\e]l%n@%m %~$1\e\\" ;;
       *xterm*|rxvt|(k|E|dt)term|gnome-terminal)
-		print -Pn "\e]0;%n@%m (%l) %~\a" ;;
+	    print -Pn "\e]0;%n@%m (%l) %~$1\a" ;;
     esac
-    #print -P "%(/,%78>...>%/,%//)%b"
+}
+
+_chpwd()
+{
+    term_title
+}
+
+chpwd()
+{
+    _chpwd
+    which todo 2>&1 > /dev/null && todo
 }
 
 precmd ()
 {
 ##   [[ -t 1 ]] &&
 #    print -nP "%(?,,%{[34;1m%}Foirage n°%{[38;1;45m%}%?\n)%{[0m%}"
+    _chpwd
 }
 
 preexec ()
 {
-    #nothing :)
+    term_title "  $1"
 }

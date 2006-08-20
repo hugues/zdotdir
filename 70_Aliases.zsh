@@ -12,8 +12,10 @@ alias a='alias'
 
 a una=unalias
 
-a e='emacs'
+a e='emacsclient'
 a ne='emacs -nw'
+
+a v='vim'
 
 a close='eject -t'
 
@@ -21,7 +23,6 @@ a rm='rm -i'
 a mv='mv -i'
 autoload zmv
 a mmv='noglob zmv -W'
-a cp='cp -a'
 
 a apt-get='sudo apt-get'
 

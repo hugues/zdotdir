@@ -1,10 +1,5 @@
 
-which calendar 2>&1 >/dev/null && \
-for i in {1..$COLUMNS} ; do echo -n "_" ; done &&\
-echo &&\
-calendar -A0 | sed "s/^\(......\*.*\)/[1m\1[0m/" &&\
-for i in {1..$COLUMNS} ; do echo -n "_" ; done &&\
-echo "[0m"
+[ -f $ZDOTDIR/user:`whoami`/zlogin ] && source $ZDOTDIR/user:`whoami`/zlogin
 
 [ -f $ZDOTDIR/.keychain ] && source $ZDOTDIR/.keychain
 which keychain 2>&1 >/dev/null && keychain --quiet --stop others --inherit any

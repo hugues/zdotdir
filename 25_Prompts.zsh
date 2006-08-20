@@ -9,14 +9,6 @@
 ## these files with or without this notice.
 ## 
 
-## Prompts
-#
-# Pour plus d'infos sur les paramètres d'expansion du prompt:
-#  man zshmisc(1)
-#
-# La définition des prompts est séparée de celles desvariables d'environnement
-# classiques pour permettre de configurer, par exemple, les couleurs par défaut
-# dans ces fichiers. 
 # Pour personnaliser les couleurs du prompt, configurez ces variables :
 #  - PS1_ROOT pour la couleur du prompt ROOT
 #  - PS1_USER pour la couleur du prompt USER local
@@ -31,16 +23,26 @@
 
 ## Couleur par défaut pour le prompt ROOT (c'est super pour sudo, ça...)
 PS1_ROOT=${PS1_ROOT:-31}
-if ( [ "$SSH_TTY" = "" ] )
+
+# Couleur par défaut pour les utilisateurs normaux (moi, quoi)
+PS1_USER=${PS1_USER:-34}
+
+if ( [ "$SSH_TTY" != "" ] )
 then
-    # Couleur par défaut pour les utilisateurs normaux (moi, quoi)
-	PS1_USER=${PS1_USER:-34}
-else
     # Couleur par défaut pour les utilisateurs normaux loggués via SSH
     # Ça permet de faire une distinction rapide entre les shells locaux
     # et les shells distants. C'est trop bon, mangez-en !
-	PS1_USER=${PS1_USER_SSH:-35}
+    PS1_USER=${PS1_USER_SSH:-$PS1_USER}
 fi
+
+## Prompts
+#
+# Pour plus d'infos sur les paramètres d'expansion du prompt:
+#  man zshmisc(1)
+#
+# La définition des prompts est séparée de celles desvariables d'environnement
+# classiques pour permettre de configurer, par exemple, les couleurs par défaut
+# dans ces fichiers. 
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
@@ -58,7 +60,7 @@ PS3="?# "
 PS4="+%N:%i> "
 
 # Prompt de droite, pour l'heure et le code d'erreur de la dernière commande
-RPS1="%(?;;%{[1;32m%}%?%{[0m%}) %{[0;%(!."$PS1_ROOT"."$PS1_USER")m%}%D{%a%d%b|%H:%M\'%S}%{[0m%}"
+RPS1="%(?;;%{["$PS1_USER"m%}%?%{[0m%}) %{[0;%(!."$PS1_ROOT"."$PS1_USER")m%}%D{%a%d%b|%H:%M\'%S}%{[0m%}"
 
 # Ultime : prompt de correction :-)
 SPROMPT="zsh: %{[34m%}%BÂ«%RÂ»%b%{[0m%} ? Vous ne vouliez pas plutÃ´t %{[35m%}%BÂ«%rÂ»%b%{[0m%} ? [%BN%byae] "

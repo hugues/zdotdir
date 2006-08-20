@@ -10,4 +10,5 @@
 ## 
 
 ## Hop on rafraîchit le titre de la fenêtre
-chpwd
+term_title
+todo veryhigh

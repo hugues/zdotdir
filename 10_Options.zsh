@@ -51,16 +51,16 @@ unsetopt Correct
 setopt Correct_All
 unsetopt Equals
 unsetopt Extended_Glob
-unsetopt Extended_History
 setopt Hash_Cmds
 setopt Hash_Dirs
 
 ## Gestion de l'historique
+unsetopt Extended_History
 setopt Hist_Expire_Dups_First
 setopt Hist_Ignore_All_Dups
 setopt Hist_Ignore_Space
 setopt Hist_No_Functions
-setopt Hist_No_Store
+unsetopt Hist_No_Store
 setopt Hist_Reduce_Blanks
 setopt Inc_Append_History
 

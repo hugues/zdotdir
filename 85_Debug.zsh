@@ -49,18 +49,3 @@ exports()
 		fi
 	done
 }
-
-preexec()
-{
-    if ( [ "$DEBUG_MODE" = "yes" ] )
-    then
-    fi
-}
-
-precmd()
-{
-    if ( [ "$DEBUG_MODE" = "yes" ] )
-    then
-		exports
-    fi
-}
