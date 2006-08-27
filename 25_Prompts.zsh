@@ -32,6 +32,7 @@ PS1_ROOT=${PS1_ROOT:-$COLOR_RED}
 
 # Couleur par défaut pour les utilisateurs normaux (moi, quoi)
 PS1_USER=${PS1_USER:-$COLOR_BLUE}
+PS1_USER_SSH=${PS1_USER_SSH:-$COLOR_MAGENTA}
 
 if ( [ "$SSH_TTY" != "" ] )
 then
