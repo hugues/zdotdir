@@ -69,7 +69,7 @@ MISC="$C_$COLOR_RSET;$COLOR_BOLD;$PS1_COLOR$_C"
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-PS1=$USERCOLOR"%n"$MISC"@"$HOSTCOLOR"%m"$RESET" ("$TERMCOLOR"%y"$RESET") ["$PATHCOLOR"%(!.%d.%(5~:.../:%4~))"$RESET"]"${LD_PRELOAD:t:s/lib//:r}" %h"$MISC"#"$RESET" "
+PS1=$USERCOLOR"%n"$MISC"@"$HOSTCOLOR"%m"$RESET" ("$TERMCOLOR"%y"$RESET") ["$PATHCOLOR"%(!.%d.%(5~:.../%4~:%~))"$RESET"]"${LD_PRELOAD:t:s/lib//:r}" %h"$MISC"#"$RESET" "
 
 # Prompt level 2
 PS2="%{[33m%}%B%_%b%{[36m%}%B>%b%{[0m%} "
