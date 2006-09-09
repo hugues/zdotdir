@@ -216,3 +216,4 @@ bindkey -s "M" "make "
 bindkey -s "l" "  l\n"
 #bindkey -s "L" "  la\n"
 
+bindkey -s " " "\\\\ "

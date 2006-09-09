@@ -33,7 +33,7 @@ export NULLCMD=cat
 
 [ `which dircolors` >/dev/null 2>&1 ] && eval $(dircolors ~/.dir_colors 2>&-)
 export TZ="Europe/Paris"
-export TIME_STYLE="+%Y-%b-%d %H:%M"
+export TIME_STYLE="+%Y-%b-%d %H:%M.%S"
 
 ## Agent de clefs SSH/GPG
 # En principe il a été fait dans le .zlogin, mais si on n'est pas en

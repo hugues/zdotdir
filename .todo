@@ -1,14 +1,17 @@
 <todo version="0.1.19">
+    <title>
+        Zsh
+    </title>
     <note priority="high" time="1153741167" done="1154079395">
         Nettoyer les keybindings
-    </note>
-    <note priority="medium" time="1153741210">
-        Ajouter un système de gestion des nouvelles fonctionnalités dans la conf zsh, avec subversion par exemple
     </note>
     <note priority="low" time="1153741155" done="1153985034">
         Supprimer le fichier __40_KeyBindings.zsh
         <comment>
             rm !!! :-&gt;
         </comment>
+    </note>
+    <note priority="low" time="1153741210">
+        Ajouter un système de gestion des nouvelles fonctionnalités dans la conf zsh, avec subversion par exemple
     </note>
 </todo>
