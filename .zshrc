@@ -30,9 +30,9 @@ if [ -d $ZDOTDIR ]; then
         [ "$DEBUG" != "" ] && echo "${${script:t:r}/??_/}... ";
 		source $script
 
-        for i in "host:`hostname -s`" "user:`whoami`" #"host:`hostname -s`.user:`whoami`"
+        for i in "host:`hostname -s`" "user:`whoami`" "net:`hostname -d`"
         do
-            specific_script=${script:h}/$i/${script:t}
+            specific_script=${script:h}/$i/${${script:t}/??_/}
             [ -f $specific_script ] && source $specific_script
         done
 	done
