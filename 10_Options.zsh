@@ -50,7 +50,7 @@ setopt Complete_in_Word
 unsetopt Correct
 setopt Correct_All
 unsetopt Equals
-unsetopt Extended_Glob
+setopt Extended_Glob
 setopt Hash_Cmds
 setopt Hash_Dirs
 
