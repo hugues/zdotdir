@@ -61,6 +61,10 @@ a gnus='emacs -f gnus'
 
 #a make='make -j'
 
+# Unicode-uncompliant
+a mutt='ASCII mutt'
+a svn='ASCII svn'
+
 ## Suffixes Aliases
 a -s patch=editdiff
 a -s c=$EDITOR
