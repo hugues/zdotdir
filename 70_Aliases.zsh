@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@nullpart.net>
@@ -9,6 +8,12 @@
 ## these files with or without this notice.
 ## 
 alias a='alias'
+
+a -g DEVNULL='>/dev/null 2>&1'
+a -g NOTROOT='[ "`whoami`" != "root" ] && '
+
+a -g ASCII='LC_ALL=fr_FR'
+a -g UNICODE='LC_ALL=fr_FR.UTF-8'
 
 a una=unalias
 
@@ -24,7 +29,7 @@ a mv='mv -i'
 autoload zmv
 a mmv='noglob zmv -W'
 
-a apt-get='sudo apt-get'
+NOTROOT which apt-get DEVNULL && a apt-get='sudo apt-get'
 
 a rt='find . -type f \( -name "*~" -o -name ".*~" -o -name "#*#" \) -exec rm -vf \{\} \;'
 
@@ -55,3 +60,8 @@ a dosbox='dosbox -c "mount c \"`pwd`\"" -c "mount d /cdrom -t cdrom" -c "c:" '
 a gnus='emacs -f gnus'
 
 #a make='make -j'
+
+## Suffixes Aliases
+a -s patch=editdiff
+a -s c=$EDITOR
+a -s h=$EDITOR

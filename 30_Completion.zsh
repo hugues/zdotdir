@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@nullpart.net>
@@ -60,4 +59,4 @@ zstyle -e ':completion:*:(ssh|scp):*' hosts 'reply=(
   )'
 #  ${(A)ssh_config_hosts:=${${${${(@M)${(f)"$(<~/.ssh/config)"}:#Host *}#Host }:#*\**}:#*\?*}}
 
-
+zstyle -e ':completion:*:quilt:*' command 'quilt help|tail -n +4|head -6'

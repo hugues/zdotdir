@@ -10,9 +10,3 @@
 ## 
 #export PRINTER=Gertrude
 export PRINTER=Berthe
-
-export MANPATH=:$MANPATH
-export PATH=:$PATH
-export INFOPATH=:$INFOPATH
-
-typeset -gU PATH MANPATH INFOPATH PKG_CONFIG_PATH LD_LIBRARY_PATH

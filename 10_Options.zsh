@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@nullpart.net>
@@ -73,5 +72,6 @@ setopt No_Hup
 setopt No_Prompt_Cr
 setopt Numeric_Glob_Sort
 unsetopt Prompt_Cr
+setopt Auto_Pushd
 setopt Pushd_Ignore_Dups
 setopt Glob

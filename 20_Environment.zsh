@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@nullpart.net>
@@ -33,7 +32,7 @@ export NULLCMD=cat
 
 [ `which dircolors` >/dev/null 2>&1 ] && eval $(dircolors ~/.dir_colors 2>&-)
 export TZ="Europe/Paris"
-export TIME_STYLE="+%Y-%b-%d %H:%M.%S"
+export TIME_STYLE="+%Y-%b-%d %H:%M:%S"
 
 ## Agent de clefs SSH/GPG
 # En principe il a été fait dans le .zlogin, mais si on n'est pas en
@@ -51,11 +50,12 @@ unset LANG # Unuseful
 # si et seulement si $VARIABLE contient déjà des choses, cela pour éviter
 # d'avoir un PATH (p.e.) de la forme : PATH=:/bin
 #
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}~/libs
-export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}/usr/X11R6/lib/pkgconfig
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:~/libs
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
 export PATH=$PATH:~/sbin:~/bin
+[ `id -u` -lt 100 ] && PATH=/sbin:/usr/sbin:$PATH
 export MANPATH=$MANPATH:~/man
-export INFOPATH=${INFOPATH:+$INFOPATH:}~/info
+export INFOPATH=$INFOPATH:~/info
 ## Nettoyage des précédentes variables pour supprimer les duplicata
 typeset -gU PATH MANPATH INFOPATH PKG_CONFIG_PATH LD_LIBRARY_PATH
 

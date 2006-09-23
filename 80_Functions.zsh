@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@nullpart.net>
@@ -28,7 +27,7 @@ _chpwd()
 chpwd()
 {
     _chpwd
-    which todo 2>&1 > /dev/null && todo
+    which todo > /dev/null 2>&1 && todo
 }
 
 precmd ()

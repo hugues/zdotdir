@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@nullpart.net>
@@ -9,30 +8,25 @@
 ## these files with or without this notice.
 ## 
 
+VOID=0
+BOLD=1
+UNDERLINE=4
+RED=31
+GREEN=32
+YELLOW=33
+BLUE=34
+MAGENTA=35
+CYAN=36
+WHITE=37
+
 # Pour personnaliser les couleurs du prompt, configurez ces variables :
 #  - PS1_ROOT pour la couleur du prompt ROOT
 #  - PS1_USER pour la couleur du prompt USER local
 #  - PS1_USER_SSH pour la couleur du prompt USER distant
 
-C_="%{["
-_C="m%}"
-
-COLOR_RSET=0
-COLOR_BOLD=1
-COLOR_LINE=4
-COLOR_RED=31
-COLOR_GREEN=32
-COLOR_YELLOW=33
-COLOR_BLUE=34
-COLOR_MAGENTA=35
-COLOR_CYAN=36
-
-## Couleur par défaut pour le prompt ROOT (c'est super pour sudo, ça...)
-PS1_ROOT=${PS1_ROOT:-$COLOR_RED}
-
-# Couleur par défaut pour les utilisateurs normaux (moi, quoi)
-PS1_USER=${PS1_USER:-$COLOR_BLUE}
-PS1_USER_SSH=${PS1_USER_SSH:-$COLOR_MAGENTA}
+PS1_ROOT=$RED
+PS1_USER=$BLUE
+PS1_USER_SSH=$MAGENTA
 
 if ( [ "$SSH_TTY" != "" ] )
 then
@@ -42,19 +36,19 @@ then
     PS1_USER=${PS1_USER_SSH:-$PS1_USER}
 fi
 
-PS1_COLOR="%(!.$PS1_ROOT.$PS1_USER)"
+## Les couleurs !! ##
+C_="%{["
+_C="m%}"
+COLOR_PATH="0;%(!.$PS1_ROOT.$BOLD;$PS1_USER)"
+COLOR_TERM="0;%(!.$PS1_ROOT.$PS1_USER)"
+COLOR_USER="0;%(!.$PS1_ROOT.$PS1_USER)"
+COLOR_HOST="0;%(!.$PS1_ROOT.$PS1_USER)"
+COLOR_HIST=$VOID
+COLOR_AROB="0;1;%(!.$BOLD;$PS1_ROOT.$PS1_USER)"
+COLOR_DIES="0;%(!.$BOLD;$PS1_ROOT.$PS1_USER)"
 
-# COULEURS DU PROMPT
-# La classe.
-
-PATHCOLOR="$C_$COLOR_RSET;$PS1_COLOR$_C"
-USERCOLOR="$C_$COLOR_RSET;$PS1_COLOR$_C"
-HOSTCOLOR="$C_$COLOR_RSET;$PS1_COLOR$_C"
-TERMCOLOR="$C_$COLOR_RSET;$COLOR_CYAN$_C"
-ERRRCOLOR="$C_$COLOR_RED$_C"
-RESET="$C_$COLOR_RSET$_C"
-MISC="$C_$COLOR_RSET;$COLOR_BOLD;$PS1_COLOR$_C"
-
+COLOR_ERRR="$BOLD;$RED"
+COLOR_DATE="0;%(!.$PS1_ROOT.$PS1_USER)"
 
 ## Prompts
 #
@@ -69,7 +63,7 @@ MISC="$C_$COLOR_RSET;$COLOR_BOLD;$PS1_COLOR$_C"
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-PS1=$USERCOLOR"%n"$MISC"@"$HOSTCOLOR"%m"$RESET" ("$TERMCOLOR"%y"$RESET") ["$PATHCOLOR"%(!.%d.%(5~:.../%4~:%~))"$RESET"]"${LD_PRELOAD:t:s/lib//:r}" %h"$MISC"#"$RESET" "
+PS1=""$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m"$C_$VOID$_C" ("$C_$COLOR_TERM$_C"%y"$C_$VOID$_C") ["$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C"]"${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"#"$C_$VOID$_C" "
 
 # Prompt level 2
 PS2="%{[33m%}%B%_%b%{[36m%}%B>%b%{[0m%} "
@@ -81,8 +75,8 @@ PS3="?# "
 PS4="+%N:%i> "
 
 # Prompt de droite, pour l'heure et le code d'erreur de la dernière commande
-RPS1="%(?..$ERRRCOLOR%?$COLOR_RSET) %{[0;%(!."$PS1_ROOT"."$PS1_USER")m%}%D{%a%d%b|%H:%M\'%S}%{[0m%}"
+RPS1="%(?;;"$C_$COLOR_ERRR$_C"%?"$C_$VOID$_C") "$C_$COLOR_DATE$_C"%D{%H:%M:%S %d/%m/%Y}"$C_$VOID$_C""
 
 # Ultime : prompt de correction :-)
-SPROMPT="zsh: %{[34m%}%B«%R»%b%{[0m%} ? Vous ne vouliez pas plutôt %{[35m%}%B«%r»%b%{[0m%} ? [%BN%byae] "
+SPROMPT="zsh: $_C_$BLUE$_C%B'%R'%b%C_$VOID$_C ? Vous ne vouliez pas plutôt $C_$MAGENTA$_C%B'%r'%b$C_$VOID$_C ? [%BN%byae] "
 

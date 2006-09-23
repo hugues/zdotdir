@@ -1,5 +1,6 @@
-
-hash -d dev=/developpement/nes/sagem-box/hhiegel
-hash -d public=/public/nes
-hash -d tftp=~public/pc-test/tftp/
-
+hash -d dev=/developpement/$WORKSTATION/sagem-box/$(whoami)
+hash -d public=/public/$WORKSTATION
+hash -d Public=/public/$(hostname -s)
+hash -d archives=/projets/sagem-box/archives
+hash -d doc=/projets/sagem-box/doc
+hash -d tftp=/public/$WORKSTATION/tftp
