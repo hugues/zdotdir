@@ -30,7 +30,7 @@ if [ -d $ZDOTDIR ]; then
         [ "$DEBUG" != "" ] && echo "${${script:t:r}/??_/}... ";
 		source $script
 
-        for i in "host:`hostname -s`" "user:`whoami`" "net:`hostname -d 2>/dev/null`"
+        for i in "host:`hostname -s 2>/dev/null`" "user:`whoami`" "net:`hostname -d 2>/dev/null`"
         do
             specific_script=${script:h}/$i/${${script:t}/??_/}
             [ -f $specific_script ] && source $specific_script
