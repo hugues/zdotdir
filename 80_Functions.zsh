@@ -14,7 +14,7 @@ term_title()
     case $TERM in
       sun-cmd)
         print -Pn "\e]l%n@%m %~$1\e\\" ;;
-      *xterm*|rxvt|(k|E|dt)term|gnome-terminal)
+      *xterm*|rxvt*|(k|E|dt)term|gnome-terminal)
 	    print -Pn "\e]0;%n@%m (%l) %~$1\a" ;;
     esac
 }
