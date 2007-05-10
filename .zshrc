@@ -23,6 +23,12 @@
 ZDOTDIR=${ZDOTDIR:-~/.zsh}
 mkdir -p $ZDOTDIR
 
+USER=${USER:-`whoami`}
+HOST=${HOST:-$(hostname -s 2>/dev/null)}
+DOMAIN=${DOMAIN:-${$(hostname -d 2>/dev/null):-$(hostname -y 2>/dev/null)}}
+
+export USER HOST DOMAIN
+
 if [ -d $ZDOTDIR ]; then
 	for script in $ZDOTDIR/??_*.zsh
 	do
@@ -30,10 +36,13 @@ if [ -d $ZDOTDIR ]; then
         [ "$DEBUG" != "" ] && echo "${${script:t:r}/??_/}... ";
 		source $script
 
-        for i in "host:`hostname -s 2>/dev/null`" "user:`whoami`" "net:`hostname -d 2>/dev/null`"
+        for i in "net:$DOMAIN" "host:$HOST" "user:$USER"
         do
             specific_script=${script:h}/$i/${${script:t}/??_/}
-            [ -f $specific_script ] && source $specific_script
+            if test -f $specific_script
+			then
+				source $specific_script
+			fi
         done
 	done
 fi

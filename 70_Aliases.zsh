@@ -62,7 +62,7 @@ a gnus='emacs -f gnus'
 #a make='make -j'
 
 # Unicode-uncompliant
-a mutt='ASCII mutt'
+#a mutt='ASCII mutt'
 
 ## Suffixes Aliases
 a -s patch=editdiff

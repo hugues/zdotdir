@@ -11,6 +11,6 @@
 
 ## Paranoid specifics aliases
 
-a mailstat='\mailstat -o ~/.procmail/procmail.log | egrep -v "## procmail:"'
-a mails='\mailstat -k ~/.procmail/procmail.log | egrep -v "## procmail:" ; cat ~/.procmail/procmail.log >> ~/.procmail/procmail.log.old ; echo -n > ~/.procmail/procmail.log'
+a mailstats='mailstat -mo ~/.procmail/procmail.log'
+a mails='mailstat -k ~/.procmail/procmail.log | egrep -v "## .*:" ; cat ~/.procmail/procmail.log >> ~/.procmail/procmail.log.old ; echo -n > ~/.procmail/procmail.log'
 a junkmail='mutt -f ~/Mail/junk.gz'

@@ -78,5 +78,5 @@ PS4="+%N:%i> "
 RPS1="%(?;;"$C_$COLOR_ERRR$_C"%?"$C_$VOID$_C") "$C_$COLOR_DATE$_C"%D{%H:%M:%S %d/%m/%Y}"$C_$VOID$_C""
 
 # Ultime : prompt de correction :-)
-SPROMPT="zsh: $_C_$BLUE$_C%B'%R'%b%C_$VOID$_C ? Vous ne vouliez pas plutôt $C_$MAGENTA$_C%B'%r'%b$C_$VOID$_C ? [%BN%byae] "
+SPROMPT="zsh: $C_$BLUE$_C%B'%R'%b$C_$VOID$_C ? Vous ne vouliez pas plutôt $C_$MAGENTA$_C%B'%r'%b$C_$VOID$_C ? [%BN%byae] "
 
