@@ -30,7 +30,7 @@ export PAGER=less
 ## Quelle commande utiliser par défaut ?
 export NULLCMD=cat
 
-cmd_exists dircolors && eval $(dircolors ~/.dir_colors 2>&- )
+cmd_exists dircolors && eval $(dircolors ~/.dir_colors)
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M:%S"
 

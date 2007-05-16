@@ -31,13 +31,15 @@ UID=${UID:-`id -u`}
 HOST=${HOST:-$(hostname -s)}
 DOMAIN=${DOMAIN:-${$(hostname -d):-$(hostname -y)}}
 
+DEBUG=no
+
 export USER HOST DOMAIN UID
 
 if [ -d $ZDOTDIR ]; then
 	for script in $ZDOTDIR/??_*.zsh
 	do
 
-        [ "$DEBUG" != "" ] && echo "${${script:t:r}/??_/}... ";
+        [ "$DEBUG" = "yes" ] && echo "${${script:t:r}/??_/}... ";
 		source $script
 
         for i in "net:$DOMAIN" "host:$HOST" "user:$USER" "user:$SUDO_USER"
@@ -45,13 +47,14 @@ if [ -d $ZDOTDIR ]; then
             specific_script=${script:h}/$i/${${script:t}/??_/}
             if test -f $specific_script
 			then
+        		[ "$DEBUG" = "yes" ] && echo "$i/${${specific_script:t:r}/??_/}... ";
 				source $specific_script
 			fi
         done
 	done
 fi
 
-if [ "`whoami`" = "root" ]
+if privileged_user
 then
 	[ "`pwd`" = ~ ] && cd ~root
 	export HOME=~root

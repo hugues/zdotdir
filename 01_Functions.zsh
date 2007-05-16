@@ -49,7 +49,7 @@ cmd_exists ()
 
 normal_user ()
 {
-	eval `grep -v '^[$#]' /etc/login.defs | tr -d '[:blank:]' | sed 's/^[A-Z_]\+/&=/'`
+	eval `grep -v '^[$#]' /etc/login.defs | grep "^UID_" | tr -d '[:blank:]' | sed 's/^[A-Z_]\+/&=/'`
 	test \( $UID -ge $UID_MIN \) -a \( $UID -le $UID_MAX \)
 }
 
