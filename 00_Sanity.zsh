@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@hiegel.fr>
@@ -8,6 +7,13 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
-a port='sudo port'
-a ls='ls -FG'
-a aless='open -a /Applications/DarwinPorts/AquaLess.app'
+
+# No more core dumps :)
+ulimit -c 0
+
+# No dangerous world-writeable files & folders
+umask 002
+
+#  sanity
+[[ -t 0 ]] && /bin/stty erase  "^H" intr  "^C" susp "^Z" dsusp "^Y" stop "^S" start "^Q" kill "^U"  >& /dev/null
+

@@ -1,6 +1,6 @@
 ##
 ## Part of configuration files for Zsh 4
-## by Hugues Hiegel <hugues@nullpart.net>
+## by Hugues Hiegel <hugues@hiegel.fr>
 ## 
 ## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
 ##
@@ -20,7 +20,7 @@
 export BC_ENV_ARGS="-q"
 
 ## Editeur par défaut
-export EDITOR=`which vim`
+export EDITOR=`which vim || which vi || which emacs`
 export VISUAL=$EDITOR
 export FCEDIT=$EDITOR
 
@@ -30,7 +30,7 @@ export PAGER=less
 ## Quelle commande utiliser par défaut ?
 export NULLCMD=cat
 
-[ `which dircolors` >/dev/null 2>&1 ] && eval $(dircolors ~/.dir_colors 2>&-)
+cmd_exists dircolors && eval $(dircolors ~/.dir_colors 2>&- )
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M:%S"
 
@@ -50,10 +50,10 @@ unset LANG # Unuseful
 # si et seulement si $VARIABLE contient déjà des choses, cela pour éviter
 # d'avoir un PATH (p.e.) de la forme : PATH=:/bin
 #
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:~/libs
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:~/libs
+#export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
 export PATH=$PATH:~/sbin:~/bin
-[ `id -u` -lt 100 ] && PATH=/sbin:/usr/sbin:$PATH
+privileged_user && PATH=/sbin:/usr/sbin:$PATH
 export MANPATH=$MANPATH:~/man
 export INFOPATH=$INFOPATH:~/info
 ## Nettoyage des précédentes variables pour supprimer les duplicata

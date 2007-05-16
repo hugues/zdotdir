@@ -1,6 +1,6 @@
 ##
 ## Part of configuration files for Zsh 4
-## by Hugues Hiegel <hugues@nullpart.net>
+## by Hugues Hiegel <hugues@hiegel.fr>
 ## 
 ## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
 ##
@@ -14,7 +14,7 @@ term_title()
     case $TERM in
       sun-cmd)
         print -Pn "\e]l%n@%m %~$1\e\\" ;;
-      *xterm*|rxvt*|(k|E|dt)term|gnome-terminal)
+      *term*|rxvt*)
 	    print -Pn "\e]0;%n@%m (%l) %~$1\a" ;;
     esac
 }
@@ -39,5 +39,22 @@ precmd ()
 
 preexec ()
 {
-    term_title "  $1"
+    term_title " ··· $1"
 }
+
+cmd_exists ()
+{
+	which $1 2>/dev/null >&2
+}
+
+normal_user ()
+{
+	eval `grep -v '^[$#]' /etc/login.defs | tr -d '[:blank:]' | sed 's/^[A-Z_]\+/&=/'`
+	test \( $UID -ge $UID_MIN \) -a \( $UID -le $UID_MAX \)
+}
+
+privileged_user ()
+{
+	! normal_user
+}
+

@@ -1,6 +1,6 @@
 ##
 ## Part of configuration files for Zsh 4
-## by Hugues Hiegel <hugues@nullpart.net>
+## by Hugues Hiegel <hugues@hiegel.fr>
 ## 
 ## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
 ##

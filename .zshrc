@@ -23,11 +23,15 @@
 ZDOTDIR=${ZDOTDIR:-~/.zsh}
 mkdir -p $ZDOTDIR
 
+# Useful environment variables which may be used
+# at any time - We compute them now to avoid calling
+# the required processes each time we'll need.
 USER=${USER:-`whoami`}
-HOST=${HOST:-$(hostname -s 2>/dev/null)}
-DOMAIN=${DOMAIN:-${$(hostname -d 2>/dev/null):-$(hostname -y 2>/dev/null)}}
+UID=${UID:-`id -u`}
+HOST=${HOST:-$(hostname -s)}
+DOMAIN=${DOMAIN:-${$(hostname -d):-$(hostname -y)}}
 
-export USER HOST DOMAIN
+export USER HOST DOMAIN UID
 
 if [ -d $ZDOTDIR ]; then
 	for script in $ZDOTDIR/??_*.zsh
@@ -36,7 +40,7 @@ if [ -d $ZDOTDIR ]; then
         [ "$DEBUG" != "" ] && echo "${${script:t:r}/??_/}... ";
 		source $script
 
-        for i in "net:$DOMAIN" "host:$HOST" "user:$USER"
+        for i in "net:$DOMAIN" "host:$HOST" "user:$USER" "user:$SUDO_USER"
         do
             specific_script=${script:h}/$i/${${script:t}/??_/}
             if test -f $specific_script
