@@ -24,9 +24,9 @@ WHITE=37
 #  - PS1_USER pour la couleur du prompt USER local
 #  - PS1_USER_SSH pour la couleur du prompt USER distant
 
-PS1_ROOT=$RED
-PS1_USER=$BLUE
-PS1_USER_SSH=$MAGENTA
+PS1_ROOT=${PS1_ROOT:-RED}
+PS1_USER=${PS1_USER:-BLUE}
+PS1_USER_SSH=${PS1_USER_SSH:-MAGENTA}
 
 if ( [ "$SSH_TTY" != "" ] )
 then

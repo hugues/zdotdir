@@ -29,7 +29,7 @@ mkdir -p $ZDOTDIR
 USER=${USER:-`whoami`}
 UID=${UID:-`id -u`}
 HOST=${HOST:-$(hostname -s)}
-DOMAIN=${DOMAIN:-${$(hostname -d):-$(hostname -y)}}
+DOMAIN=${DOMAIN:-${$(hostname -d 2>&-):-$(hostname -y 2>&-)}}
 
 DEBUG=no
 
