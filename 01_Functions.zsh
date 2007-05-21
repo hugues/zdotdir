@@ -49,10 +49,10 @@ cmd_exists ()
 
 normal_user ()
 {
-	if test -e /etc/login.defs
+	if [ -e /etc/login.defs ]
 	then
 		eval `grep -v '^[$#]' /etc/login.defs | grep "^UID_" | tr -d '[:blank:]' | sed 's/^[A-Z_]\+/&=/'`
-		test \( $UID -ge $UID_MIN \) -a \( $UID -le $UID_MAX \)
+		[ \( $UID -ge $UID_MIN \) -a \( $UID -le $UID_MAX \) ]
 	else
 		[ "`whoami`" != "root" ]
 	fi

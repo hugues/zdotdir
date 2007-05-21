@@ -54,7 +54,7 @@ if [ -d $ZDOTDIR ]; then
 	done
 fi
 
-if privileged_user
+if [ "$USER" = "root" ]
 then
 	[ "`pwd`" = ~ ] && cd ~root
 	export HOME=~root

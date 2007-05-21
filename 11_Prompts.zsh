@@ -8,21 +8,10 @@
 ## these files with or without this notice.
 ## 
 
-VOID=0
-BOLD=1
-UNDERLINE=4
-RED=31
-GREEN=32
-YELLOW=33
-BLUE=34
-MAGENTA=35
-CYAN=36
-WHITE=37
-
 # Pour personnaliser les couleurs du prompt, configurez ces variables :
 #  - PS1_ROOT pour la couleur du prompt ROOT
 #  - PS1_USER pour la couleur du prompt USER local
-#  - PS1_USER_SSH pour la couleur du prompt USER distant
+#  - PS1_USER_SSH pour la couleur du prompt USER distant (en ssh)
 
 PS1_ROOT=${PS1_ROOT:-$RED}
 PS1_USER=${PS1_USER:-$BLUE}
@@ -30,15 +19,12 @@ PS1_USER_SSH=${PS1_USER_SSH:-$MAGENTA}
 
 if ( [ "$SSH_TTY" != "" ] )
 then
-    # Couleur par défaut pour les utilisateurs normaux loggués via SSH
-    # Ça permet de faire une distinction rapide entre les shells locaux
+    # Permet de faire une distinction rapide entre les shells locaux
     # et les shells distants. C'est trop bon, mangez-en !
     PS1_USER=${PS1_USER_SSH:-$PS1_USER}
 fi
 
 ## Les couleurs !! ##
-C_="%{["
-_C="m%}"
 COLOR_PATH="0;%(!.$PS1_ROOT.$BOLD;$PS1_USER)"
 COLOR_TERM="0;%(!.$PS1_ROOT.$PS1_USER)"
 COLOR_USER="0;%(!.$PS1_ROOT.$PS1_USER)"
