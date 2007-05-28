@@ -12,6 +12,14 @@ alias a='alias'
 a -g ¬ISO='LC_ALL=fr_FR'
 a -g ¬UTF='LC_ALL=fr_FR.UTF-8'
 
+a -g ...=../..
+a -g ....=../../..
+a -g .....=../../../..
+a -g ......=../../../../..
+a -g .......=../../../../../..
+a -g ........=../../../../../../..
+a -g .........=../../../../../../../..
+
 a una=unalias
 
 cmd_exists emacsclient && a e='emacsclient'
