@@ -37,7 +37,7 @@ a mmv='noglob zmv -W'
 
 normal_user && cmd_exists apt-get && a apt-get='sudo apt-get'
 
-a rt='find .* * -prune -type f \( -name "*~" -o -name ".*~" -o -name "#*#" \) -exec rm -vf \{\} \;'
+a rt='find .* * -prune -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
 
 a eg=egrep
 
