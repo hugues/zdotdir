@@ -205,7 +205,7 @@ bindkey "\M-^@"-"\M-" self-insert
 
 # Raccourcis pour les todo : funny :)
 bindkey -s "t" "  todo\n"
-bindkey -s "T" "  todo all -c\n"
+#bindkey -s "T" "  todo all -c\n"
 
 bindkey -s "é" " 2>/dev/null "
 bindkey -s "2" " 2>&1 "

@@ -7,7 +7,8 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
-alias a='alias'
+alias a=alias
+a una=unalias
 
 a -g ¬ISO='LC_ALL=fr_FR'
 a -g ¬UTF='LC_ALL=fr_FR.UTF-8'
@@ -20,14 +21,14 @@ a -g .......=../../../../../..
 a -g ........=../../../../../../..
 a -g .........=../../../../../../../..
 
-a una=unalias
-
 cmd_exists emacsclient && a e='emacsclient'
 cmd_exists emacs && a ne='emacs -nw'
 
 cmd_exists vim && a v='vim'
 
 cmd_exists eject && a close='eject -t'
+
+a goto='cd -P' ## Resolve symlinks
 
 a rm='rm -i'
 a mv='mv -i'

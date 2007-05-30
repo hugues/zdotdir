@@ -32,8 +32,7 @@ list_deleted_elements ()
 
 	if [ -d $FOLDER ]
 	then
-		for element in $(find $FOLDER -maxdepth 1 ! -wholename "$FOLDER" )
-			ls -lad $element | sed "s:$FOLDER/::"
+			ls -lad $(find $FOLDER -maxdepth 1 ! -wholename $FOLDER) | sed "s:$FOLDER/::"
 	else
 		echo "Nothing found in trash."
 	fi
@@ -59,4 +58,7 @@ undelete_from_trash ()
 
 alias delete='move_to_trash'
 alias undelete='undelete_from_trash'
-alias deleted='list_deleted_elements'
+alias lsdeleted='list_deleted_elements'
+
+alias cdtrash='cd $TRASH/$PWD'
+alias sotrash='cd ${PWD/$TRASH/}'
