@@ -44,18 +44,4 @@ HISTFILE=$ZDOTDIR/.history.$USER.$HOSTNAME # Pour éviter les conflits de conf
 HISTSIZE=42000
 SAVEHIST=42000
 
-## Colors 
-C_="%{["
-_C="m%}"
 
-VOID=0
-BOLD=1
-UNDERLINE=4
-color=0
-for COLOR in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE
-do
-	eval    $COLOR=$[ $color + 30 ]
-	eval BG_$COLOR=$[ $color + 40 ]
-    color=$[ $color + 1 ]
-done
-unset color

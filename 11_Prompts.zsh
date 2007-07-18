@@ -8,6 +8,22 @@
 ## these files with or without this notice.
 ## 
 
+## Colors 
+C_="%{["
+_C="m%}"
+
+VOID=0
+BOLD=1
+UNDERLINE=4
+color=0
+for COLOR in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE
+do
+	eval    $COLOR=$[ $color + 30 ]
+	eval BG_$COLOR=$[ $color + 40 ]
+    color=$[ $color + 1 ]
+done
+unset color
+
 # Pour personnaliser les couleurs du prompt, configurez ces variables :
 #  - PS1_ROOT pour la couleur du prompt ROOT
 #  - PS1_USER pour la couleur du prompt USER local
@@ -16,33 +32,34 @@
 PS1_ROOT=${PS1_ROOT:-$RED}
 PS1_USER=${PS1_USER:-$BLUE}
 PS1_USER_SSH=${PS1_USER_SSH:-$MAGENTA}
-MYCOLOR=$(print -Pn "%(! $PS1_ROOT $PS1_USER)")
+GENERIC=$(print -Pn "%(! $PS1_ROOT $PS1_USER)")
 
 if ( [ "$SSH_TTY" != "" ] )
 then
     # Permet de faire une distinction rapide entre les shells locaux
     # et les shells distants. C'est trop bon, mangez-en !
-    MYCOLOR=${PS1_USER_SSH:-$MYCOLOR}
+    GENERIC=${PS1_USER_SSH:-$GENERIC}
 fi
 
 c_=[
 _c=m
 
 ## Les couleurs !! ##
-COLOR_PATH="0;%(!  $BOLD;)$MYCOLOR"
-COLOR_TERM="0;$MYCOLOR"
-COLOR_USER="0;$MYCOLOR"
-COLOR_HOST="0;$MYCOLOR"
+COLOR_PATH="0;%(!  $BOLD;)$GENERIC"
+COLOR_TERM="0;$GENERIC"
+COLOR_USER="0;$GENERIC"
+COLOR_HOST="0;$GENERIC"
 COLOR_HIST=$VOID
-COLOR_AROB="0;1;%(! $BOLD; )$MYCOLOR"
+COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
 COLOR_DIES="0;%(! $BOLD; )"
-COLOR_DOUBLEDOT="0;%(! $VOID $MYCOLOR)"
-COLOR_BRANCH="0;%(! $BOLD; )$MYCOLOR"
+COLOR_DOUBLEDOT="0;%(! $VOID $GENERIC)"
+COLOR_BRANCH="0;%(! $BOLD; )$GENERIC"
 COLOR_BRACES="0;$CYAN"
 COLOR_PAREN="0;$CYAN"
+COLOR_BAR="0;$GENERIC;$BOLD"
 
 COLOR_ERRR="$BOLD;$RED"
-COLOR_DATE="0;$MYCOLOR"
+COLOR_DATE="0;$GENERIC"
 
 ## Prompts
 #
@@ -80,14 +97,17 @@ preexec ()
 
 precmd ()
 {
-##   [[ -t 1 ]] &&
-#    print -nP "%(?,,%{[34;1m%}Foirage n°%{[38;1;45m%}%?\n)%{[0m%}"
     term_title
 
 	DATE=$(date "+%H:%M:%S-%d/%m/%Y")
-	if [ ! $? -eq 0 ]
+	if [ ! "$?" -eq "0" ]
 	then
-		ERROR=$?
+		if which perror 2>&-
+		then
+			ERROR=perror $?
+		else
+			ERROR=$?
+		fi
 	else
 		ERROR=
 	fi
@@ -97,19 +117,18 @@ precmd ()
 		HBAR=$HBAR-
 	done
 
-	echo "$c_$BOLD;$MYCOLOR$_c-$c_$COLOR_ERRR$_c$ERROR$c_$MYCOLOR$_c$HBAR$DATE-$c_$VOID$_c"
-}
-
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
+	PS1=$C_$COLOR_BAR$_C"-"%(? $C_$COLOR_ERRR$_C$ERROR )$C_$COLOR_BAR$_C$HBAR$C_$COLOR_DATE$_C$DATE$C_$COLOR_BAR$_C"-\
+"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_BRACES$_C"["$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | cut -c3-)}$C_$COLOR_BRACES$_C"]"$C_$VOID$_C${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
+}
+
 chpwd()
 {
     term_title
     which todo > /dev/null 2>&1 && todo
-
-	PS1=""$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_BRACES$_C"["$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | cut -c3-)}$C_$COLOR_BRACES$_C"]"$C_$VOID$_C${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
 
