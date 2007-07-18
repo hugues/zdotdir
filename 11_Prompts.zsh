@@ -9,8 +9,6 @@
 ## 
 
 ## Colors 
-C_="%{["
-_C="m%}"
 
 VOID=0
 BOLD=1
@@ -43,6 +41,8 @@ fi
 
 c_=[
 _c=m
+C_="%{$c_"
+_C="$_c%}"
 
 ## Les couleurs !! ##
 COLOR_PATH="0;%(!  $BOLD;)$GENERIC"
@@ -58,7 +58,7 @@ COLOR_BRACES="0;$CYAN"
 COLOR_PAREN="0;$CYAN"
 COLOR_BAR="0;$GENERIC;$BOLD"
 
-COLOR_ERRR="$BOLD;$RED"
+COLOR_ERRR="$BOLD;$YELLOW"
 COLOR_DATE="0;$GENERIC"
 
 ## Prompts
@@ -100,19 +100,9 @@ precmd ()
     term_title
 
 	DATE=$(date "+%H:%M:%S-%d/%m/%Y")
-	if [ ! "$?" -eq "0" ]
-	then
-		if which perror 2>&-
-		then
-			ERROR=perror $?
-		else
-			ERROR=$?
-		fi
-	else
-		ERROR=
-	fi
+	ERROR='%?'
 	HBAR=
-	for i in {1..$(($COLUMNS - ${#DATE} - ${#ERROR} - 2))}
+	for i in {1..$(($COLUMNS - ${#DATE} - 3 - 2))}
 	do
 		HBAR=$HBAR-
 	done
@@ -121,8 +111,8 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-"%(? $C_$COLOR_ERRR$_C$ERROR )$C_$COLOR_BAR$_C$HBAR$C_$COLOR_DATE$_C$DATE$C_$COLOR_BAR$_C"-\
-"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_BRACES$_C"["$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | cut -c3-)}$C_$COLOR_BRACES$_C"]"$C_$VOID$_C${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
+	PS1=$C_$COLOR_BAR$_C"-"%(? "---" $C_$COLOR_ERRR$_C$ERROR)$C_$COLOR_BAR$_C$HBAR$C_$COLOR_DATE$_C$DATE$C_$COLOR_BAR$_C"-
+"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_BRACES$_C"["$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | cut -c3-)}$C_$COLOR_BRACES$_C"]"$C_$VOID$_C${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
 chpwd()
@@ -142,7 +132,7 @@ PS3="?# "
 PS4="+%N:%i> "
 
 # Prompt de droite, pour l'heure et le code d'erreur de la dernière commande
-RPS1="%(?;;"$C_$COLOR_ERRR$_C"%?"$C_$VOID$_C")"
+#RPS1="%(?;;"$C_$COLOR_ERRR$_C"%?"$C_$VOID$_C")"
 
 # Ultime : prompt de correction :-)
 SPROMPT="zsh: $C_$BLUE$_C%B'%R'%b$C_$VOID$_C ? Vous ne vouliez pas plutôt $C_$MAGENTA$_C%B'%r'%b$C_$VOID$_C ? [%BN%byae] "
