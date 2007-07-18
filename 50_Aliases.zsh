@@ -53,7 +53,7 @@ a so='cd ${OLDPWD}'
 
 a x=exit
 
-a ls='ls -F --color=always'
+a ls="ls $LS_OPTIONS"
 a l='ls -lh'
 a ll='ls -l'
 a la='ls -la'

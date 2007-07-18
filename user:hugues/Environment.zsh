@@ -35,6 +35,8 @@ cmd_exists dircolors && eval $(dircolors ~/.dir_colors)
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M:%S"
 
+export LS_OPTIONS="-F --color=always -I CVS"
+
 ##  Trucs à la con spécifiques à Zsh
 LOGCHECK=10                             # %n has logged on/off ..
 REPORTTIME=1                            # ``time'' automatique
