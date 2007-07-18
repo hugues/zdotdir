@@ -62,3 +62,5 @@ alias lsdeleted='list_deleted_elements'
 
 alias cdtrash='cd $TRASH/$PWD'
 alias sotrash='cd ${PWD/$TRASH/}'
+
+hash -d trash=$TRASH
