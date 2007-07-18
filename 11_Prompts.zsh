@@ -111,7 +111,7 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-"%(? "---" $C_$COLOR_ERRR$_C$ERROR)$C_$COLOR_BAR$_C$HBAR$C_$COLOR_DATE$_C$DATE$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-"%(? "---" $C_$COLOR_ERRR$_C"%3>>%?$C_$COLOR_BAR$_C---%>>")$C_$COLOR_BAR$_C$HBAR$C_$COLOR_DATE$_C$DATE$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_BRACES$_C"["$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | cut -c3-)}$C_$COLOR_BRACES$_C"]"$C_$VOID$_C${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
