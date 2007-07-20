@@ -1,10 +1,5 @@
 
-which calendar 2>&1 >/dev/null && \
-for i in {1..$COLUMNS} ; do echo -n "_" ; done && \
-echo && \
-calendar -A0 | sed "s/^\(......\*.*\)/[1m\1[0m/" && \
-for i in {1..$COLUMNS} ; do echo -n "_" ; done && \
-echo "[0m"
+cmd_exists calendar && calendar -A0 | sed "s/^\(......\*.*\)/[1m\1[0m/"
 
 cmd_exists keychain && keychain --quiet --stop others --inherit any
 #keychain --quiet --quick id_dsa
