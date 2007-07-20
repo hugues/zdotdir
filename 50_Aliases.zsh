@@ -42,7 +42,7 @@ a rt='find -maxdepth 1 -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -n
 a RT='find -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
 
 a grep='grep --color=auto'
-a eg='egrep --color=auto'
+a egrep='egrep --color=auto'
 
 a hg='< $HISTFILE cat -n | grep'
 ##'hc' stands for something like 'fc' and 'hg'##
