@@ -14,9 +14,9 @@
 autoload -U compinit 2> /dev/null
 compinit -i
 
-## Affiche le menu de sÃlection si au moins 2 entrÃes sont possibles
+## Affiche le menu de sélection si au moins 2 entrées sont possibles
 zstyle ':completion:*' menu select=2
-## Utilise les couleurs dÃ©finies avec dircolors
+## Utilise les couleurs définies avec dircolors
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # Premiers essais...

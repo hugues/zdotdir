@@ -8,20 +8,6 @@
 ## these files with or without this notice.
 ## 
 
-## Colors 
-
-VOID=0
-BOLD=1
-UNDERLINE=4
-color=0
-for COLOR in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE
-do
-	eval    $COLOR=$[ $color + 30 ]
-	eval BG_$COLOR=$[ $color + 40 ]
-    color=$[ $color + 1 ]
-done
-unset color
-
 # Pour personnaliser les couleurs du prompt, configurez ces variables :
 #  - PS1_ROOT pour la couleur du prompt ROOT
 #  - PS1_USER pour la couleur du prompt USER local
@@ -87,6 +73,8 @@ term_title()
         print -Pn "\e]l%n@%m %~$1\e\\" ;;
       *term*|rxvt*)
 	    print -Pn "\e]0;%n@%m (%l) %~$1\a" ;;
+	  *)
+	  	;;
     esac
 }
 
@@ -103,10 +91,11 @@ precmd ()
 	ERROR=%(? "---" "%3<<"$C_$COLOR_BAR$_C"---"$C_$COLOR_ERRR$_C"%?%<<")
 	CURDIR=$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | grep '^\*' | cut -c3-)}
 	unset HBAR
-	for i in {1..$(($COLUMNS - ${#DATE} - 3 - 2))}
+	for _hbar in {1..$(($COLUMNS - ${#DATE} - 3 - 2))}
 	do
 		HBAR=$HBAR-
 	done
+	unset _hbar
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 

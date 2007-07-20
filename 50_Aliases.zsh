@@ -41,7 +41,8 @@ normal_user && cmd_exists apt-get && a apt-get='sudo apt-get'
 a rt='find -maxdepth 1 -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
 a RT='find -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
 
-a eg=egrep
+a grep='grep --color=auto'
+a eg='egrep --color=auto'
 
 a hg='< $HISTFILE cat -n | grep'
 ##'hc' stands for something like 'fc' and 'hg'##

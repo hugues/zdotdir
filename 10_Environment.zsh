@@ -17,9 +17,25 @@
 ##
 
 ## Agent de clefs SSH/GPG
-# En principe il a été fait dans le .zlogin, mais si on n'est pas en
-# login shell on n'aura pas ces informations. Donc on le fait ici aussi.
-[ -f $ZDOTDIR/.keychain ] && source $ZDOTDIR/.keychain
+KEYCHAIN=~/.keychain/$(hostname)-sh
+[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
+[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
+( ps fax | grep -v grep | grep $SSH_AGENT_PID 2>&- >&- ) || ( cmd_exists keychain && keychain --quiet --stop others --inherit any ) && \
+	[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN} ;\
+	[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
+
+## Colors 
+VOID=0
+BOLD=1
+UNDERLINE=4
+color=0
+for COLOR in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE
+do
+	eval    $COLOR=$[ $color + 30 ]
+	eval BG_$COLOR=$[ $color + 40 ]
+    color=$[ $color + 1 ]
+done
+unset color
 
 ## Variables d'environnement ``classiques''
 #

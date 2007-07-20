@@ -31,6 +31,9 @@ export LC_ALL=${LC_ALL:-fr_FR.UTF-8}
 export LC_MESSAGES=${LC_MESSAGES:-fr_FR}
 unset LANG # Unuseful
 
+# Couleurs pour grep --color=auto
+export GREP_COLOR=$YELLOW\;$BOLD
+
 cmd_exists dircolors && eval $(dircolors ~/.dir_colors)
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M:%S"
