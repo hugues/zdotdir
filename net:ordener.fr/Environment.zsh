@@ -9,4 +9,5 @@
 ## these files with or without this notice.
 ## 
 #export PRINTER=Gertrude
-export PRINTER=Berthe
+export PRINTER=Gertrude
+export NNTPSERVER=news.free.fr
