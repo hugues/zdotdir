@@ -88,7 +88,7 @@ precmd ()
     term_title
 
 	DATE=$(date "+%H:%M:%S-%d/%m/%Y")
-	ERROR=%(? "---" "%3<<"$C_$COLOR_BAR$_C"---"$C_$COLOR_ERRR$_C"%?%<<")
+	ERROR=%(? "---" "%3<<"$C_$COLOR_BAR$_C"--"$C_$COLOR_ERRR$_C"%?%<<")
 	CURDIR=$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | grep '^\*' | cut -c3-)}
 	unset HBAR
 	for _hbar in {1..$(($COLUMNS - ${#DATE} - 3 - 2))}
