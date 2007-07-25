@@ -49,19 +49,19 @@ COLOR_DATE="0;$GENERIC"
 
 ## Prompts
 #
-# Pour plus d'infos sur les paramètres d'expansion du prompt:
+# Pour plus d'infos sur les paramÃ¨tres d'expansion du prompt:
 #  man zshmisc(1)
 #
-# La définition des prompts est séparée de celles desvariables d'environnement
-# classiques pour permettre de configurer, par exemple, les couleurs par défaut
+# La dÃ©finition des prompts est sÃ©parÃ©e de celles desvariables d'environnement
+# classiques pour permettre de configurer, par exemple, les couleurs par dÃ©faut
 # dans ces fichiers. 
 
 ## Automagic funcs
 #
-# Fonctions exécutées automatiquement sous certaines conditions
+# Fonctions exÃ©cutÃ©es automatiquement sous certaines conditions
 #
-# chpwd		: changement de répertoire
-# preexec	: avant d'exécuter une commande
+# chpwd		: changement de rÃ©pertoire
+# preexec	: avant d'exÃ©cuter une commande
 # precmd	: avant d'afficher le prompt
 #
 
@@ -80,7 +80,7 @@ term_title()
 
 preexec ()
 {
-    term_title " ··· $1"
+    term_title " Â·Â·Â· $1"
 }
 
 precmd ()
@@ -89,7 +89,10 @@ precmd ()
 
 	DATE=$(date "+%H:%M:%S-%d/%m/%Y")
 	ERROR=%(? "---" "%3<<"$C_$COLOR_BAR$_C"--"$C_$COLOR_ERRR$_C"%?%<<")
-	CURDIR=$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | grep '^\*' | cut -c3-)}
+	GITBRANCH=${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | grep '^\* ' | cut -c3-)}
+	if [ $(svn status | grep '^M' | wc -l) -gt 0 ] ; then COLOR_BRANCH=$COLOR_BRANCH\;$UNDERLINE ; fi
+	SVNREV=${$(svn info 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C"r$(svn info | tail -n+5 | head -n1 | cut -d' ' -f3)"}
+	CURDIR=$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C"$GITBRANCH$SVNREV"
 	unset HBAR
 	for _hbar in {1..$(($COLUMNS - ${#DATE} - 3 - 2))}
 	do
@@ -98,9 +101,9 @@ precmd ()
 	unset _hbar
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
-# Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
-# Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
-# de pourrir le fenêtre de terminal avec un prompt à rallonge.
+# Affiche l'user, l'host, le tty et le pwd. Rien que Ã§a... 
+# Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour Ã©viter
+# de pourrir le fenÃªtre de terminal avec un prompt Ã  rallonge.
 	PS1=$C_$COLOR_BAR$_C"-"$ERROR$C_$COLOR_BAR$_C$HBAR$C_$COLOR_DATE$_C$DATE$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_BRACES$_C"["$CURDIR$C_$COLOR_BRACES$_C"]"$C_$VOID$_C${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
@@ -121,9 +124,9 @@ PS3="?# "
 # Prompt level 4
 PS4="+%N:%i> "
 
-# Prompt de droite, pour l'heure et le code d'erreur de la dernière commande
+# Prompt de droite, pour l'heure et le code d'erreur de la derniÃ¨re commande
 #RPS1="%(?;;"$C_$COLOR_ERRR$_C"%?"$C_$VOID$_C")"
 
 # Ultime : prompt de correction :-)
-SPROMPT="zsh: $C_$BLUE$_C%B'%R'%b$C_$VOID$_C ? Vous ne vouliez pas plutôt $C_$MAGENTA$_C%B'%r'%b$C_$VOID$_C ? [%BN%byae] "
+SPROMPT="zsh: $C_$BLUE$_C%B'%R'%b$C_$VOID$_C ? Vous ne vouliez pas plutÃ´t $C_$MAGENTA$_C%B'%r'%b$C_$VOID$_C ? [%BN%byae] "
 
