@@ -89,10 +89,10 @@ precmd ()
 
 	DATE=$(date "+%H:%M:%S-%d/%m/%Y")
 	ERROR=%(? "---" "%3<<"$C_$COLOR_BAR$_C"--"$C_$COLOR_ERRR$_C"%?%<<")
-	if [ $(git status 2>&- | grep -E '^# ([[:alpha:]]+ )+but not( [[:alpha:]]+)+:$' | wc -l) -gt 0 ] ; then COLOR_STATUS=$COLOR_BRANCH\;$YELLOW ; else COLOR_STATUS=$COLOR_BRANCH ; fi
-	GITBRANCH=${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_STATUS$_C$(git branch | grep '^\* ' | cut -c3-)}
-	if [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] ; then COLOR_STATUS=$COLOR_BRANCH\;$YELLOW ; else COLOR_STATUS=$COLOR_BRANCH ; fi
 	SVNREV=${$(svn info 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_STATUS$_C"r$(svn info | tail -n+5 | head -n1 | cut -d' ' -f3)"}
+	if [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] ; then COLOR_STATUS=$COLOR_BRANCH\;$YELLOW ; else COLOR_STATUS=$COLOR_BRANCH ; fi
+	[ "$SVNREV" = "" ] && if [ $(git status 2>&- | grep -E '^# ([[:alpha:]]+ )+but not( [[:alpha:]]+)+:$' | wc -l) -gt 0 ] ; then COLOR_STATUS=$COLOR_BRANCH\;$YELLOW ; else COLOR_STATUS=$COLOR_BRANCH ; fi
+	GITBRANCH=${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_STATUS$_C$(git branch | grep '^\* ' | cut -c3-)}
 	CURDIR=$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C"$GITBRANCH$SVNREV"
 	unset HBAR
 	for _hbar in {1..$(($COLUMNS - ${#DATE} - 3 - 2))}
