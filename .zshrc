@@ -12,12 +12,14 @@
 # With that, file ``10_Toto.zsh'' would be parsed before
 # file ``20_Tutu.zsh'', allowing you ordering your scripts.
 # 
-# If you want to make host-specific configurations, create a
-# file named with the root of your configuration file, and
-# append to it ".$(hostname -s)". (replace "zsh" by the hostname.
-# if you have a computer named "zsh", well....... :-) )
-# For example, for specific configuration for the host HAL in
-# the file 10_Toto.zsh, you would create a file named 10_Toto.HAL
+# If you want to make user, host or network specific configurations,
+# add your specific scripts to the folders
+#  - "user:$(whoami)" for user-specific conf,
+#  - "host:$(hostname -s)" for host-specific conf,
+#  - "net:$(domainname)" for network-specific conf,
+# rename your scripts to the form mentionned above, minus the "??_"
+# prefix. An original script prefixed by a two-digits number SHOULD
+# be present on the $ZDOTDIR folder, even if empty.
 #
 
 ZDOTDIR=${ZDOTDIR:-~/.zsh}
@@ -54,6 +56,7 @@ if [ -d $ZDOTDIR ]; then
 	done
 fi
 
+# For sudo shells
 if [ "$USER" = "root" ]
 then
 	[ "`pwd`" = ~ ] && cd ~root
