@@ -18,7 +18,7 @@ PS1_USER=${PS1_USER:-$BLUE}
 PS1_USER_SSH=${PS1_USER_SSH:-$MAGENTA}
 GENERIC=$(print -Pn "%(! $PS1_ROOT $PS1_USER)")
 
-if ( [ "$SSH_TTY" != "" ] )
+normal_user && if ( [ "$SSH_TTY" != "" ] )
 then
     # Permet de faire une distinction rapide entre les shells locaux
     # et les shells distants. C'est trop bon, mangez-en !
@@ -38,7 +38,7 @@ COLOR_HOST="0;$GENERIC"
 COLOR_HIST=$VOID
 COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
 COLOR_DIES="0;%(! $BOLD; )"
-COLOR_DOUBLEDOT="0;%(! $VOID $GENERIC)"
+COLOR_DOUBLEDOT="0;%(! $VOID $VOID)"
 COLOR_BRANCH="0;%(! $BOLD; )$GENERIC"
 COLOR_BRACES="0;$CYAN"
 COLOR_PAREN="0;$CYAN"
