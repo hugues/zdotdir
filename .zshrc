@@ -57,9 +57,9 @@ if [ -d $ZDOTDIR ]; then
 fi
 
 # For sudo shells
-if [ "$USER" = "root" ]
-then
-	[ "`pwd`" = ~ ] && cd ~root
-	export HOME=~root
-fi
+#if [ "$USER" = "root" ]
+#then
+	[ "`pwd`" = ~ ] && cd ~$USER
+	export HOME=~$USER
+#fi
 
