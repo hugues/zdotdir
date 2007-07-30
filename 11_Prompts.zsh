@@ -16,7 +16,7 @@
 PS1_ROOT=${PS1_ROOT:-$RED}
 PS1_USER=${PS1_USER:-$BLUE}
 PS1_USER_SSH=${PS1_USER_SSH:-$MAGENTA}
-GENERIC=$(print -Pn "%(! $PS1_ROOT $PS1_USER)")
+GENERIC=`print -Pn "%(! $PS1_ROOT $PS1_USER)"`
 
 normal_user && if ( [ "$SSH_TTY" != "" ] )
 then
@@ -35,11 +35,12 @@ COLOR_PATH="0;%(!  $BOLD;)$GENERIC"
 COLOR_TERM="0;$GENERIC"
 COLOR_USER="0;$GENERIC"
 COLOR_HOST="0;$GENERIC"
-COLOR_HIST=$VOID
+COLOR_HIST="$VOID"
 COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
 COLOR_DIES="0;%(! $BOLD; )"
 COLOR_DOUBLEDOT="0;%(! $VOID $VOID)"
-COLOR_BRANCH="0;%(! $BOLD; )$GENERIC"
+COLOR_BRANCH_OR_REV="0;$GENERIC;$BOLD"
+COLOR_NOT_UPTODATE="0;%(! $GENERIC $RED;$BOLD)"
 COLOR_BRACES="0;$CYAN"
 COLOR_PAREN="0;$CYAN"
 COLOR_BAR="0;$GENERIC;$BOLD"
@@ -89,12 +90,37 @@ precmd ()
 
 	DATE=$(date "+%H:%M:%S-%d/%m/%Y")
 	ERROR=%(? "---" "%3<<"$C_$COLOR_BAR$_C"--"$C_$COLOR_ERRR$_C"%?%<<")
-	GITBRANCH=${$(git branch 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_BRANCH$_C$(git branch | grep '^\* ' | cut -c3-)}
-	if [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] ; then COLOR_STATUS=$COLOR_BRANCH\;$YELLOW ; else COLOR_STATUS=$COLOR_BRANCH ; fi
-	SVNREV=${$(svn info 2>&-):+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_STATUS$_C"r$(svn info | tail -n+5 | head -n1 | cut -d' ' -f3)"}
-	CURDIR=$C_$COLOR_PATH$_C"%(!.%d.%(5~:.../:)%4~)"$C_$VOID$_C"$GITBRANCH$SVNREV"
+
+	## GIT TRACKING ##
+	GITBRANCH=$(git branch 2>&- | grep '^\* ' | cut -c3-)
+	if [ "$GITBRANCH" != "" ]
+	then
+		if [ $(git status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$' | wc -l) -gt 0 ]
+		then
+			COLOR_GIT=$COLOR_NOT_UPTODATE
+		else
+			COLOR_GIT=$COLOR_BRANCH_OR_REV
+		fi
+	fi
+
+	## SVN TRACKING ##
+	SVNREV=$(svn info 2>&- | sed '5!d;s/^.* : /r/')
+	if [ "$SVNREV" != "" ]
+	then
+		if [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ]
+		then
+			COLOR_SVN=$COLOR_NOT_UPTODATE
+		else
+			COLOR_SVN=$COLOR_BRANCH_OR_REV
+		fi
+	else
+		SVNREV=
+	fi
+
+	CURDIR="$C_$COLOR_PATH$_C%(!.%d.%(5~:.../:)%4~)$C_$VOID$_C"
+
 	unset HBAR
-	for _hbar in {1..$(($COLUMNS - ${#DATE} - 3 - 2))}
+	for _hbar in {1..$(($COLUMNS - 1 - 3 - 1 - ${#GITBRANCH} - 1 - ${#SVNREV} - ${#DATE} - 1))}
 	do
 		HBAR=$HBAR-
 	done
@@ -104,7 +130,7 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-"$ERROR$C_$COLOR_BAR$_C$HBAR$C_$COLOR_DATE$_C$DATE$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-$ERROR"$C_$COLOR_BAR$_C"-"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_DATE$_C"$DATE"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_BRACES$_C"["$CURDIR$C_$COLOR_BRACES$_C"]"$C_$VOID$_C${LD_PRELOAD:t:s/lib//:r}" "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
