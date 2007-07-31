@@ -124,7 +124,7 @@ precmd ()
 	#
 	# -ERR-[ git svn ]----------------------- date -
 	#
-	SPACE_LEFT=$(($COLUMNS -   4    - 1 - 2 -   ${#GITBRANCH} - ${#SVNREV} - 1 - ${#DATE} - 1))
+	SPACE_LEFT=$(($COLUMNS -   4    -    ${#GITBRANCH} - 1 - ${#SVNREV} - 2 - ${#DATE} - 3))
 	MY_PATH="%(!.%d.%~)"
 	#pathsize=`print -Pn $MY_PATH`
 	#pathsize=${#pathsize}
@@ -145,7 +145,7 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BRACES$_C"["$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C"]"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"["$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C"]"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
