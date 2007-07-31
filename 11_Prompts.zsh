@@ -95,15 +95,14 @@ precmd ()
 	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
 
 	## GIT TRACKING ##
-	GITBRANCH=$(git branch 2>&- | grep '^\* ' | cut -c3-)
-	GITBRANCH=""
+	GITBRANCH=$(git branch 2>&- | grep -E '^\* ' | cut -c3-)
 	if [ "$GITBRANCH" != "" ]
 	then
 		if [ "$GITCHECK" != "" ] && [ $(git status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$' | wc -l) -gt 0 ]
 		then
 			COLOR_GIT=$COLOR_NOT_UPTODATE
 		else
-		COLOR_GIT=$COLOR_BRANCH_OR_REV
+			COLOR_GIT=$COLOR_BRANCH_OR_REV
 		fi
 	fi
 
@@ -146,7 +145,7 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BRACES$_C"["$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C"]"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BRACES$_C"["$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C"]"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
