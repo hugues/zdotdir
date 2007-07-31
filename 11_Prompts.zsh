@@ -40,7 +40,7 @@ COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
 COLOR_DIES="0;$GENERIC"
 COLOR_DOUBLEDOT="0;%(! $VOID $VOID)"
 COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UPTODATE="0;%(! $GENERIC;$BOLD $RED;$BOLD)"
+COLOR_NOT_UPTODATE="0;$YELLOW;$BOLD"
 COLOR_PAREN="0;$CYAN"
 COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
@@ -124,7 +124,7 @@ precmd ()
 	#
 	# -ERR------------------------git-svn-[ date ]-
 	#
-	SPACE_LEFT=$(($COLUMNS -   6    -    ${#GITBRANCH} - 1 - ${#SVNREV} - 2 - ${#DATE} - 2))
+	SPACE_LEFT=$(($COLUMNS -   6    -    ${#GITBRANCH} - 1 - ${#SVNREV} - 3 - ${#DATE} - 3))
 	MY_PATH="%(!.%d.%~)"
 	#pathsize=`print -Pn $MY_PATH`
 	#pathsize=${#pathsize}
@@ -145,7 +145,7 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"["$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C"]"$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
