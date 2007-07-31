@@ -31,16 +31,16 @@ C_="%{$c_"
 _C="$_c%}"
 
 ## Les couleurs !! ##
-COLOR_PATH="0;%(!  $BOLD;)$GENERIC"
+COLOR_PATH="0;$GENERIC;$BOLD"
 COLOR_TERM="0;$GENERIC"
 COLOR_USER="0;$GENERIC"
 COLOR_HOST="0;$GENERIC"
 COLOR_HIST="$VOID"
 COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
-COLOR_DIES="0;%(! $BOLD; )"
+COLOR_DIES="0;$GENERIC"
 COLOR_DOUBLEDOT="0;%(! $VOID $VOID)"
 COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UPTODATE="0;%(! $GENERIC $YELLOW;$BOLD)"
+COLOR_NOT_UPTODATE="0;%(! $GENERIC;$BOLD $RED;$BOLD)"
 COLOR_PAREN="0;$CYAN"
 COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
@@ -84,30 +84,34 @@ preexec ()
     term_title " ··· $1"
 }
 
+GITCHECK=yeah
+SVNCHECK=yeah
+
 precmd ()
 {
     term_title
 
-	DATE=$(date "+%H:%M:%S-%d/%m/%Y")
-	ERROR=%(? "---" "%3<<"$C_$COLOR_BAR$_C"--"$C_$COLOR_ERRR$_C"%?%<<")
+	DATE=$(date "+ %H:%M:%S %d/%b/%Y ")
+	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
 
 	## GIT TRACKING ##
-	GITBRANCH=$(git branch 2>&- | grep '^\* ' | cut -c2-)
+	GITBRANCH=$(git branch 2>&- | grep '^\* ' | cut -c3-)
+	GITBRANCH=""
 	if [ "$GITBRANCH" != "" ]
 	then
-		if [ $(git status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$' | wc -l) -gt 0 ]
+		if [ "$GITCHECK" != "" ] && [ $(git status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$' | wc -l) -gt 0 ]
 		then
 			COLOR_GIT=$COLOR_NOT_UPTODATE
 		else
-			COLOR_GIT=$COLOR_BRANCH_OR_REV
+		COLOR_GIT=$COLOR_BRANCH_OR_REV
 		fi
 	fi
 
 	## SVN TRACKING ##
-	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : / r/')
+	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : /r/')
 	if [ "$SVNREV" != "" ]
 	then
-		if [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ]
+		if [ "$SVNCHECK" != "" ] && [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ]
 		then
 			COLOR_SVN=$COLOR_NOT_UPTODATE
 		else
@@ -117,11 +121,15 @@ precmd ()
 		SVNREV=
 	fi
 
-	#                        -  ERR  -   [   ~    GITBRANCH       SVNREV    ]   -      DATE    -
-	SPACE_LEFT=$(($COLUMNS - 1 - 3 - 1 - 1 -   ${#GITBRANCH} - ${#SVNREV} - 1 - 1 - ${#DATE} - 1))
+	## First line of prompt : 
+	#
+	# -ERR-[ git svn ]----------------------- date -
+	#
+	SPACE_LEFT=$(($COLUMNS -   4    - 1 - 2 -   ${#GITBRANCH} - ${#SVNREV} - 1 - ${#DATE} - 1))
 	MY_PATH="%(!.%d.%~)"
-	pathsize=`print -Pn $MY_PATH`
-	pathsize=${#pathsize}
+	#pathsize=`print -Pn $MY_PATH`
+	#pathsize=${#pathsize}
+	pathsize=0
 	CURDIR="$C_$COLOR_PATH$_C%`echo $SPACE_LEFT`<..<"$MY_PATH"%<<$C_$VOID$_C"
 
 	HBAR=-
@@ -138,8 +146,8 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-$ERROR"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[""$CURDIR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BRACES$_C"]"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_DATE$_C"$DATE"$C_$COLOR_BAR$_C"-
-"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m "$C_$COLOR_PAREN$_C"("$C_$COLOR_TERM$_C"%y"$C_$COLOR_PAREN$_C") "$C_$COLOR_HIST$_C"%h"$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
+	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BRACES$_C"["$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C"]"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-
+"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
 chpwd()
