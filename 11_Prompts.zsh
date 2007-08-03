@@ -81,7 +81,7 @@ term_title()
 
 preexec ()
 {
-    term_title " ··· $1"
+    term_title " ··· $(echo $1 | tr '\n' ';' | sed 's/%/%%/g')"
 }
 
 GITCHECK=${GITCHECK:-yeah}
