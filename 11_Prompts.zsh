@@ -93,9 +93,7 @@ precmd ()
 
 	DATE="%D{%H:%M:%S %d/%m/%Y}"
 	datesize=`print -Pn $DATE`
-	echo $datesize
 	datesize=${#datesize}
-	echo $datesize
 	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
 	errorsize=4
 
