@@ -84,15 +84,20 @@ preexec ()
     term_title " ··· $1"
 }
 
-GITCHECK=yeah
-SVNCHECK=yeah
+GITCHECK=${GITCHECK:-yeah}
+SVNCHECK=${SVNCHECK:-yeah}
 
 precmd ()
 {
     term_title
 
-	DATE=$(date "+%H:%M:%S %d/%b/%Y")
+	DATE="%D{%H:%M:%S %d/%m/%Y}"
+	datesize=`print -Pn $DATE`
+	echo $datesize
+	datesize=${#datesize}
+	echo $datesize
 	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
+	errorsize=4
 
 	## GIT TRACKING ##
 	GITBRANCH=$(git branch 2>&- | grep -E '^\* ' | cut -c3-)
@@ -124,34 +129,35 @@ precmd ()
 	#
 	# -ERR------------------------git-svn-[ date ]-
 	#
-	SPACE_LEFT=$(($COLUMNS -   6    -    ${#GITBRANCH} - 1 - ${#SVNREV} - 3 - ${#DATE} - 3))
-	MY_PATH="%(!.%d.%~)"
-	#pathsize=`print -Pn $MY_PATH`
-	#pathsize=${#pathsize}
-	pathsize=0
-	CURDIR="$C_$COLOR_PATH$_C%`echo $SPACE_LEFT`<..<"$MY_PATH"%<<$C_$VOID$_C"
+	spaceleft=$(($COLUMNS - ${errorsize} - ${#GITBRANCH} - 1 - ${#SVNREV} - 3 - ${datesize} - 3))
 
-	HBAR=-
-	if [ $pathsize -lt $SPACE_LEFT ]	
-	then
-		for h in {1..$(($SPACE_LEFT - $pathsize))}
-		do
-			HBAR=$HBAR-
-		done
-		unset h
-	fi
+	unset HBAR
+	for h in {1..$(($spaceleft - 1))}
+	do
+		HBAR=$HBAR-
+	done
+
+	## Second line of prompt : don't let the path garbage the entire line
+	MY_PATH="%(!.%d.%~)"
+	pathsize=`print -Pn $MY_PATH`
+	pathsize=${#pathsize}
+	spaceleft=`print -Pn "%n@%m  %#-ls -laCdtrux-[ $DATE ]-"`
+	spaceleft=$(($COLUMNS - ${#spaceleft}))
+	minimalsize=`print -Pn "%1~"`
+	minimalsize=$((3 + ${#minimalsize}))
+	[ $spaceleft -lt $minimalsize ] && spaceleft=$minimalsize
+	CURDIR="$C_$COLOR_PATH$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$VOID$_C"
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-""$ERROR"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-""$ERROR$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
 }
 
 chpwd()
 {
-    term_title
     which todo > /dev/null 2>&1 && todo
 }
 
