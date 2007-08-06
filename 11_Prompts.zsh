@@ -39,11 +39,15 @@ COLOR_HIST="$VOID"
 COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
 COLOR_DIES="0;$GENERIC"
 COLOR_DOUBLEDOT="0;%(! $VOID $VOID)"
-COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UPTODATE="0;$YELLOW;$BOLD"
 COLOR_PAREN="0;$CYAN"
 COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
+
+COLOR_BRANCH_OR_REV="0;$GENERIC"
+COLOR_NOT_UPTODATE="0;$GENERIC;$BOLD"
+
+COLOR_CMD="0;$BOLD"
+COLOR_EXEC="$VOID"
 
 COLOR_ERRR="$BOLD;$YELLOW"
 COLOR_DATE="0;$GENERIC"
@@ -82,6 +86,7 @@ term_title()
 preexec ()
 {
     term_title " ··· $(echo $1 | tr '\n' ';' | sed 's/%/%%/g')"
+	print -Pn "$C_$COLOR_EXEC$_C"
 }
 
 GITCHECK=${GITCHECK:-yeah}
@@ -151,7 +156,7 @@ precmd ()
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
 	PS1=$C_$COLOR_BAR$_C"-""$ERROR$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
-"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$VOID$_C" "
+"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
 }
 
 chpwd()
