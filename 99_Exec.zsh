@@ -8,5 +8,5 @@
 ## these files with or without this notice.
 ## 
 
-## Hop on rafraîchit le titre de la fenêtre
-chpwd
+## Nothing to do. :)
+
