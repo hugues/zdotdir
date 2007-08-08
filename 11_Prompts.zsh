@@ -44,9 +44,9 @@ COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
 
 COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UPTODATE="0;$GENERIC;$BOLD"
+COLOR_NOT_UPTODATE="0;$YELLOW;$BOLD"
 
-COLOR_CMD="0;$BOLD"
+COLOR_CMD="$VOID"
 COLOR_EXEC="$VOID"
 
 COLOR_ERRR="$BOLD;$YELLOW"
@@ -90,7 +90,8 @@ preexec ()
 }
 
 GITCHECK=${GITCHECK:-yeah}
-SVNCHECK=${SVNCHECK:-yeah}
+#SVNCHECK=${SVNCHECK:-yeah}
+#unset GITCHECK SVNCHECK
 
 precmd ()
 {
@@ -106,19 +107,21 @@ precmd ()
 	GITBRANCH=$(git branch 2>&- | grep -E '^\* ' | cut -c3-)
 	if [ "$GITBRANCH" != "" ]
 	then
-		if [ "$GITCHECK" != "" ] && [ $(git status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$' | wc -l) -gt 0 ]
+		if [ "$GITCHECK" != "" ] && ( print -n "[0;30mChecking git status...\r" ; [ $(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$' | wc -l) -gt 0 ] )
 		then
 			COLOR_GIT=$COLOR_NOT_UPTODATE
 		else
 			COLOR_GIT=$COLOR_BRANCH_OR_REV
 		fi
+
+		GITBRANCH=$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH
 	fi
 
 	## SVN TRACKING ##
 	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : /r/')
 	if [ "$SVNREV" != "" ]
 	then
-		if [ "$SVNCHECK" != "" ] && [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ]
+		if [ "$SVNCHECK" != "" ] && ( print -n "[0;30mChecking svn status...\r" ; [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] )
 		then
 			COLOR_SVN=$COLOR_NOT_UPTODATE
 		else
@@ -132,7 +135,7 @@ precmd ()
 	#
 	# -ERR------------------------git-svn-[ date ]-
 	#
-	spaceleft=$(($COLUMNS - ${errorsize} - ${#GITBRANCH} - 1 - ${#SVNREV} - 3 - ${datesize} - 3))
+	spaceleft=$(($COLUMNS - ${errorsize} - ${#SVNREV} - 3 - ${datesize} - 3))
 
 	unset HBAR
 	for h in {1..$(($spaceleft - 1))}
@@ -144,7 +147,7 @@ precmd ()
 	MY_PATH="%(!.%d.%~)"
 	pathsize=`print -Pn $MY_PATH`
 	pathsize=${#pathsize}
-	spaceleft=`print -Pn "%n@%m  %#-ls -laCdtrux-[ $DATE ]-"`
+	spaceleft=`print -Pn "%n@%m $GITBRANCH %#-ls -laCdtrux-[ $DATE ]-"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	minimalsize=`print -Pn "%1~"`
 	minimalsize=$((3 + ${#minimalsize}))
@@ -155,8 +158,8 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-""$ERROR$HBAR"$C_$COLOR_GIT$_C"$GITBRANCH"$C_$COLOR_BAR$_C"-"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
-"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
+	PS1=$C_$COLOR_BAR$_C"-""$ERROR$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
+"$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR$GITBRANCH "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
 }
 
 chpwd()
