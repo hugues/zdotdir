@@ -44,7 +44,8 @@ COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
 
 COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UPTODATE="0;$YELLOW;$BOLD"
+COLOR_NOT_UP_TODATE="0;$RED;$BOLD"
+COLOR_TOBE_COMMITED="0;$YELLOW;$BOLD"
 
 COLOR_CMD="$VOID"
 COLOR_EXEC="$VOID"
@@ -107,9 +108,15 @@ precmd ()
 	GITBRANCH=$(git branch 2>&- | grep -E '^\* ' | cut -c3-)
 	if [ "$GITBRANCH" != "" ]
 	then
-		if [ "$GITCHECK" != "" ] && ( print -n "[0;30mChecking git status...\r" ; [ $(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$' | wc -l) -gt 0 ] )
+		if [ "$GITCHECK" != "" ]
 		then
-			COLOR_GIT=$COLOR_NOT_UPTODATE
+			print -n "[0;30mChecking git status...\r"
+			_git_status=$(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
+		if   [ "$(grep "to be committed" <<< $_git_status)" != "" ]
+		then
+			COLOR_GIT=$COLOR_TOBE_COMMITED
+		elif [ "$(grep "but not" <<< $_git_status)" != "" ]
+			COLOR_GIT=$COLOR_NOT_UP_TODATE
 		else
 			COLOR_GIT=$COLOR_BRANCH_OR_REV
 		fi
@@ -123,7 +130,7 @@ precmd ()
 	then
 		if [ "$SVNCHECK" != "" ] && ( print -n "[0;30mChecking svn status...\r" ; [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] )
 		then
-			COLOR_SVN=$COLOR_NOT_UPTODATE
+			COLOR_SVN=$COLOR_NOT_UP_TODATE
 		else
 			COLOR_SVN=$COLOR_BRANCH_OR_REV
 		fi
