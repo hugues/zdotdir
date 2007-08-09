@@ -120,9 +120,10 @@ precmd ()
 				COLOR_GIT=$COLOR_BRANCH_OR_REV
 			fi
 
-			GITBRANCH=$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH
 		fi
 	fi
+	GitBranch=${GITBRANCH:+:$GITBRANCH}
+	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH}
 
 	## SVN TRACKING ##
 	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : /r/')
@@ -154,7 +155,7 @@ precmd ()
 	MY_PATH="%(!.%d.%~)"
 	pathsize=`print -Pn $MY_PATH`
 	pathsize=${#pathsize}
-	spaceleft=`print -Pn "%n@%m $GITBRANCH %#-ls -laCdtrux-[ $DATE ]-"`
+	spaceleft=`print -Pn "%n@%m $GitBranch %#-ls -laCdtrux-[ $DATE ]-"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	minimalsize=`print -Pn "%1~"`
 	minimalsize=$((3 + ${#minimalsize}))
