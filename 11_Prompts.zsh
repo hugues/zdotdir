@@ -112,16 +112,16 @@ precmd ()
 		then
 			print -n "[0;30mChecking git status...\r"
 			_git_status=$(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
-		if   [ "$(grep "to be committed" <<< $_git_status)" != "" ]
-		then
-			COLOR_GIT=$COLOR_TOBE_COMMITED
-		elif [ "$(grep "but not" <<< $_git_status)" != "" ]
-			COLOR_GIT=$COLOR_NOT_UP_TODATE
-		else
-			COLOR_GIT=$COLOR_BRANCH_OR_REV
-		fi
+			if   [ "$(grep "to be committed" <<< $_git_status)" != "" ] ; then 
+				COLOR_GIT=$COLOR_TOBE_COMMITED
+			elif [ "$(grep "but not" <<< $_git_status)" != "" ] ; then 
+				COLOR_GIT=$COLOR_NOT_UP_TODATE
+			else
+				COLOR_GIT=$COLOR_BRANCH_OR_REV
+			fi
 
-		GITBRANCH=$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH
+			GITBRANCH=$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH
+		fi
 	fi
 
 	## SVN TRACKING ##
