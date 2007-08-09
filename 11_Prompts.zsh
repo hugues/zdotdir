@@ -44,7 +44,7 @@ COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
 
 COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UP_TODATE="0;$YELLOW"
+COLOR_NOT_UP_TODATE="0;$GREEN;$BOLD"
 COLOR_TOBE_COMMITED="0;$YELLOW;$BOLD"
 
 COLOR_CMD="$VOID"
@@ -86,13 +86,23 @@ term_title()
 
 preexec ()
 {
-    term_title " ··· $(echo $1 | tr '\n' ';' | sed 's/%/%%/g')"
+    term_title " ··· $(echo $1 | tr '\n' ';' | sed 's/%/%%/g;s/\\/\\\\/g')"
 	print -Pn "$C_$COLOR_EXEC$_C"
 }
 
 GITCHECK=${GITCHECK:-yeah}
 #SVNCHECK=${SVNCHECK:-yeah}
 #unset GITCHECK SVNCHECK
+
+preprint()
+{
+	hbar=
+	for i in {1..$(($COLUMNS - ${#1} - 5))}
+	do
+		hbar=$hbar-
+	done
+	print -Pn "${C_}0;30;1${_C}${hbar}[ $1 ]-\r"
+}
 
 precmd ()
 {
@@ -110,7 +120,7 @@ precmd ()
 	then
 		if [ "$GITCHECK" != "" ]
 		then
-			print -n "[0;30mChecking git status...\r"
+			preprint "Checking git status..."
 			_git_status=$(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
 			if   [ "$(grep "but not" <<< $_git_status)" != "" ] ; then 
 				COLOR_GIT=$COLOR_NOT_UP_TODATE
@@ -129,7 +139,7 @@ precmd ()
 	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : /r/')
 	if [ "$SVNREV" != "" ]
 	then
-		if [ "$SVNCHECK" != "" ] && ( print -n "[0;30mChecking svn status...\r" ; [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] )
+		if [ "$SVNCHECK" != "" ] && ( preprint "Checking svn status..." ; [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] )
 		then
 			COLOR_SVN=$COLOR_NOT_UP_TODATE
 		else
