@@ -86,7 +86,7 @@ term_title()
 
 preexec ()
 {
-    term_title " ··· $(echo $1 | tr '\n' ';' | sed 's/%/%%/g;s/\\/\\\\/g')"
+    term_title " ··· $(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g')"
 	print -Pn "$C_$COLOR_EXEC$_C"
 }
 
