@@ -115,10 +115,11 @@ precmd ()
 	errorsize=4
 
 	## GIT TRACKING ##
-	GITBRANCH=$(git branch 2>&- | grep -E '^\* ' | cut -c3-)
-	if [ "$GITBRANCH" != "" ]
+	unset GITBRANCH
+	if [ "$GITCHECK" != "" ]
 	then
-		if [ "$GITCHECK" != "" ]
+		GITBRANCH=$(git branch 2>&- | grep -E '^\* ' | cut -c3-)
+		if [ "$GITBRANCH" != "" ]
 		then
 			preprint "Checking git status..."
 			_git_status=$(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
