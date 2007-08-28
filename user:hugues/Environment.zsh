@@ -52,7 +52,7 @@ WATCHFMT=$COLOR_BLUECLAIR"%n"$COLOR_END
 WATCHFMT=$WATCHFMT" has "$COLOR_YELLOW"%a[0m %l from %M"
 WATCH=notme
 
-WORDCHARS='*?-_~!#$%^.' ## Caractères faisant partie des mots
+WORDCHARS='*?-_~!#$%^' ## Caractères faisant partie des mots
                         ## J'ai viré les  '/()[]{}'
 
 
