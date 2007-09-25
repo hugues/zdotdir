@@ -114,28 +114,6 @@ precmd ()
 	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
 	errorsize=4
 
-	## GIT TRACKING ##
-	unset GITBRANCH
-	if [ "$GITCHECK" != "" ]
-	then
-		GITBRANCH=$(git branch 2>&- | grep -E '^\* ' | cut -c3-)
-		if [ "$GITBRANCH" != "" ]
-		then
-			preprint "Checking git status..."
-			_git_status=$(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
-			if   [ "$(grep "but not" <<< $_git_status)" != "" ] ; then 
-				COLOR_GIT=$COLOR_NOT_UP_TODATE
-			elif [ "$(grep "to be committed" <<< $_git_status)" != "" ] ; then 
-				COLOR_GIT=$COLOR_TOBE_COMMITED
-			else
-				COLOR_GIT=$COLOR_BRANCH_OR_REV
-			fi
-
-		fi
-	fi
-	GitBranch=${GITBRANCH:+:$GITBRANCH}
-	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH}
-
 	## SVN TRACKING ##
 	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : /r/')
 	if [ "$SVNREV" != "" ]
@@ -184,6 +162,7 @@ precmd ()
 chpwd()
 {
     which todo > /dev/null 2>&1 && todo
+	get_git_status
 }
 
 

@@ -217,3 +217,6 @@ bindkey -s "l" "  l\n"
 #bindkey -s "L" "  la\n"
 
 bindkey -s " " "\\\\ "
+
+bindkey -s "g" "  get_git_status\n"
+bindkey -s "G" "  GITBRANCH=\n"
