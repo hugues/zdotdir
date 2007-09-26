@@ -25,6 +25,7 @@ get_git_status ()
 	if [ "$GITCHECK" != "" ]
 	then
 		GITBRANCH=$(get_git_branch);
+		TEE=""
 		if [ "$GITBRANCH" != "" ]
 		then
 			preprint "Checking git status..."
