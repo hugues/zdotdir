@@ -45,6 +45,7 @@ get_git_branch ()
 get_git_status ()
 {
 	git-status
+	GITCHECK="yes"
 	check_git_status
 }
 
