@@ -71,19 +71,6 @@ COLOR_DATE="0;$GENERIC"
 # precmd	: avant d'afficher le prompt
 #
 
-term_title()
-{
-  [[ -t 1 ]] &&
-    case $TERM in
-      sun-cmd)
-        print -Pn "\e]l%n@%m %~$1\e\\" ;;
-      *term*|rxvt*)
-	    print -Pn "\e]0;%n@%m (%l) %~$1\a" ;;
-	  *)
-	  	;;
-    esac
-}
-
 preexec ()
 {
     term_title " ··· $(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g')"
@@ -93,16 +80,6 @@ preexec ()
 GITCHECK=${GITCHECK:-yeah}
 #SVNCHECK=${SVNCHECK:-yeah}
 #unset GITCHECK SVNCHECK
-
-preprint()
-{
-	hbar=
-	for i in {1..$(($COLUMNS - ${#1} - 5))}
-	do
-		hbar=$hbar-
-	done
-	print -Pn "${C_}0;30;1${_C}${hbar}[ $1 ]-\r"
-}
 
 precmd ()
 {
@@ -162,7 +139,7 @@ precmd ()
 chpwd()
 {
     which todo > /dev/null 2>&1 && todo
-	get_git_status
+	check_git_status
 }
 
 
