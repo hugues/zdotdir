@@ -58,7 +58,7 @@ check_git_status ()
 		if [ "$GITBRANCH" != "" ]
 		then
 			preprint "Check git status..."
-			_git_status=$(git-runstatus 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
+			_git_status=$(git-status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
 			if   [ "$(grep "but not" <<< $_git_status)" != "" ] ; then 
 				COLOR_GIT=$COLOR_NOT_UP_TODATE
 			elif [ "$(grep "to be committed" <<< $_git_status)" != "" ] ; then 
