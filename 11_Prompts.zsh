@@ -77,8 +77,8 @@ preexec ()
 	print -Pn "$C_$COLOR_EXEC$_C"
 }
 
-#GITCHECK=${GITCHECK:-yeah}
-#SVNCHECK=${SVNCHECK:-yeah}
+GITCHECK=${GITCHECK:-}
+#SVNCHECK=${SVNCHECK:-}
 #unset GITCHECK SVNCHECK
 
 precmd ()

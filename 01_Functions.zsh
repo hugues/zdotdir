@@ -42,13 +42,6 @@ get_git_branch ()
 	echo $(git branch 2>&- | grep -E '^\* ' | cut -c3-)
 }
 
-get_git_status ()
-{
-	git-status
-	GITCHECK="yes"
-	check_git_status
-}
-
 check_git_status ()
 {
 	## GIT TRACKING ##
