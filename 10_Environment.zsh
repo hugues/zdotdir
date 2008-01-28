@@ -18,11 +18,11 @@
 
 ## Agent de clefs SSH/GPG
 KEYCHAIN=~/.keychain/$(hostname)-sh
-[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
-[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
-( ps fax | grep -v grep | grep $SSH_AGENT_PID 2>&- >&- ) || ( cmd_exists keychain && keychain --quiet --stop others --inherit any ) && \
-	[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN} ;\
-	[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
+#[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
+#[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
+#( ps fu | grep -v grep | grep $SSH_AGENT_PID 2>&- >&- ) || ( cmd_exists keychain && keychain --quiet --stop others --inherit any ) && \
+#	[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN} ;\
+#	[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
 
 ## Colors 
 VOID=0
