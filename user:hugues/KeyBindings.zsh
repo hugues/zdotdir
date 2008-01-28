@@ -210,7 +210,7 @@ bindkey -s "t" "  todo\n"
 bindkey -s "é" " 2>/dev/null "
 bindkey -s "2" " 2>&1 "
 
-bindkey -s "m" "  make\n"
+bindkey -s "m" "  mails\n"
 bindkey -s "M" "make "
 
 bindkey -s "l" "  l\n"
