@@ -42,8 +42,9 @@ if [ -d $ZDOTDIR ]; then
 	for script in $ZDOTDIR/??_*.zsh
 	do
 
-        [ "$DEBUG" = "yes" ] && echo "${${script:t:r}/??_/}... ";
+        [ "$DEBUG" = "yes" ] && echo -n "${${script:t:r}/??_/}... "
 		source $script
+		[ "$DEBUG" = "yes" ] && echo
 
         for i in "net:$DOMAIN" "host:$HOST" "user:$USER" "user:$SUDO_USER"
         do
