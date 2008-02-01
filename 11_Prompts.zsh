@@ -134,6 +134,9 @@ precmd ()
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
 	PS1=$C_$COLOR_BAR$_C"-""$ERROR$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR$GITBRANCH "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
+
+	# Mailcheck
+	[ -s ~/.procmail/procmail.log ] && sbin/mails
 }
 
 chpwd()
