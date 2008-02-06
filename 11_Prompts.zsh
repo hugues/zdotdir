@@ -136,7 +136,7 @@ precmd ()
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR$GITBRANCH "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
 
 	# Mailcheck
-	[ -s ~/.procmail/procmail.log ] && [ "`< ~/.procmail/procmail.log awk 'BEGIN {FS="From" ; MATCH=0} !/JUNK/ { MATCH++ } END { print MATCH }'`" -gt 0 ] && sbin/mails
+	[ -s ~/.procmail/procmail.log ] && [ `< ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=0} !/JUNK/ { HAM++ } END { print HAM }'` -gt 1 ] && sbin/mails
 }
 
 chpwd()
