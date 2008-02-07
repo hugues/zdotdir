@@ -44,8 +44,8 @@ COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
 
 COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UP_TODATE="0;$GREEN;$BOLD"
-COLOR_TOBE_COMMITED="0;$YELLOW;$BOLD"
+COLOR_NOT_UP_TO_DATE="0;$GREEN;$BOLD"
+COLOR_TO_BE_COMMITED="0;$YELLOW;$BOLD"
 
 COLOR_CMD="$VOID"
 COLOR_EXEC="$VOID"
@@ -105,6 +105,8 @@ precmd ()
 		SVNREV=
 	fi
 
+	check_git_status
+
 	## First line of prompt : 
 	#
 	# -ERR------------------------git-svn-[ date ]-
@@ -137,12 +139,12 @@ precmd ()
 
 	# Mailcheck
 	[ -s ~/.procmail/procmail.log ] && [ `< ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=0} !/JUNK/ { HAM++ } END { print HAM }'` -gt 1 ] && sbin/mails | grep -v JUNK
+
 }
 
 chpwd()
 {
     which todo > /dev/null 2>&1 && todo
-	check_git_status
 }
 
 

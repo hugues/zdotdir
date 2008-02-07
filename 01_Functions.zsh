@@ -45,22 +45,24 @@ get_git_branch ()
 check_git_status ()
 {
 	## GIT TRACKING ##
-	if [ "$GITCHECK" != "" ]
+	if [ "$GITCHECK" != "no" ]
 	then
 		GITBRANCH=$(get_git_branch);
 		if [ "$GITBRANCH" != "" ]
 		then
 			preprint "Check git status..."
-			_git_status=$(git-status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
-			if   [ "$(grep "but not" <<< $_git_status)" != "" ] ; then 
-				COLOR_GIT=$COLOR_NOT_UP_TODATE
-			elif [ "$(grep "to be committed" <<< $_git_status)" != "" ] ; then 
-				COLOR_GIT=$COLOR_TOBE_COMMITED
+			#_git_status=$(git-status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
+			if   [ "$(git-diff --cached | lsdiff)" != "" ] ; then 
+				COLOR_GIT=$COLOR_TO_BE_COMMITED
+			elif [ "$(git-ls-files -m)" != "" ] ; then 
+				COLOR_GIT=$COLOR_NOT_UP_TO_DATE
 			else
 				COLOR_GIT=$COLOR_BRANCH_OR_REV
 			fi
 
 		fi
+	else
+		GITBRANCH=""
 	fi
 	GitBranch=${GITBRANCH:+:$GITBRANCH}
 	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH}
