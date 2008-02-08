@@ -50,7 +50,7 @@ check_git_status ()
 		GITBRANCH=$(get_git_branch);
 		if [ "$GITBRANCH" != "" ]
 		then
-			preprint "Check git status..."
+			#preprint "Check git status..."
 			#_git_status=$(git-status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
 			if   [ "$(git-diff --cached | lsdiff)" != "" ] ; then 
 				COLOR_GIT=$COLOR_TO_BE_COMMITED
