@@ -91,6 +91,10 @@ precmd ()
 	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
 	errorsize=4
 
+	# Mailcheck
+	MAILSTAT="`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "-You got mail !-" } }'`"
+
+
 	## SVN TRACKING ##
 	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : /r/')
 	if [ "$SVNREV" != "" ]
@@ -111,7 +115,7 @@ precmd ()
 	#
 	# -ERR------------------------git-svn-[ date ]-
 	#
-	spaceleft=$(($COLUMNS - ${errorsize} - ${#SVNREV} - 3 - ${datesize} - 3))
+	spaceleft=$(($COLUMNS - ${errorsize} - ${#MAILSTAT} - ${#SVNREV} - 3 - ${datesize} - 3))
 
 	unset HBAR
 	for h in {1..$(($spaceleft - 1))}
@@ -134,11 +138,9 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-""$ERROR$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-""$ERROR$MAILSTAT$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR$GITBRANCH "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
 
-	# Mailcheck
-	[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=0} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "You got mail !" } }'
 
 }
 
