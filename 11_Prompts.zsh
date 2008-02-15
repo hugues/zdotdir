@@ -92,7 +92,7 @@ precmd ()
 	errorsize=4
 
 	# Mailcheck
-	MAILSTAT="`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "-You got mail !-" } }'`"
+	MAILSTAT="`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "-You got mail !-" } }'`"
 
 
 	## SVN TRACKING ##
