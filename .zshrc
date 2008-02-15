@@ -46,7 +46,14 @@ if [ -d $ZDOTDIR ]; then
 		source $script
 		[ "$DEBUG" = "yes" ] && echo
 
-        for i in "net:$DOMAIN" "host:$HOST" "user:$USER" "user:$SUDO_USER"
+        for i in	"net:$DOMAIN"\
+					"host:$HOST"\
+					"user:$USER"\
+					"user:$SUDO_USER"\
+					"net:$DOMAIN/host:$HOST"\
+					"net:$DOMAIN/user:$USER"\
+					"net:$DOMAIN/host:$HOST/user:$USER"\
+					"net:$DOMAIN/host:$HOST/user:$SUDO_USER"
         do
             specific_script=${script:h}/$i/${${script:t}/??_/}
             if test -f $specific_script
