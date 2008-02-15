@@ -22,6 +22,7 @@ export FCEDIT=$EDITOR
 
 ## Pageur par défaut
 export PAGER=less
+export LESS="-R -F -X"
 
 ## Quelle commande utiliser par défaut ?
 export NULLCMD=cat
