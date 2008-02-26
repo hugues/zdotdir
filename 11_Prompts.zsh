@@ -40,6 +40,7 @@ COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
 COLOR_DIES="0;$GENERIC"
 COLOR_DOUBLEDOT="0;%(! $VOID $VOID)"
 COLOR_PAREN="0;$CYAN"
+COLOR_MAIL="0;$YELLOW;$BOLD"
 COLOR_BAR="0;$GENERIC;$BOLD"
 COLOR_BRACES=$COLOR_BAR
 
@@ -92,7 +93,7 @@ precmd ()
 	errorsize=4
 
 	# Mailcheck
-	MAILSTAT="`[ -s ~/.procmail/procmail.log -a $(find ~/Mail -type f -iwholename "*/new/*" | wc -l) -ne 0 ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "-You got mail !-" } }'`"
+	MAILSTAT="`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "@" } }'`"
 
 
 	## SVN TRACKING ##
@@ -115,7 +116,7 @@ precmd ()
 	#
 	# -ERR------------------------git-svn-[ date ]-
 	#
-	spaceleft=$(($COLUMNS - ${errorsize} - ${#MAILSTAT} - ${#SVNREV} - 3 - ${datesize} - 3))
+	spaceleft=$(($COLUMNS - ${#MAILSTAT} - 1 - ${errorsize} - ${#SVNREV} -3- ${datesize} -3))
 
 	unset HBAR
 	for h in {1..$(($spaceleft - 1))}
@@ -138,7 +139,7 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-""$ERROR$MAILSTAT$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C$DATE$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
+	PS1=$C_$COLOR_BAR$_C"-"$C_$COLOR_MAIL$_C"$MAILSTAT"$C_$COLOR_BAR$_C"-$ERROR"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"$DATE"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR$GITBRANCH "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
 
 
