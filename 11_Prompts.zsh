@@ -87,7 +87,7 @@ precmd ()
 {
     term_title
 
-	DATE="%D{%H:%M:%S %d/%m/%Y}"
+	DATE="%D{%a %d %b %Y  %H:%M:%S}"
 	datesize=`print -Pn $DATE`
 	datesize=${#datesize}
 	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
