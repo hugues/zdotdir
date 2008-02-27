@@ -75,3 +75,6 @@ unsetopt Prompt_Cr
 setopt Auto_Pushd
 setopt Pushd_Ignore_Dups
 setopt Glob
+
+## Gestion de l'UTF-8 !!
+setopt MultiByte
