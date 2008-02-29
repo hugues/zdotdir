@@ -52,7 +52,7 @@ check_git_status ()
 		then
 			#preprint "Check git status..."
 			#_git_status=$(git-status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
-			if   [ "$(git-diff --cached | lsdiff)" != "" ] ; then 
+			if   [ "$(git-diff --cached | grep '^diff ')" != "" ] ; then 
 				COLOR_GIT=$COLOR_TO_BE_COMMITED
 			elif [ "$(git-ls-files -m)" != "" ] ; then 
 				COLOR_GIT=$COLOR_NOT_UP_TO_DATE
