@@ -39,7 +39,10 @@ preprint()
 
 get_git_branch ()
 {
-	echo $(git branch 2>&- | grep -E '^\* ' | cut -c3-)
+	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
+	[ $my_git_branch == "(no branch)" ] && my_git_branch="$(git-log HEAD~1..HEAD --pretty=format:%h)"
+
+	echo $my_git_branch
 }
 
 check_git_status ()
