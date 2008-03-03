@@ -45,7 +45,7 @@ get_git_branch ()
 check_git_status ()
 {
 	## GIT TRACKING ##
-	if [ "$GITCHECK" != "no" ]
+	if [ "$GITCHECK" != "no" -a "$(git-log .)" != "" ]
 	then
 		GITBRANCH=$(get_git_branch);
 		if [ "$GITBRANCH" != "" ]
