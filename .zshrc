@@ -34,7 +34,7 @@ HOST=${HOST:-$(hostname -s)}
 DOMAIN=${DOMAIN:-${$(hostname -d 2>&-):-$(hostname -y 2>&-)}}
 [ $DOMAIN = "" -o $DOMAIN = "localdomain" -o $DOMAIN = "(none)" ] && DOMAIN=$(grep "^search " /etc/resolv.conf | cut -d' ' -f2)
 
-DEBUG=no
+DEBUG=${DEBUG:-no}
 
 export USER HOST DOMAIN UID
 
@@ -52,14 +52,18 @@ if [ -d $ZDOTDIR ]; then
 					"user:$SUDO_USER"\
 					"net:$DOMAIN/host:$HOST"\
 					"net:$DOMAIN/user:$USER"\
+					"net:$DOMAIN/user:$SUDO_USER"\
 					"net:$DOMAIN/host:$HOST/user:$USER"\
-					"net:$DOMAIN/host:$HOST/user:$SUDO_USER"
+					"net:$DOMAIN/host:$HOST/user:$SUDO_USER"\
+					"host:$HOST/user:$USER"\
+					"host:$HOST/user:$SUDO_USER"
         do
             specific_script=${script:h}/$i/${${script:t}/??_/}
             if test -f $specific_script
 			then
-        		[ "$DEBUG" = "yes" ] && echo "$i/${${specific_script:t:r}/??_/}... ";
+        		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/}... ";
 				source $specific_script
+				[ "$DEBUG" = "yes" ] && echo
 			fi
         done
 	done
