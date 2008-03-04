@@ -39,8 +39,8 @@ preprint()
 
 get_git_branch ()
 {
-	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
-	[ $my_git_branch == "(no branch)" ] && my_git_branch="$(git-log HEAD~1..HEAD --pretty=format:%h)"
+	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
+	[ $my_git_branch == "(no branch)" ] && my_git_branch="$(git-log HEAD~1..HEAD --pretty=format:%h 2>&-)"
 
 	echo $my_git_branch
 }
@@ -55,9 +55,9 @@ check_git_status ()
 		then
 			#preprint "Check git status..."
 			#_git_status=$(git-status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
-			if   [ "$(git-diff --cached | grep '^diff ')" != "" ] ; then 
+			if   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
 				COLOR_GIT=$COLOR_TO_BE_COMMITED
-			elif [ "$(git-ls-files -m)" != "" ] ; then 
+			elif [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
 				COLOR_GIT=$COLOR_NOT_UP_TO_DATE
 			else
 				COLOR_GIT=$COLOR_BRANCH_OR_REV
