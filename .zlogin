@@ -1,14 +1,11 @@
 
-cmd_exists calendar && (\
 #for _col in {1..$COLUMNS} ; do echo -n "_" ; done ;\ echo;\
-echo "--------------------------------------------------[ événements ]---" ;\
-( calendar -A0 -f all ; calendar -A0 -f ~/.calendar/calendar ) | sed "s/\(\*.*\)/[1m\1[0m/;s/\(\*.*\*\)/[33;1m\1[0m/" ;\
-)
+echo "--------------------------------------------------[ événements ]---" ;
+cmd_exists when && when w --calendar=~/.when/birthdays
+cmd_exists calendar && calendar -A0 | sed "s/\(\*.*\)/[1m\1[0m/;s/\(\*.*\*\)/[33;1m\1[0m/" ;\
 
-[ -x ~/sbin//calendrier ] && ( \
-echo "--------------------------------------------------[ calendrier ]---" ;\
-~/sbin/calendrier \
-)
+echo "--------------------------------------------------[ calendrier ]---" ;
+[ -x ~/sbin//calendrier ] && ~/sbin/calendrier
 
 #cmd_exists remind && remind -n
 #
