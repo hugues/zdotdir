@@ -219,4 +219,4 @@ bindkey -s "l" "  l\n"
 bindkey -s " " "\\\\ "
 
 bindkey -s "g" "  git-status\n"
-bindkey -s "G" "  GITCHECK= GITBRANCH=\n"
+bindkey -s "G" "  git-repack\n"
