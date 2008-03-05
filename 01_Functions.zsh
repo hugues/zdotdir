@@ -71,6 +71,12 @@ check_git_status ()
 				COLOR_GIT=$COLOR_BRANCH_OR_REV
 			fi
 
+			# Here we are on a .git folder..
+			if ( echo ${(s:/:)PWD} | grep "\.\<git\>" >/dev/null )
+			then
+				COLOR_GIT="$BOLD;$RED"
+			fi
+
 		fi
 	else
 		GITBRANCH=""
