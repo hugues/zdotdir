@@ -39,8 +39,16 @@ preprint()
 
 get_git_branch ()
 {
+	# Get current working GIT branch
 	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
-	[ $my_git_branch == "(no branch)" ] && my_git_branch="$(git-log HEAD~1..HEAD --pretty=format:%h 2>&-)"
+
+	# If not on a working GIT branch, get the named current commit-ish inside parenthesis
+	[ "$my_git_branch" == "(no branch)" ] &&\
+		my_git_branch="$(git-show --pretty=format:%H 2>&- | head -n1 | git-name-rev --stdin 2>&- | awk '{ print $2 }')"
+
+	# If neither on a named commit-ish, show abbreviated commit-id
+	[ "$my_git_branch" == "" ] &&\
+		my_git_branch="($(git-show --pretty=format:%h 2>&- | head -n1)...)"
 
 	echo $my_git_branch
 }
