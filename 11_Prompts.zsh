@@ -121,7 +121,7 @@ precmd ()
 	MY_PATH="%(!.%d.%~)"
 	pathsize=`print -Pn $MY_PATH`
 	pathsize=${#pathsize}
-	spaceleft=`print -Pn "%n@%m $GitBranch %#-ls -laCdtrux-[ $DATE ]-"`
+	spaceleft=`print -Pn "%n@%m $GitBranch $ ls -laCdtrux $(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	minimalsize=`print -Pn "%1~"`
 	minimalsize=$((3 + ${#minimalsize}))
