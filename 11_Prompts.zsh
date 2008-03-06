@@ -93,7 +93,7 @@ precmd ()
 	ERRORSIZE=${#error}
 	ERROR="%(?;;"$C_$COLOR_BAR$_C"-"$C_$COLOR_ERRR$_C"%?)"
 
-	DATE=$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"%D{%a %d %b %Y  %H:%M:%S}"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-"
+	DATE=$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"%D{%a-%d-%b-%Y  %H:%M:%S}"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-"
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 
