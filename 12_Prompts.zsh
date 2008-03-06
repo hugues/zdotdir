@@ -123,7 +123,7 @@ old_precmd()
 	PATHSIZE=${#PATHSIZE}
 	[ "$DEBUG" = "yes" ] && echo
 	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..."
-	spaceleft=`print -Pn "%n@%m  $ ls -laCdtrux $(expand_text "$DATE")"`
+	spaceleft=`print -Pn "%n@$LOCALIP  $ ls -laCdtrux $(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	#minimalpathsize=`print -Pn "../%1~"`
 	#minimalpathsize=${#minimalpathsize}
@@ -161,7 +161,7 @@ old_precmd()
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
 	PS1="$MAILSTAT""$ERROR"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
-"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
+"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"$LOCALIP $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 
 }
