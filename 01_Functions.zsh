@@ -47,7 +47,7 @@ get_git_branch ()
 {
 	local my_git_branch
 
-	[ "$(git-ls-files . | head -n 1)" == "" ] && return 
+	[ "$(git-ls-files . 2>&- | head -n 1)" == "" ] && return 
 
 	# Get current working GIT branch
 	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
