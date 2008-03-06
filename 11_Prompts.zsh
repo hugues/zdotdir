@@ -79,37 +79,50 @@ preexec ()
 }
 
 GITCHECK=${GITCHECK:-}
-#SVNCHECK=${SVNCHECK:-}
-#unset GITCHECK SVNCHECK
 
 expand_text()
 {
 	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
 }
 
-precmd ()
+new_precmd()
 {
+	#
+	# Arrays 
+	# [0] prompt-style string
+	# [1] total size
+	# [2] color
+	# [3] pre-string
+	# [4] post-string
+	#
+	typeset -A ERROR DATE MAILS LOGIN HOST CWD GITINFO SVNINFO PROMPT
+}
+
+old_precmd()
+{
+	# Error
 	error=$(print -Pn "%(?;;-%?)")
 	ERRORSIZE=${#error}
 	ERROR="%(?;;"$C_$COLOR_BAR$_C"-"$C_$COLOR_ERRR$_C"%?)"
 
 	DATE=$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"%D{%a-%d-%b-%Y  %H:%M:%S}"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-"
-	DATEEXPAND=$(expand_text "$DATE")
-	DATESIZE=${#DATEEXPAND}
+	# Flush the term title
 
     term_title
 
-	#
+	# Date
+	DATEEXPAND=$(expand_text "$DATE")
+	DATESIZE=${#DATEEXPAND}
+	
 	# Mailcheck
 	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "$C_$COLOR_BAR$_C""-""$C_$COLOR_MAIL$_C""@" } }'`")
 	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 
+	# get git status
 	check_git_status
 
-	#echo "$DATESIZE - $ERRORSIZE - $MAILSTATSIZE"
-
-	## First line of prompt : 
+	# First line of prompt, calculation of the remaining place
 	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
 
 	unset HBAR
@@ -117,10 +130,9 @@ precmd ()
 	do
 		HBAR=$HBAR-
 	done
+	#
 	## Second line of prompt : don't let the path garbage the entire line
 	MY_PATH="%(!.%d.%~)"
-	pathsize=`print -Pn $MY_PATH`
-	pathsize=${#pathsize}
 	spaceleft=`print -Pn "%n@%m $GitBranch $ ls -laCdtrux $(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	minimalsize=`print -Pn "%1~"`
@@ -136,6 +148,11 @@ precmd ()
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR$GITBRANCH "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
 
 
+}
+
+precmd()
+{
+	old_precmd
 }
 
 chpwd()
