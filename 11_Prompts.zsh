@@ -13,9 +13,9 @@
 #  - PS1_USER pour la couleur du prompt USER local
 #  - PS1_USER_SSH pour la couleur du prompt USER distant (en ssh)
 
-PS1_ROOT=${PS1_ROOT:-$RED}
-PS1_USER=${PS1_USER:-$BLUE}
-PS1_USER_SSH=${PS1_USER_SSH:-$MAGENTA}
+PS1_ROOT=${PS1_ROOT:-$color[red]}
+PS1_USER=${PS1_USER:-$color[blue]}
+PS1_USER_SSH=${PS1_USER_SSH:-$color[magenta]}
 GENERIC=`print -Pn "%(! $PS1_ROOT $PS1_USER)"`
 
 normal_user && if ( [ "$SSH_TTY" != "" ] )
@@ -31,28 +31,28 @@ C_="%{$c_"
 _C="$_c%}"
 
 ## Les couleurs !! ##
-COLOR_PATH="0;$GENERIC;$BOLD"
-COLOR_TERM="0;$GENERIC"
-COLOR_USER="0;$GENERIC"
-COLOR_HOST="0;$GENERIC"
-COLOR_HIST="$VOID"
-COLOR_AROB="0;1;%(! $BOLD; )$GENERIC"
-COLOR_DIES="0;$GENERIC"
-COLOR_DOUBLEDOT="0;%(! $VOID $VOID)"
-COLOR_PAREN="0;$CYAN"
-COLOR_MAIL="0;$YELLOW;$BOLD"
-COLOR_BAR="0;$GENERIC;$BOLD"
+COLOR_PATH="$color[none];$GENERIC;$color[bold]"
+COLOR_TERM="$color[none];$GENERIC"
+COLOR_USER="$color[none];$GENERIC"
+COLOR_HOST="$color[none];$GENERIC"
+COLOR_HIST="$color[reset]"
+COLOR_AROB="$color[none];1;%(! $color[bold]; )$GENERIC"
+COLOR_DIES="$color[none];$GENERIC"
+COLOR_DOUBLEDOT="$color[none];"
+COLOR_PAREN="$color[none];$color[cyan]"
+COLOR_MAIL="$color[none];$color[yellow];$color[bold]"
+COLOR_BAR="$color[none];$GENERIC;$color[bold]"
 COLOR_BRACES=$COLOR_BAR
 
-COLOR_BRANCH_OR_REV="0;$GENERIC"
-COLOR_NOT_UP_TO_DATE="0;$GREEN;$BOLD"
-COLOR_TO_BE_COMMITED="0;$YELLOW;$BOLD"
+COLOR_BRANCH_OR_REV="$color[none];$GENERIC"
+COLOR_NOT_UP_TO_DATE="$color[none];$color[green];$color[bold]"
+COLOR_TO_BE_COMMITED="$color[none];$color[yellow];$color[bold]"
 
-COLOR_CMD="$VOID"
-COLOR_EXEC="$VOID"
+COLOR_CMD="$color[reset]"
+COLOR_EXEC="$color[reset]"
 
-COLOR_ERRR="$BOLD;$YELLOW"
-COLOR_DATE="0;$GENERIC"
+COLOR_ERRR="$color[bold];$color[yellow]"
+COLOR_DATE="$color[none];$color[standout];$GENERIC"
 
 ## Prompts
 #
@@ -78,8 +78,6 @@ preexec ()
 	print -Pn "$C_$COLOR_EXEC$_C"
 }
 
-GITCHECK=${GITCHECK:-}
-
 expand_text()
 {
 	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
@@ -95,7 +93,12 @@ new_precmd()
 	# [3] pre-string
 	# [4] post-string
 	#
-	typeset -A ERROR DATE MAILS LOGIN HOST CWD GITINFO SVNINFO PROMPT
+	typeset -A ERROR DATE MAILS LOGIN HOST CWD GITINFO SVNINFO PRECMD
+	ERROR[color] = $COLOR_ERROR
+	ERROR[string] = "%(?;;%?)"
+	ERROR[pre] = "-"
+	ERROR[post] = 
+	ERROR[size] = ${#$(print -Pn $ERROR["pre"]$ERROR["string"]$ERROR["post"])}
 }
 
 old_precmd()
@@ -105,7 +108,7 @@ old_precmd()
 	ERRORSIZE=${#error}
 	ERROR="%(?;;"$C_$COLOR_BAR$_C"-"$C_$COLOR_ERRR$_C"%?)"
 
-	DATE=$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"%D{%a-%d-%b-%Y  %H:%M:%S}"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-"
+	DATE=$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-"
 	# Flush the term title
 
     term_title
@@ -120,7 +123,8 @@ old_precmd()
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 
 	# get git status
-	check_git_status
+	GITBRANCH=$(get_git_branch)
+	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_$(get_git_status)$_C$GITBRANCH}
 
 	# First line of prompt, calculation of the remaining place
 	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
@@ -133,12 +137,12 @@ old_precmd()
 	#
 	## Second line of prompt : don't let the path garbage the entire line
 	MY_PATH="%(!.%d.%~)"
-	spaceleft=`print -Pn "%n@%m $GitBranch $ ls -laCdtrux $(expand_text "$DATE")"`
+	spaceleft=`print -Pn "%n@%m $(expand_text $GITBRANCH) $ ls -laCdtrux $(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	minimalsize=`print -Pn "%1~"`
 	minimalsize=$((3 + ${#minimalsize}))
 	[ $spaceleft -lt $minimalsize ] && spaceleft=$minimalsize
-	CURDIR="$C_$COLOR_PATH$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$VOID$_C"
+	CURDIR="$C_$COLOR_PATH$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[reset]$_C"
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
@@ -162,7 +166,7 @@ chpwd()
 
 
 # Prompt level 2
-PS2="%{[33m%}%B%_%b%{[36m%}%B>%b%{[0m%} "
+PS2="%{[33m%}%B%_%b%{[36m%}%B>%b%{[$color[none]m%} "
 
 # Prompt level 3
 PS3="?# "
@@ -171,8 +175,8 @@ PS3="?# "
 PS4="+%N:%i> "
 
 # Prompt de droite, pour l'heure et le code d'erreur de la dernière commande
-#RPS1="%(?;;"$C_$COLOR_ERRR$_C"%?"$C_$VOID$_C")"
+#RPS1="%(?;;"$C_$COLOR_ERRR$_C"%?"$C_$color[reset]$_C")"
 
 # Ultime : prompt de correction :-)
-SPROMPT="zsh: $C_$BLUE$_C%B'%R'%b$C_$VOID$_C ? Vous ne vouliez pas plutôt $C_$MAGENTA$_C%B'%r'%b$C_$VOID$_C ? [%BN%byae] "
+SPROMPT="zsh: $C_$color[blue]$_C%B'%R'%b$C_$color[reset]$_C ? Vous ne vouliez pas plutôt $C_$color[magenta]$_C%B'%r'%b$C_$color[reset]$_C ? [%BN%byae] "
 

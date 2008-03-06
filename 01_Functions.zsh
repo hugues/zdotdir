@@ -19,9 +19,15 @@ term_title()
   [[ -t 1 ]] &&
     case $TERM in
       sun-cmd)
-        print -Pn "\e]l%n@%m %~$1\e\\" ;;
+        print -Pn "\e]l%n@%m %~$1\e\\"				# Never tested..
+		;;
       *term*|rxvt*)
-	    print -Pn "\e]0;%n@%m (%l) %~$1\a" ;;
+	    print -Pn "\e]0;%n@%m (%l) %~$1\a"			# Sets term title
+		;;
+	  screen)
+	    print -Pn "\e]2;[SCREEN] %n@%m (%l) %~$1\a" # Sets term title
+		print -Pn "\ek%n@%m (%l) %~$1\e\\"			# Sets screen title
+		;;
 	  *)
 	  	;;
     esac
@@ -39,50 +45,44 @@ preprint()
 
 get_git_branch ()
 {
+	local my_git_branch
+
 	# Get current working GIT branch
 	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
 
-	# If not on a working GIT branch, get the named current commit-ish inside parenthesis
-	[ "$my_git_branch" == "(no branch)" ] &&\
-		my_git_branch="$(git-show --pretty=format:%H 2>&- | head -n1 | git-name-rev --stdin 2>&- | awk '{ print $2 }')"
+	if [ "$my_git_branch" != "" ]
+	then
+		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
+		[ "$my_git_branch" == "(no branch)" ] &&\
+			my_git_branch="$(git-show --pretty=format:%H 2>&- | head -n1 | git-name-rev --stdin 2>&- | awk '{ print $2 }')"
 
-	# If neither on a named commit-ish, show abbreviated commit-id
-	[ "$my_git_branch" == "" ] &&\
-		my_git_branch="($(git-show --pretty=format:%h 2>&- | head -n1)...)"
+		# If neither on a named commit-ish, show abbreviated commit-id
+		[ "$my_git_branch" == "" ] &&\
+			my_git_branch="($(git-show --pretty=format:%h 2>&- | head -n1)...)"
+	fi
 
 	echo $my_git_branch
 }
 
-check_git_status ()
+# We *must* have previously checked that
+# we obtained a correct GIT branch with
+# a call to `get_git_branch`
+get_git_status ()
 {
-	## GIT TRACKING ##
-	if [ "$GITCHECK" != "no" -a "$(git-ls-files 2>&-)" != "" ]
+	local my_git_status
+	
+	if ( echo ${(s:/:)PWD} | grep "\.\<git\>" >/dev/null )
 	then
-		GITBRANCH=$(get_git_branch);
-		if [ "$GITBRANCH" != "" ]
-		then
-			#preprint "Check git status..."
-			#_git_status=$(git-status 2>&- | grep -E '^# ([[:alpha:]]+ )+(but not|to be)( [[:alpha:]]+)+:$')
-			if   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
-				COLOR_GIT=$COLOR_TO_BE_COMMITED
-			elif [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
-				COLOR_GIT=$COLOR_NOT_UP_TO_DATE
-			else
-				COLOR_GIT=$COLOR_BRANCH_OR_REV
-			fi
-
-			# Here we are on a .git folder..
-			if ( echo ${(s:/:)PWD} | grep "\.\<git\>" >/dev/null )
-			then
-				COLOR_GIT="$BOLD;$RED"
-			fi
-
-		fi
+		my_git_status="$color[red];$color[bold]"
+	elif   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
+		my_git_status="$color[yellow];$color[bold]"
+	elif [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
+		my_git_status="$color[green];$color[bold]"
 	else
-		GITBRANCH=""
+		my_git_status="$color[blue]"
 	fi
-	GitBranch=${GITBRANCH:+:$GITBRANCH}
-	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_$COLOR_GIT$_C$GITBRANCH}
+
+	echo $my_git_status
 }
 
 normal_user ()

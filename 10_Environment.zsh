@@ -25,17 +25,7 @@ KEYCHAIN=~/.keychain/$(hostname)-sh
 #	[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
 
 ## Colors 
-VOID=0
-BOLD=1
-UNDERLINE=4
-color=0
-for COLOR in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE
-do
-	eval    $COLOR=$[ $color + 30 ]
-	eval BG_$COLOR=$[ $color + 40 ]
-    color=$[ $color + 1 ]
-done
-unset color
+autoload colors && colors
 
 ## Variables d'environnement ``classiques''
 #
@@ -51,6 +41,7 @@ export MANPATH=$MANPATH:~/man
 export INFOPATH=$INFOPATH:~/info
 [ "$DEBUG" = "yes" ] && export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}~/libs
 [ "$DEBUG" = "yes" ] && export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}~/pkgconfig
+
 ## Nettoyage des précédentes variables pour supprimer les duplicata
 typeset -gU PATH MANPATH INFOPATH PKG_CONFIG_PATH LD_LIBRARY_PATH
 
