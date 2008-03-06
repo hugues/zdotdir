@@ -82,48 +82,41 @@ GITCHECK=${GITCHECK:-}
 #SVNCHECK=${SVNCHECK:-}
 #unset GITCHECK SVNCHECK
 
+expand_text()
+{
+	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
+}
+
 precmd ()
 {
+	error=$(print -Pn "%(?;;-%?)")
+	ERRORSIZE=${#error}
+	ERROR="%(?;;"$C_$COLOR_BAR$_C"-"$C_$COLOR_ERRR$_C"%?)"
+
+	DATE=$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"%D{%a %d %b %Y  %H:%M:%S}"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-"
+	DATEEXPAND=$(expand_text "$DATE")
+	DATESIZE=${#DATEEXPAND}
+
     term_title
 
-	DATE="%D{%a %d %b %Y  %H:%M:%S}"
-	datesize=`print -Pn $DATE`
-	datesize=${#datesize}
-	ERROR=%(? "$C_$COLOR_BAR$_C----" "%4>>"$C_$COLOR_ERRR$_C"%?$C_$COLOR_BAR$_C"---"%>>")
-	errorsize=4
-
+	#
 	# Mailcheck
-	MAILSTAT="`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "@" } }'`"
-
-
-	## SVN TRACKING ##
-	SVNREV=$(svn info 2>&- | grep '^Révision : ' | sed 's/^.* : /r/')
-	if [ "$SVNREV" != "" ]
-	then
-		if [ "$SVNCHECK" != "" ] && ( preprint "Checking svn status..." ; [ $(svn status 2>&- | grep -v '^?' | wc -l) -gt 0 ] )
-		then
-			COLOR_SVN=$COLOR_NOT_UP_TODATE
-		else
-			COLOR_SVN=$COLOR_BRANCH_OR_REV
-		fi
-	else
-		SVNREV=
-	fi
+	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "$C_$COLOR_BAR$_C""-""$C_$COLOR_MAIL$_C""@" } }'`")
+	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
+	MAILSTATSIZE=${#MAILSTATEXPAND}
 
 	check_git_status
 
+	#echo "$DATESIZE - $ERRORSIZE - $MAILSTATSIZE"
+
 	## First line of prompt : 
-	#
-	# -ERR------------------------git-svn-[ date ]-
-	#
-	spaceleft=$(($COLUMNS - ${#MAILSTAT} - 1 - ${errorsize} - ${#SVNREV} -3- ${datesize} -3))
+	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
 
 	unset HBAR
 	for h in {1..$(($spaceleft - 1))}
 	do
 		HBAR=$HBAR-
 	done
-
 	## Second line of prompt : don't let the path garbage the entire line
 	MY_PATH="%(!.%d.%~)"
 	pathsize=`print -Pn $MY_PATH`
@@ -139,7 +132,7 @@ precmd ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1=$C_$COLOR_BAR$_C"-"$C_$COLOR_MAIL$_C"$MAILSTAT"$C_$COLOR_BAR$_C"-$ERROR"$C_$COLOR_BAR$_C"$HBAR"$C_$COLOR_SVN$_C"$SVNREV"$C_$COLOR_BAR$_C"-"$C_$COLOR_BRACES$_C"[ "$C_$COLOR_DATE$_C"$DATE"$C_$COLOR_BRACES$_C" ]"$C_$COLOR_BAR$_C"-
+	PS1="$MAILSTAT""$ERROR"$C_$COLOR_BAR$_C"$HBAR""$DATE
 "$C_$COLOR_USER$_C"%n"$C_$COLOR_AROB$_C"@"$C_$COLOR_HOST$_C"%m $CURDIR$GITBRANCH "$C_$COLOR_DIES$_C"%#"$C_$COLOR_CMD$_C" "
 
 
