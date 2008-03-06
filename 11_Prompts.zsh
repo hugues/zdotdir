@@ -31,28 +31,28 @@ C_="%{$c_"
 _C="$_c%}"
 
 ## Les couleurs !! ##
-COLOR_PATH="$color[none];$GENERIC;$color[bold]"
-COLOR_TERM="$color[none];$GENERIC"
-COLOR_USER="$color[none];$GENERIC"
-COLOR_HOST="$color[none];$GENERIC"
+COLOR_PATH="$color[reset];$GENERIC;$color[bold]"
+COLOR_TERM="$color[reset];$GENERIC"
+COLOR_USER="$color[reset];$GENERIC"
+COLOR_HOST="$color[reset];$GENERIC"
 COLOR_HIST="$color[reset]"
-COLOR_AROB="$color[none];1;%(! $color[bold]; )$GENERIC"
-COLOR_DIES="$color[none];$GENERIC"
-COLOR_DOUBLEDOT="$color[none];"
-COLOR_PAREN="$color[none];$color[cyan]"
-COLOR_MAIL="$color[none];$color[yellow];$color[bold]"
-COLOR_BAR="$color[none];$GENERIC;$color[bold]"
+COLOR_AROB="$color[reset];1;%(! $color[bold]; )$GENERIC"
+COLOR_DIES="$color[reset];$GENERIC"
+COLOR_DOUBLEDOT="$color[reset];"
+COLOR_PAREN="$color[reset];$color[cyan]"
+COLOR_MAIL="$color[reset];$color[yellow];$color[bold]"
+COLOR_BAR="$color[reset];$GENERIC;$color[bold]"
 COLOR_BRACES=$COLOR_BAR
 
-COLOR_BRANCH_OR_REV="$color[none];$GENERIC"
-COLOR_NOT_UP_TO_DATE="$color[none];$color[green];$color[bold]"
-COLOR_TO_BE_COMMITED="$color[none];$color[yellow];$color[bold]"
+COLOR_BRANCH_OR_REV="$color[reset];$GENERIC"
+COLOR_NOT_UP_TO_DATE="$color[reset];$color[green];$color[bold]"
+COLOR_TO_BE_COMMITED="$color[reset];$color[yellow];$color[bold]"
 
 COLOR_CMD="$color[reset]"
 COLOR_EXEC="$color[reset]"
 
 COLOR_ERRR="$color[bold];$color[yellow]"
-COLOR_DATE="$color[none];$color[standout];$GENERIC"
+COLOR_DATE="$color[reset];$GENERIC"
 
 ## Prompts
 #
@@ -166,7 +166,7 @@ chpwd()
 
 
 # Prompt level 2
-PS2="%{[33m%}%B%_%b%{[36m%}%B>%b%{[$color[none]m%} "
+PS2="$C_$color[yellow];$color[bold]$_C%_$C_$color[reset];$color[cyan];$color[bold]$_C>$C_$color[reset]$_C "
 
 # Prompt level 3
 PS3="?# "
