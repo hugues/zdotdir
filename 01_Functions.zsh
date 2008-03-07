@@ -8,6 +8,14 @@
 ## these files with or without this notice.
 ## 
 
+##
+## 	User-defined functions
+##
+#
+# For preexec, precmd, chpwd and other built-in functions,
+# go see the file Prompts.zsh
+#
+
 
 cmd_exists ()
 {
@@ -35,12 +43,16 @@ term_title()
 
 preprint()
 {
+	local my_color
+
+	my_color=${2-"$color[black];$color[bold]"}
+
 	hbar=
 	for i in {1..$(($COLUMNS - ${#1} - 5))}
 	do
 		hbar=$hbar-
 	done
-	print -Pn "${C_}0;30;1${_C}${hbar}[ $1 ]-\r${C_}0${_C}"
+	print -Pn "${C_}$my_color${_C}${hbar}[ $1 ]-\r${C_}0${_C}"
 }
 
 get_git_branch ()
