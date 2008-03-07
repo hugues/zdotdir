@@ -47,7 +47,7 @@ get_git_branch ()
 {
 	local my_git_branch
 
-	[ "$(git-ls-files . 2>&- | head -n 1)" == "" ] && return 
+	[ "$( ( git-ls-tree HEAD . 2>&- ; git-ls-files . 2>&- ) | head -n 1)" == "" ] && return 
 
 	# Get current working GIT branch
 	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
@@ -75,13 +75,13 @@ get_git_status ()
 	
 	if ( echo ${(s:/:)PWD} | grep "\.\<git\>" >/dev/null )
 	then
-		my_git_status="$color[red];$color[bold]"
+		my_git_status="$COLOR_GIT_MANAGMENT"
 	elif   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
-		my_git_status="$color[yellow];$color[bold]"
+		my_git_status="$COLOR_GIT_CACHED"
 	elif [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
-		my_git_status="$color[green];$color[bold]"
+		my_git_status="$COLOR_GIT_NOT_UP_TO_DATE"
 	else
-		my_git_status="$color[blue]"
+		my_git_status="$COLOR_GIT_UP_TO_DATE"
 	fi
 
 	echo $my_git_status

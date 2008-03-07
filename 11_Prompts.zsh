@@ -43,16 +43,19 @@ COLOR_PAREN="$color[reset];$color[cyan]"
 COLOR_MAIL="$color[reset];$color[yellow];$color[bold]"
 COLOR_BAR="$color[reset];$GENERIC;$color[bold]"
 COLOR_BRACES=$COLOR_BAR
-
-COLOR_BRANCH_OR_REV="$color[reset];$GENERIC"
-COLOR_NOT_UP_TO_DATE="$color[reset];$color[green];$color[bold]"
-COLOR_TO_BE_COMMITED="$color[reset];$color[yellow];$color[bold]"
-
+COLOR_ERRR="$color[bold];$color[yellow]"
+COLOR_DATE="$color[reset];$GENERIC"
 COLOR_CMD="$color[reset]"
 COLOR_EXEC="$color[reset]"
 
-COLOR_ERRR="$color[bold];$color[yellow]"
-COLOR_DATE="$color[reset];$GENERIC"
+COLOR_BRANCH_OR_REV="$color[reset];$GENERIC"
+COLOR_NOT_UP_TO_DATE="$color[reset];$color[green];$color[bold]"
+COLOR_TO_BE_COMMITED="$COLOR_ERRR"
+
+COLOR_GIT_MANAGMENT="$color[reset];$color[red];$color[bold]"
+COLOR_GIT_CACHED="$color[reset];$COLOR_ERRR"
+COLOR_GIT_NOT_UP_TO_DATE="$color[reset];$COLOR_NOT_UP_TO_DATE"
+COLOR_GIT_UP_TO_DATE="$color[reset];$GENERIC"
 
 ## Prompts
 #
@@ -123,7 +126,7 @@ old_precmd()
 
 	# get git status
 	GITBRANCH=$(get_git_branch)
-	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_$(get_git_status)$_C$GITBRANCH}
+	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_"$(get_git_status)"$_C$GITBRANCH}
 
 	# First line of prompt, calculation of the remaining place
 	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
