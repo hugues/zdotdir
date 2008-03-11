@@ -25,9 +25,9 @@ bindkey "[D" backward-word			# ESC left
 bindkey "[3~" kill-region			# ESC del
 
 # Pratique pour rehasher rapidement
-bindkey -s "r" "  rehash\n"
+bindkey -s "r" "Q rehash\n"
 # Exécute la commande ``rt'' qui me permet de nettoyer toutes les saletés
-bindkey -s "R" "  rt\n"
+bindkey -s "R" "Q rt\n"
 
 test $TERM = "rxvt" -o $TERM = "xterm" -o $TERM = "aterm" &&
 {
@@ -204,19 +204,20 @@ bindkey "" backward-delete-char
 bindkey "\M-^@"-"\M-" self-insert
 
 # Raccourcis pour les todo : funny :)
-bindkey -s "t" "  todo\n"
-#bindkey -s "T" "  todo all -c\n"
+# "q" stands for "push-line"
+bindkey -s "t" "Q todo\n"
+#bindkey -s "T" "Q todo all -c\n"
 
 bindkey -s "é" " 2>/dev/null "
 bindkey -s "2" " 2>&1 "
 
-bindkey -s "m" "  mails\n"
+bindkey -s "m" "Q mails\n"
 bindkey -s "M" "make "
 
-bindkey -s "l" "  l\n"
-#bindkey -s "L" "  la\n"
+bindkey -s "l" "Q l\n"
+#bindkey -s "L" "Q la\n"
 
 bindkey -s " " "\\\\ "
 
-bindkey -s "g" "  git-status\n"
-bindkey -s "G" "  git-repack\n"
+bindkey -s "g" "Q git-status\n"
+bindkey -s "G" "Q git-repack\n"
