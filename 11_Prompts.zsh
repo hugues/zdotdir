@@ -41,6 +41,7 @@ COLOR_DIES="$color[reset];$GENERIC"
 COLOR_DOUBLEDOT="$color[reset];"
 COLOR_PAREN="$color[reset];$color[cyan]"
 COLOR_MAIL="$color[reset];$color[yellow];$color[bold]"
+COLOR_LISTES="$color[reset];$color[red];$color[bold]"
 COLOR_BAR="$color[reset];$GENERIC;$color[bold]"
 COLOR_BRACES=$COLOR_BAR
 COLOR_ERRR="$color[bold];$color[yellow]"
@@ -120,7 +121,7 @@ old_precmd()
 	DATESIZE=${#DATEEXPAND}
 	
 	# Mailcheck
-	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1} !/JUNK/ { HAM++ } END { if (HAM > 0) { print "$C_$COLOR_BAR$_C""-""$C_$COLOR_MAIL$_C""@" } }'`")
+	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$COLOR_BAR$_C""-""$C_$COLOR_MAIL$_C""@" } else if (LISTES > 0) { print "$C_$COLOR_BAR$_C""-""$C_$COLOR_LISTES$_C""@" } }'`")
 	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 
