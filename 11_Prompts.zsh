@@ -8,10 +8,18 @@
 ## these files with or without this notice.
 ## 
 
-# Pour personnaliser les couleurs du prompt, configurez ces variables :
-#  - PS1_ROOT pour la couleur du prompt ROOT
-#  - PS1_USER pour la couleur du prompt USER local
-#  - PS1_USER_SSH pour la couleur du prompt USER distant (en ssh)
+# I hate kik00l0l colorized prompts, so I'm using a way to
+# give a dominant color for each part of the prompt, each of
+# these remain still configurable one by one.
+# Take a look to set_prompt_colors for these colorizations.
+#
+# To set the dominant color I'm using this :
+#
+#  - PS1_ROOT when we are root
+#  - PS1_USER for normal usage
+#  - PS1_USER_SSH when we are connected through SSH
+#
+# I'm storing the resulting dominant color in $GENERIC
 
 PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
@@ -20,9 +28,10 @@ GENERIC=`print -Pn "%(! $PS1_ROOT $PS1_USER)"`
 
 normal_user && if ( [ "$SSH_TTY" != "" ] )
 then
-    # Permet de faire une distinction rapide entre les shells locaux
-    # et les shells distants. C'est trop bon, mangez-en !
-    GENERIC=${PS1_USER_SSH:-$GENERIC}
+	# This allows us to easily distinguish shells
+	# which really are on the local machine or not.
+	# That's so good, use it ! :-)
+	GENERIC=${PS1_USER_SSH:-$GENERIC}
 fi
 
 c_=[
@@ -68,16 +77,10 @@ set_prompt_colors $GENERIC
 
 ## Prompts
 #
-# Pour plus d'infos sur les paramètres d'expansion du prompt:
 #  man zshmisc(1)
 #
-# La définition des prompts est séparée de celles desvariables d'environnement
-# classiques pour permettre de configurer, par exemple, les couleurs par défaut
-# dans ces fichiers. 
 
 ## Automagic funcs
-#
-# Fonctions exécutées automatiquement sous certaines conditions
 #
 # chpwd		: changement de répertoire
 # preexec	: avant d'exécuter une commande
@@ -92,6 +95,7 @@ preexec ()
 
 expand_text()
 {
+	# strips the %{...%}
 	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
 }
 
