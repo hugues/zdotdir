@@ -30,33 +30,41 @@ _c=m
 C_="%{$c_"
 _C="$_c%}"
 
-## Les couleurs !! ##
-COLOR_PATH="$color[reset];$GENERIC;$color[bold]"
-COLOR_TERM="$color[reset];$GENERIC"
-COLOR_USER="$color[reset];$GENERIC"
-COLOR_HOST="$color[reset];$GENERIC"
-COLOR_HIST="$color[reset]"
-COLOR_AROB="$color[reset];1;%(! $color[bold]; )$GENERIC"
-COLOR_DIES="$color[reset];$GENERIC"
-COLOR_DOUBLEDOT="$color[reset];"
-COLOR_PAREN="$color[reset];$color[cyan]"
-COLOR_MAIL="$color[reset];$color[yellow];$color[bold]"
-COLOR_LISTES="$color[reset];$color[red];$color[bold]"
-COLOR_BAR="$color[reset];$GENERIC;$color[bold]"
-COLOR_BRACES=$COLOR_BAR
-COLOR_ERRR="$color[bold];$color[yellow]"
-COLOR_DATE="$color[reset];$GENERIC"
-COLOR_CMD="$color[reset]"
-COLOR_EXEC="$color[reset]"
+set_prompt_colors ()
+{
+	local generic=${1:-$GENERIC}
 
-COLOR_BRANCH_OR_REV="$color[reset];$GENERIC"
-COLOR_NOT_UP_TO_DATE="$color[reset];$color[green];$color[bold]"
-COLOR_TO_BE_COMMITED="$COLOR_ERRR"
+	## Les couleurs !! ##
+	COLOR_PATH="$color[reset];$generic;$color[bold]"			# pwd
+	#COLOR_TERM="$color[reset];$generic"							# tty
+	COLOR_USER="$color[reset];$generic"							# login
+	COLOR_HOST="$color[reset];$generic"							# hostname
+	#COLOR_HIST="$color[reset]"									# history number
+	COLOR_AROB="$color[reset];1;%(! $color[bold]; )$generic"	# <login>@<hostname>
+	COLOR_DIES="$color[reset];$generic"							# the bottom-end of the prompt
+	COLOR_DOUBLEDOT="$color[reset];"							# separates pwd from git-branch
+	#COLOR_PAREN="$color[reset];$color[cyan]"					# parenthesis (around tty)
+	COLOR_MAIL="$color[reset];$color[yellow];$color[bold]"		# mail received
+	COLOR_LISTES="$color[reset];$color[red];$color[bold]"		# less important mail received
+	COLOR_BAR="$color[reset];$generic;$color[bold]"				# horizontal bar
+	COLOR_BRACES=$COLOR_BAR										# braces (around date)
+	COLOR_ERRR="$color[bold];$color[yellow]"					# error code
+	COLOR_DATE="$color[reset];$generic"							# full date
 
-COLOR_GIT_MANAGMENT="$color[reset];$color[red];$color[bold]"
-COLOR_GIT_CACHED="$color[reset];$COLOR_ERRR"
-COLOR_GIT_NOT_UP_TO_DATE="$color[reset];$COLOR_NOT_UP_TO_DATE"
-COLOR_GIT_UP_TO_DATE="$color[reset];$GENERIC"
+	COLOR_CMD="$color[reset]"									# command prompt
+	COLOR_EXEC="$color[reset]"									# command output
+
+	COLOR_BRANCH_OR_REV="$color[reset];$generic"						# up-to-date
+	COLOR_NOT_UP_TO_DATE="$color[reset];$color[green];$color[bold]" 	# not up to date
+	COLOR_TO_BE_COMMITED="$color[reset];$color[yellow];$color[bold]"	# changes in cache
+
+	COLOR_GIT_MANAGMENT="$color[reset];$color[red];$color[bold]"	# .git/... folder browsing
+	COLOR_GIT_CACHED="$color[reset];$COLOR_TO_BE_COMMITED"			# git changes in cache
+	COLOR_GIT_NOT_UP_TO_DATE="$color[reset];$COLOR_NOT_UP_TO_DATE"	# git changes in working tree
+	COLOR_GIT_UP_TO_DATE="$color[reset];$generic"					# git up-to-date
+}
+
+set_prompt_colors $GENERIC
 
 ## Prompts
 #
