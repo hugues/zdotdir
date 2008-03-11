@@ -137,10 +137,6 @@ old_precmd()
 	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 
-	# get git status
-	GITBRANCH=$(get_git_branch)
-	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_"$(get_git_status)"$_C$GITBRANCH}
-
 	# First line of prompt, calculation of the remaining place
 	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
 
@@ -149,14 +145,40 @@ old_precmd()
 	do
 		HBAR=$HBAR-
 	done
-	#
+
+	##
 	## Second line of prompt : don't let the path garbage the entire line
+	##
+
+	# get git status
+	#
+	GITBRANCH=$(get_git_branch)
+	GITBRANCHSIZE=${#GITBRANCH}
+	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE + 1))
+	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_"$(get_git_status)"$_C$GITBRANCH}
+
 	MY_PATH="%(!.%d.%~)"
-	spaceleft=`print -Pn "%n@%m $(expand_text $GITBRANCH) $ ls -laCdtrux $(expand_text "$DATE")"`
+	PATHSIZE=$(print -Pn $MY_PATH)
+	PATHSIZE=${#PATHSIZE}
+	spaceleft=`print -Pn "%n@%m $(expand_text "$GITBRANCH") $ ls -laCdtrux -$(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
-	minimalsize=`print -Pn "%1~"`
-	minimalsize=$((3 + ${#minimalsize}))
-	[ $spaceleft -lt $minimalsize ] && spaceleft=$minimalsize
+	minimalpathsize=`print -Pn "../%1~"`
+	minimalpathsize=${#minimalpathsize}
+	#minimalgitsize=$((1 + 8)) # ':' + git-abbrev-commit-ish
+	#if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
+	#then
+		#  reduce the git-branch until it is shrinked to 7 characters max.
+	#	if [ $GITBRANCHSIZE -gt 0 ]
+	#	then
+	#		GITBRANCHSIZE=$(( $spaceleft - $PATHSIZE ))
+	#		[ $GITBRANCHSIZE -lt $minimalgitsize ] && GITBRANCHSIZE=$minimalgitsize
+	#		GITBRANCH=`print -Pn "%$((GITBRANCHSIZE - 1))>...>$GITBRANCH>>"`
+	#	fi
+
+	#fi
+	#  then we reduce the path until it reaches the last path element,
+	#spaceleft=$(($spaceleft - $GITBRANCHSIZE))
+	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
 	CURDIR="$C_$COLOR_PATH$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[reset]$_C"
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
