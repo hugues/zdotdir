@@ -154,31 +154,41 @@ old_precmd()
 	#
 	GITBRANCH=$(get_git_branch)
 	GITBRANCHSIZE=${#GITBRANCH}
-	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE + 1))
-	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_"$(get_git_status)"$_C$GITBRANCH}
+	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
 
 	MY_PATH="%(!.%d.%~)"
 	PATHSIZE=$(print -Pn $MY_PATH)
 	PATHSIZE=${#PATHSIZE}
-	spaceleft=`print -Pn "%n@%m $(expand_text "$GITBRANCH") $ ls -laCdtrux -$(expand_text "$DATE")"`
+	spaceleft=`print -Pn "%n@%m  $ ls -laCdtrux $(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
-	minimalpathsize=`print -Pn "../%1~"`
-	minimalpathsize=${#minimalpathsize}
-	#minimalgitsize=$((1 + 8)) # ':' + git-abbrev-commit-ish
-	#if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
-	#then
-		#  reduce the git-branch until it is shrinked to 7 characters max.
-	#	if [ $GITBRANCHSIZE -gt 0 ]
-	#	then
-	#		GITBRANCHSIZE=$(( $spaceleft - $PATHSIZE ))
-	#		[ $GITBRANCHSIZE -lt $minimalgitsize ] && GITBRANCHSIZE=$minimalgitsize
-	#		GITBRANCH=`print -Pn "%$((GITBRANCHSIZE - 1))>...>$GITBRANCH>>"`
-	#	fi
+	#minimalpathsize=`print -Pn "../%1~"`
+	#minimalpathsize=${#minimalpathsize}
+	minimalpathsize=10
+	minimalgitsize=10 # git-abbrev-commit-ish...
+	if [ $GITBRANCHSIZE -gt 0 ]
+	then
+		if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
+		then
+			local unbreakablegittail
+			#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
 
-	#fi
+			if [ $GITBRANCH[-1] = ")" ]
+			then
+				unbreakablegittail=${${(M)GITBRANCH%\~*}}
+				[ "$unbreakablegittail" = "" -a $GITBRANCHSIZE -gt $minimalgitsize ] && unbreakablegittail=")"
+			fi
+			if [ $GITBRANCHSIZE -gt $minimalgitsize ]
+			then
+				GITBRANCHSIZE=$(( $spaceleft - $PATHSIZE ))
+				[ $GITBRANCHSIZE -lt $minimalgitsize ] && GITBRANCHSIZE=$minimalgitsize
+			fi
+			GITBRANCH=`print -Pn "%"$(($GITBRANCHSIZE - ${#unbreakablegittail}))">..>"${GITBRANCH%\~*}${unbreakablegittail:+"%"${#unbreakablegittail}"<<"$GITBRANCH}`
+		fi
+	fi
 	#  then we reduce the path until it reaches the last path element,
-	#spaceleft=$(($spaceleft - $GITBRANCHSIZE))
+	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
+	GITBRANCH=${GITBRANCH:+$C_$COLOR_DOUBLEDOT$_C:$C_"$(get_git_status)"$_C$GITBRANCH}
 	CURDIR="$C_$COLOR_PATH$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[reset]$_C"
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
