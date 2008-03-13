@@ -19,6 +19,10 @@ zstyle ':completion:*' menu select=2
 ## Utilise les couleurs définies avec dircolors
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+## Sépare les résultats en groupes
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' format '%B---------------[ %d ]'
+
 # Premiers essais...
 #_ssh_hosts=(${(o)${${(M)${(f)"$(<~/.ssh/config)"}##host*}/host /}%% *})
 #zstyle ':completion:*:*:ssh,scp:*' hosts $_ssh_hosts
