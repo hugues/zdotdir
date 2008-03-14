@@ -85,7 +85,7 @@ get_git_status ()
 {
 	local my_git_status
 	
-	if ( echo ${(s:/:)PWD} | grep "\.\<git\>" >/dev/null )
+	if [ "$(git-rev-parse --git-dir)" == "." ]
 	then
 		my_git_status="$COLOR_GIT_MANAGMENT"
 	elif   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
