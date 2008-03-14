@@ -71,7 +71,7 @@ get_git_branch ()
 			my_git_branch="($(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
 
 		# If neither on a named commit-ish, show abbreviated commit-id
-		[ "$my_git_branch" == "" ] &&\
+		[ "$my_git_branch" == "(undefined)" ] &&\
 			my_git_branch="($(git-show --pretty=format:%H 2>&- | head -n1))"
 	fi
 
