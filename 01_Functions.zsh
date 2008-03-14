@@ -72,7 +72,7 @@ get_git_branch ()
 
 		# If neither on a named commit-ish, show abbreviated commit-id
 		[ "$my_git_branch" == "(undefined)" ] &&\
-			my_git_branch="($(git-show --pretty=format:%H 2>&- | head -n1))"
+			my_git_branch="($(git-rev-parse HEAD 2>&-))"
 	fi
 
 	echo $my_git_branch
