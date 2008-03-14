@@ -68,7 +68,7 @@ get_git_branch ()
 	then
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
 		[ "$my_git_branch" == "(no branch)" ] &&\
-			my_git_branch="$(git-show --pretty=format:%H 2>&- | head -n1 | git-name-rev --stdin 2>&- | awk '{ print $2 }')"
+			my_git_branch="($(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
 
 		# If neither on a named commit-ish, show abbreviated commit-id
 		[ "$my_git_branch" == "" ] &&\
