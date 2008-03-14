@@ -221,3 +221,5 @@ bindkey -s " " "\\\\ "
 
 bindkey -s "g" "Q git-status\n"
 bindkey -s "G" "Q git-repack\n"
+
+bindkey -s "x" "Q exec zsh\n"
