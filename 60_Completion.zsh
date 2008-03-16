@@ -21,7 +21,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 ## Sépare les résultats en groupes
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' format '%B---------------[ %d ]'
+zstyle ':completion:*' format '%B---------------[ %d ]%b'
 
 # Premiers essais...
 #_ssh_hosts=(${(o)${${(M)${(f)"$(<~/.ssh/config)"}##host*}/host /}%% *})
