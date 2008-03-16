@@ -1,0 +1,4 @@
+chpwd()
+{
+	term_title
+}
