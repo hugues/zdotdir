@@ -17,14 +17,12 @@
 ##
 
 ## Agent de clefs SSH/GPG
-KEYCHAIN=~/.keychain/$(hostname)-sh
-if cmd_exists keychain 
+if [ "$SUDO_USER" = "" ]
 then
+	KEYCHAIN=~/.keychain/$(hostname)-sh
+	cmd_exists keychain && keychain --quiet
 	[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
 	[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
-	( ps fu | grep -v grep | grep $SSH_AGENT_PID 2>&- >&- ) || ( cmd_exists keychain && keychain --quiet --stop others --inherit any ) && \
-		[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN} ;\
-		[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
 fi
 
 ## Colors 
