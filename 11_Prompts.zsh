@@ -153,6 +153,18 @@ old_precmd()
 	## Second line of prompt : don't let the path garbage the entire line
 	##
 
+	# get svn status
+	#
+	SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
+	SVNREVSIZE=${#${SVNREV:+:r$SVNREV}}	
+	if [ "$SVNREV" != "" ]
+	then
+		SVNSTATUS="$(svn status 2>&-)"
+		SVNSTATUS=${SVNSTATUS:+$prompt_colors[not_up_to_date]}
+		SVNSTATUS=${SVNSTATUS:-$prompt_colors[up_to_date]}
+	fi
+	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C:$C_$SVNSTATUS$_C"r"$SVNREV}
+
 	# get git status
 	#
 	GITBRANCH=$(get_git_branch)
@@ -199,7 +211,7 @@ old_precmd()
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
 	PS1="$MAILSTAT""$ERROR"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
-"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
+"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 
 }
