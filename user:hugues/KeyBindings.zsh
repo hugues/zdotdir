@@ -222,4 +222,6 @@ bindkey -s ' ' '\\\\ '
 bindkey -s 'g' 'Q git-status\n'
 bindkey -s 'G' 'Q git-repack\n'
 
+bindkey -s 'S' 'Q svn status\n'
+
 bindkey -s 'X' 'Q exec zsh\n'
