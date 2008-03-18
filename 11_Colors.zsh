@@ -8,7 +8,7 @@
 ## these files with or without this notice.
 ## 
 
-c_=[
+c_='['$color[none]";"
 _c=m
 C_="%{$c_"
 _C="$_c%}"
@@ -49,31 +49,31 @@ set_prompt_colors ()
 {
 	prompt_colors[generic]=${1:-$prompt_colors[generic]}
 
-	prompt_colors[path]="$color[none];$prompt_colors[generic];$color[bold]"			# pwd
-	#prompt_colors[term]="$color[none];$prompt_colors[generic]"							# tty
-	prompt_colors[user]="$color[none];$prompt_colors[generic]"							# login
-	prompt_colors[host]="$color[none];$prompt_colors[generic]"							# hostname
+	prompt_colors[path]="$prompt_colors[generic];$color[bold]"			# pwd
+	#prompt_colors[term]="$prompt_colors[generic]"							# tty
+	prompt_colors[user]="$prompt_colors[generic]"							# login
+	prompt_colors[host]="$prompt_colors[generic]"							# hostname
 	#prompt_colors[hist]="$color[none]"									# history number
-	prompt_colors[arob]="$color[none];$color[bold];$prompt_colors[generic]"	# <login>@<hostname>
-	prompt_colors[dies]="$color[none];$prompt_colors[generic]"							# the bottom-end of the prompt
+	prompt_colors[arob]="$color[bold];$prompt_colors[generic]"	# <login>@<hostname>
+	prompt_colors[dies]="$prompt_colors[generic]"							# the bottom-end of the prompt
 	prompt_colors[doubledot]="$color[none];"							# separates pwd from git-branch
-	#prompt_colors[paren]="$color[none];$color[cyan]"					# parenthesis (around tty)
-	prompt_colors[bar]="$color[none];$prompt_colors[generic];$color[bold]"				# horizontal bar
-	prompt_colors[braces]=$prompt_colors[bar]							# braces (around date)
+	#prompt_colors[paren]="$color[cyan]"					# parenthesis (around tty)
+	prompt_colors[bar]="$prompt_colors[generic];$color[bold]"				# horizontal bar
+	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date)
 	prompt_colors[error]="$color[bold];$color[yellow]"					# error code
-	prompt_colors[date]="$color[none];$prompt_colors[generic]"							# full date
+	prompt_colors[date]="$prompt_colors[generic]"							# full date
 
 	prompt_colors[cmd]="$color[none]"									# command prompt
 	prompt_colors[exec]="$color[none]"									# command output
 
-	mail_colors[unread]="$color[none];$color[yellow];$color[bold]"		# mail received
-	mail_colors[listes]="$color[none];$color[red];$color[bold]"		# less important mail received
+	mail_colors[unread]="$color[yellow];$color[bold]"		# mail received
+	mail_colors[listes]="$color[red];$color[bold]"		# less important mail received
 
-	prompt_colors[up_to_date]="$color[none];$prompt_colors[generic]"						# up-to-date
-	prompt_colors[not_up_to_date]="$color[none];$color[green];$color[bold]" 	# not up to date
-	prompt_colors[to_be_commited]="$color[none];$color[yellow];$color[bold]"	# changes in cache
+	prompt_colors[up_to_date]="$prompt_colors[generic]"						# up-to-date
+	prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date
+	prompt_colors[to_be_commited]="$color[yellow];$color[bold]"	# changes in cache
 
-	git_colors[managment_folder]="$color[none];$color[red];$color[bold]"   # .git/... folder browsing
+	git_colors[managment_folder]="$color[red];$color[bold]"   # .git/... folder browsing
 	git_colors[cached]="$prompt_colors[to_be_commited]"                     # git changes in cache
 	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date]"     # git changes in working tree
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
