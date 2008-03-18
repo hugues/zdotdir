@@ -47,21 +47,22 @@ fi
 #
 set_prompt_colors ()
 {
-	prompt_colors[generic]=${1:-$prompt_colors[generic]}
+	local my_generic
+	my_generic=${1:-$prompt_colors[generic]}
 
-	prompt_colors[path]="$prompt_colors[generic];$color[bold]"			# pwd
-	#prompt_colors[term]="$prompt_colors[generic]"							# tty
-	prompt_colors[user]="$prompt_colors[generic]"							# login
-	prompt_colors[host]="$prompt_colors[generic]"							# hostname
+	prompt_colors[path]="$my_generic;$color[bold]"			# pwd
+	#prompt_colors[term]="$my_generic"							# tty
+	prompt_colors[user]="$my_generic"							# login
+	prompt_colors[host]="$my_generic"							# hostname
 	#prompt_colors[hist]="$color[none]"									# history number
-	prompt_colors[arob]="$color[bold];$prompt_colors[generic]"	# <login>@<hostname>
-	prompt_colors[dies]="$prompt_colors[generic]"							# the bottom-end of the prompt
+	prompt_colors[arob]="$color[bold];$my_generic"	# <login>@<hostname>
+	prompt_colors[dies]="$my_generic"							# the bottom-end of the prompt
 	prompt_colors[doubledot]="$color[none];"							# separates pwd from git-branch
 	#prompt_colors[paren]="$color[cyan]"					# parenthesis (around tty)
-	prompt_colors[bar]="$prompt_colors[generic];$color[bold]"				# horizontal bar
+	prompt_colors[bar]="$my_generic;$color[bold]"				# horizontal bar
 	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date)
 	prompt_colors[error]="$color[bold];$color[yellow]"					# error code
-	prompt_colors[date]="$prompt_colors[generic]"							# full date
+	prompt_colors[date]="$my_generic"							# full date
 
 	prompt_colors[cmd]="$color[none]"									# command prompt
 	prompt_colors[exec]="$color[none]"									# command output
@@ -69,7 +70,7 @@ set_prompt_colors ()
 	mail_colors[unread]="$color[yellow];$color[bold]"		# mail received
 	mail_colors[listes]="$color[red];$color[bold]"		# less important mail received
 
-	prompt_colors[up_to_date]="$prompt_colors[generic]"						# up-to-date
+	prompt_colors[up_to_date]="$my_generic"						# up-to-date
 	prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date
 	prompt_colors[to_be_commited]="$color[yellow];$color[bold]"	# changes in cache
 
