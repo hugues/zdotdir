@@ -13,7 +13,7 @@ _c=m
 C_="%{$c_"
 _C="$_c%}"
 
-typeset -A prompt_colors git_colors mail_colors
+typeset -A prompt_colors git_colors mail_colors correct_colors
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
@@ -81,3 +81,7 @@ set_prompt_colors ()
 }
 
 set_prompt_colors
+
+correct_colors[error]="$color[red];$color[bold]"
+correct_colors[suggest]="$color[blue];$color[bold]"
+
