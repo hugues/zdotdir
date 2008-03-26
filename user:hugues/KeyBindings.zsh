@@ -217,7 +217,7 @@ bindkey -s 'M' 'make '
 bindkey -s 'l' 'Q l\n'
 #bindkey -s 'L' 'Q la\n'
 
-bindkey -s ' ' '\\\\ '
+bindkey -s ' ' '\\ '
 
 bindkey -s 'g' 'Q git-status\n'
 bindkey -s 'G' 'Q git-repack\n'
