@@ -68,7 +68,7 @@ set_prompt_colors ()
 	prompt_colors[exec]="$color[none]"									# command output
 
 	mail_colors[unread]="$color[yellow];$color[bold]"		# mail received
-	mail_colors[listes]="$color[red];$color[bold]"		# less important mail received
+	mail_colors[listes]="$my_generic;$color[bold]"		# less important mail received
 
 	prompt_colors[up_to_date]="$my_generic"						# up-to-date
 	prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date
