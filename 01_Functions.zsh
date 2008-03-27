@@ -87,13 +87,13 @@ get_git_status ()
 	
 	if [ "$(git-rev-parse --git-dir)" == "." ]
 	then
-		my_git_status="$COLOR_GIT_MANAGMENT"
+		my_git_status="$git_colors[managment_folder]"
 	elif   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
-		my_git_status="$COLOR_GIT_CACHED"
+		my_git_status="$git_colors[cached]"
 	elif [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
-		my_git_status="$COLOR_GIT_NOT_UP_TO_DATE"
+		my_git_status="$git_colors[not_up_to_date]"
 	else
-		my_git_status="$COLOR_GIT_UP_TO_DATE"
+		my_git_status="$git_colors[up_to_date]"
 	fi
 
 	echo $my_git_status
