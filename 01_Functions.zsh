@@ -83,14 +83,25 @@ get_git_branch ()
 # a call to `get_git_branch`
 get_git_status ()
 {
-	local my_git_status
+	local my_git_status cached not_up_to_date managment_folder
 	
-	if [ "$(git-rev-parse --git-dir)" == "." ]
-	then
-		my_git_status="$git_colors[managment_folder]"
-	elif   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
+	if [ "$(git-rev-parse --git-dir)" == "." ] ; then
+		echo "$git_colors[managment_folder]"
+		return
+	fi
+
+	if   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
+		cached="yes"
+	fi
+	if [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
+		not_up_to_date="yes"
+	fi
+
+	if [ "$cached" != "" -a "$not_up_to_date" != "" ] ; then
+		my_git_status="$git_colors[cached_and_not_up_to_date]"
+	elif [ "$cached" != "" ] ; then
 		my_git_status="$git_colors[cached]"
-	elif [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
+	elif [ "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[not_up_to_date]"
 	else
 		my_git_status="$git_colors[up_to_date]"

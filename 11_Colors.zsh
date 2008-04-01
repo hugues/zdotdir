@@ -76,7 +76,8 @@ set_prompt_colors ()
 
 	git_colors[managment_folder]="$color[red];$color[bold]"   # .git/... folder browsing
 	git_colors[cached]="$prompt_colors[to_be_commited]"                     # git changes in cache
-	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date]"     # git changes in working tree
+	git_colors[cached_and_not_up_to_date]="$prompt_colors[not_up_to_date];$color[bold]"
+	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
 }
 
