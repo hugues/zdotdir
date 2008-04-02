@@ -225,3 +225,5 @@ bindkey -s 'G' 'Q git-repack\n'
 bindkey -s 'S' 'Q svn status\n'
 
 bindkey -s 'X' 'Q exec zsh\n'
+
+bindkey -s '' 'Q clear\n'
