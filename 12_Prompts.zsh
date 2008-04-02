@@ -56,22 +56,31 @@ old_precmd()
 {
 	# Error
 	error=$(print -Pn "%(?;;-%?)")
+	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
 	ERROR="%(?;;"$C_$prompt_colors[bar]$_C"-"$C_$prompt_colors[error]$_C"%?)"
+	[ "$DEBUG" = "yes" ] && echo
 
+	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
 	# Flush the term title
     term_title
+	[ "$DEBUG" = "yes" ] && echo
 
 	# Date
+	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
 	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$C_$prompt_colors[bar]$_C"-"
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
+	[ "$DEBUG" = "yes" ] && echo
 	
 	# Mailcheck
+	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
 	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[unread]$_C""@" } else if (LISTES > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[listes]$_C""@" } }'`")
 	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
 	MAILSTATSIZE=${#MAILSTATEXPAND}
+	[ "$DEBUG" = "yes" ] && echo
 
+	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
 	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
 
@@ -80,6 +89,7 @@ old_precmd()
 	do
 		HBAR=$HBAR-
 	done
+	[ "$DEBUG" = "yes" ] && echo
 
 	##
 	## Second line of prompt : don't let the path garbage the entire line
@@ -87,6 +97,7 @@ old_precmd()
 
 	# get svn status
 	#
+	[ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
 	SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
 	SVNREVSIZE=${#${SVNREV:+:r$SVNREV}}	
 	if [ "$SVNREV" != "" ]
@@ -96,16 +107,22 @@ old_precmd()
 		SVNSTATUS=${SVNSTATUS:-$prompt_colors[up_to_date]}
 	fi
 	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C:$C_$SVNSTATUS$_C"r"$SVNREV}
+	[ "$DEBUG" = "yes" ] && echo
 
 	# get git status
 	#
+	[ "$DEBUG" = "yes" ] && echo -n "	GIT status..."
 	GITBRANCH=$(get_git_branch)
 	GITBRANCHSIZE=${#GITBRANCH}
 	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
+	[ "$DEBUG" = "yes" ] && echo
 
+	[ "$DEBUG" = "yes" ] && echo -n "	Path..."
 	MY_PATH="%(!.%d.%~)"
 	PATHSIZE=$(print -Pn $MY_PATH)
 	PATHSIZE=${#PATHSIZE}
+	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..."
 	spaceleft=`print -Pn "%n@%m  $ ls -laCdtrux $(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	#minimalpathsize=`print -Pn "../%1~"`
@@ -137,6 +154,7 @@ old_precmd()
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
 	GITBRANCH=${GITBRANCH:+$C_$prompt_colors[doubledot]$_C:$C_"$(get_git_status)"$_C$GITBRANCH}
 	CURDIR="$C_$prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
+	[ "$DEBUG" = "yes" ] && echo
 
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
