@@ -212,7 +212,7 @@ bindkey -s 'é' ' 2>/dev/null '
 bindkey -s '2' ' 2>&1 '
 
 bindkey -s 'm' 'Q mails\n'
-bindkey -s 'M' 'make '
+bindkey -s 'M' 'Q make\n'
 
 bindkey -s 'l' 'Q l\n'
 #bindkey -s 'L' 'Q la\n'
