@@ -12,7 +12,7 @@
 ulimit -c 0
 
 # No dangerous world-writeable files & folders
-umask 066
+umask 022
 
 #  sanity
 [[ -t 0 ]] && /bin/stty erase  "^H" intr  "^C" susp "^Z" dsusp "^Y" stop "^S" start "^Q" kill "^U"  >& /dev/null
