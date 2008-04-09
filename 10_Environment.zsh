@@ -52,5 +52,4 @@ HISTFILE=$ZDOTDIR/.history.$USER.$HOSTNAME # Pour éviter les conflits de conf
 HISTSIZE=42000
 SAVEHIST=42000
 
-LOCALIP=$(/sbin/ifconfig| grep adr: | awk '/192.168.3/ { print $2 } ' | cut -d: -f2)
 
