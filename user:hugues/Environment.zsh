@@ -49,8 +49,7 @@ TIMEFMT='`%J` -- %P cpu
  System	%S
   Total	%E'
 
-WATCHFMT=$COLOR_BLUECLAIR"%n"$COLOR_END
-WATCHFMT=$WATCHFMT" has "$COLOR_YELLOW"%a[0m %l from %M"
+WATCHFMT=$c_$color[bold]$_c"%n"$c_$color[none]$_c" has "$c_$color[bold]$_c"%a"$c_$color[none]$_c" %l from %M"
 WATCH=notme
 
 WORDCHARS='*?-_~!#$%^' ## Caractères faisant partie des mots
