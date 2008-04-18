@@ -36,7 +36,7 @@ autoload colors && colors
 #
 #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:~/libs
 #export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
-export PATH=$PATH:~/sbin:~/bin
+export PATH=$PATH:~/sbin:~/local/bin
 privileged_user && PATH=/sbin:/usr/sbin:$PATH
 export MANPATH=$MANPATH:~/man
 export INFOPATH=$INFOPATH:~/info
