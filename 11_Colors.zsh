@@ -7,12 +7,6 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
-
-c_='['$color[none]";"
-_c=m
-C_="%{$c_"
-_C="$_c%}"
-
 typeset -A prompt_colors git_colors mail_colors correct_colors
 
 # I hate kik00l0l colorized prompts, so I'm using a way to

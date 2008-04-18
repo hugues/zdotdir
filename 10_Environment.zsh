@@ -29,6 +29,10 @@ fi
 
 ## Colors 
 autoload colors && colors
+c_='['$color[none]";"
+_c=m
+C_="%{$c_"
+_C="$_c%}"
 
 ## Variables d'environnement ``classiques''
 #
