@@ -16,6 +16,8 @@
 ## on l'exporte. SInon pas. 
 ##
 
+export SHELL=`which zsh`
+
 ## Agent de clefs SSH/GPG
 if [ "$SUDO_USER" = "" ]
 then
