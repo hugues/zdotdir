@@ -51,7 +51,7 @@ set_prompt_colors ()
 	#prompt_colors[hist]="$color[none]"									# history number
 	prompt_colors[arob]="$color[bold];$my_generic"	# <login>@<hostname>
 	prompt_colors[dies]="$my_generic"							# the bottom-end of the prompt
-	prompt_colors[doubledot]="$color[none];"							# separates pwd from git-branch
+	prompt_colors[doubledot]="$color[none]"							# separates pwd from git-branch
 	#prompt_colors[paren]="$color[cyan]"					# parenthesis (around tty)
 	prompt_colors[bar]="$my_generic;$color[bold]"				# horizontal bar
 	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date)
