@@ -211,8 +211,8 @@ bindkey -s 't' 'Q todo\n'
 bindkey -s 'é' ' 2>/dev/null '
 bindkey -s '2' ' 2>&1 '
 
-bindkey -s 'm' 'Q mails\n'
-bindkey -s 'M' 'make '
+bindkey -s 'm' 'Q make\n'
+bindkey -s 'M' 'Q make\n'
 
 bindkey -s 'l' 'Q l\n'
 #bindkey -s 'L' 'Q la\n'
@@ -225,3 +225,5 @@ bindkey -s 'G' 'Q git-repack\n'
 bindkey -s 'S' 'Q svn status\n'
 
 bindkey -s 'X' 'Q exec zsh\n'
+
+bindkey -s '' 'Q clear\n'
