@@ -29,7 +29,7 @@ term_title()
       sun-cmd)
         print -Pn "\e]l%n@%m %~$1\e\\"				# Never tested..
 		;;
-      *term*|rxvt*)
+      *term*|rxvt*|putty)
 	    print -Pn "\e]0;%n@%m (%l) %~$1\a"			# Sets term title
 		;;
 	  screen)

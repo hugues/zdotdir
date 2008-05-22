@@ -24,7 +24,8 @@ set_prompt_colors $prompt_colors[generic]
 
 preexec ()
 {
-    term_title " ··· $(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g')"
+	local my_sep=$([ "$TERM" = "putty" ] && echo "---" || echo "···")
+    term_title " $my_sep $(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g')"
 	print -Pn "$C_$prompt_colors[exec]$_C"
 }
 
