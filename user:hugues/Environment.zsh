@@ -33,7 +33,7 @@ export LC_MESSAGES=${LC_MESSAGES:-fr_FR}
 unset LANG # Unuseful
 
 # Couleurs pour grep --color=auto
-export GREP_COLOR=$YELLOW\;$BOLD
+export GREP_COLOR=$color[yellow]\;$color[bold]
 
 cmd_exists dircolors && eval $(dircolors ~/.dir_colors)
 export TZ="Europe/Paris"

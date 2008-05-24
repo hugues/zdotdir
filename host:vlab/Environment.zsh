@@ -1,0 +1,2 @@
+PS1_USER=$color[red]
+PS1_USER_SSH=$PS1_USER
