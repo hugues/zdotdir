@@ -77,4 +77,4 @@ setopt Pushd_Ignore_Dups
 setopt Glob
 
 ## Gestion de l'UTF-8 !!
-setopt MultiByte
+#setopt MultiByte
