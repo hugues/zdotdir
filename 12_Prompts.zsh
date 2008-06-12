@@ -100,13 +100,13 @@ old_precmd()
 	#
 	[ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
 	SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
-	SVNREVSIZE=${#${SVNREV:+:r$SVNREV}}	
+	SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}	
 	if [ "$SVNREV" != "" ]
 	then
 		SVNSTATUS="$(svn diff 2>&-)"
 		SVNSTATUS=${${SVNSTATUS:+$prompt_colors[not_up_to_date]}:-$prompt_colors[up_to_date]}
 	fi
-	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C:$C_$SVNSTATUS$_C"r"$SVNREV}
+	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
 	[ "$DEBUG" = "yes" ] && echo
 
 	# get git status
@@ -152,7 +152,7 @@ old_precmd()
 	#  then we reduce the path until it reaches the last path element,
 	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
-	GITBRANCH=${GITBRANCH:+$C_$prompt_colors[doubledot]$_C:$C_"$(get_git_status)"$_C$GITBRANCH}
+	GITBRANCH=${GITBRANCH:+$C_$prompt_colors[doubledot]$_C $C_"$(get_git_status)"$_C$GITBRANCH}
 	CURDIR="$C_$prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
 
