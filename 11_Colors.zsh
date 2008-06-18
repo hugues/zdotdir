@@ -73,7 +73,6 @@ set_prompt_colors ()
 	git_colors[cached_and_not_up_to_date]="$prompt_colors[not_up_to_date];$color[bold]"
 	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
-	git_colors[running]="$color[magenta]"											# currently running git-status..
 }
 
 set_prompt_colors

@@ -84,27 +84,6 @@ get_git_branch ()
 get_git_status ()
 {
 	local my_git_status cached not_up_to_date managment_folder
-	local lockfile previous
-
-	lockfile="$(git rev-parse --git-dir)/.zsh.get_git_status.lock"
-	previous="$(git rev-parse --git-dir)/.zsh.get_git_status.prev"
-
-	if [ -e $lockfile ] ; then 
-
-		my_git_status=$git_colors[running]
-
-		[ "$DEBUG" == "yes" ] && echo >&2 "lockfile $lockfile already present.."
-		if [ -e $previous ] ; then
-			[ "$DEBUG" == "yes" ] && eecho >&2 "getting previous status.."
-			my_git_status=$(cat $previous)
-		fi
-
-		echo $my_git_status
-		return
-	fi
-
-	[ "$DEBUG" == "yes" ] && echo >&2 "creating $lockfile.."
-	touch $lockfile
 	
 	if [ "$(git-rev-parse --git-dir)" == "." ] ; then
 		echo "$git_colors[managment_folder]"
@@ -127,10 +106,6 @@ get_git_status ()
 	else
 		my_git_status="$git_colors[up_to_date]"
 	fi
-
-	[ "$DEBUG" == "yes" ] && echo >&2 "removing $lockfile.."
-	echo $my_git_status > $previous
-	rm -f $lockfile
 
 	echo $my_git_status
 }
