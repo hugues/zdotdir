@@ -12,6 +12,7 @@ export COMP=ARCH=sh\ CROSS_COMPILE=sh4-linux-uclibc-
 export STLINUXROOT=/opt/STM/STLinux-2.2/devkit/sh4/
 
 export PATH=$PATH:$STLINUXROOT/bin
+export PATH=~/local/bin:~/local/sbin:$PATH
 
 #--------[ Shared Folders ]-----------------------------------------
 hash -d K:=/media/osn01001/Projets_STB
