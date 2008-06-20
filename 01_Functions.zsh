@@ -43,7 +43,7 @@ term_title()
 
 preprint()
 {
-	local my_color
+	local my_color i
 
 	my_color=${2-"$color[black];$color[bold]"}
 
