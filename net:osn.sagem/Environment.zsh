@@ -7,7 +7,7 @@ eval $(~data/sagem-script44/set-env.pl 2>/dev/null) && source ~/.env
 
 #--------[ Specific Config ]----------------------------------------
 export TARGET_PATH=~targets/target
-export KERNEL_PATH_BASE=~/Kernel/exports/kernel-
+export KERNEL_PATH_BASE=~/Kernel/EXPORTS/kernel-
 export COMP=ARCH=sh\ CROSS_COMPILE=sh4-linux-uclibc-
 export STLINUXROOT=/opt/STM/STLinux-2.2/devkit/sh4/
 
