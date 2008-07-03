@@ -55,4 +55,4 @@ WATCH=notme
 WORDCHARS='*?-_~!#$%^' ## Caractères faisant partie des mots
                         ## J'ai viré les  '/()[]{}'
 
-
+MUSICPLAYER=audacious
