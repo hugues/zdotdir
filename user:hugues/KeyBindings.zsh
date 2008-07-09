@@ -26,8 +26,7 @@ bindkey '[3~' kill-region			# ESC del
 
 # Pratique pour rehasher rapidement
 bindkey -s 'r' 'Q rehash\n'
-# Exécute la commande ``rt'' qui me permet de nettoyer toutes les saletés
-bindkey -s 'R' 'Q rt\n'
+bindkey -s 'R' 'Q reset\n'
 
 test $TERM = 'rxvt' -o $TERM = 'xterm' -o $TERM = 'aterm' &&
 {
