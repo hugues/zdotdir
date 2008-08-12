@@ -86,7 +86,7 @@ old_precmd()
 	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
 
 	unset HBAR
-	for h in {1..$(($spaceleft - 1))}
+	for h in {1..$spaceleft}
 	do
 		HBAR=$HBAR-
 	done
