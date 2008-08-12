@@ -83,10 +83,10 @@ old_precmd()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
-	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
+	spaceleft=$(($COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
 
 	unset HBAR
-	for h in {1..$(($spaceleft - 1))}
+	for h in {1..$spaceleft}
 	do
 		HBAR=$HBAR-
 	done
