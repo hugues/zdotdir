@@ -69,7 +69,7 @@ old_precmd()
 
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[border]$_C"$chars[rT] "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[border]$_C" $chars[lT]"$C_$prompt_colors[border]$_C$chars['-']
+	DATE=$C_$prompt_colors[border]$_C"$chars[lT] "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[border]$_C" $chars[rT]"$C_$prompt_colors[border]$_C$chars['-']
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo

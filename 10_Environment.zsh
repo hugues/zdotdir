@@ -51,10 +51,15 @@ chars[ll]="$termcap[as]m$termcap[ae]"
 
 chars['+']="$termcap[as]n$termcap[ae]"
 
-chars[lT]="$termcap[as]t$termcap[ae]"
-chars[rT]="$termcap[as]u$termcap[ae]"
-chars[bT]="$termcap[as]v$termcap[ae]"
-chars[tT]="$termcap[as]w$termcap[ae]"
+chars[rT]="$termcap[as]t$termcap[ae]"
+chars[lT]="$termcap[as]u$termcap[ae]"
+chars[uT]="$termcap[as]v$termcap[ae]"
+chars[dT]="$termcap[as]w$termcap[ae]"
+
+chars[uA]="$termcap[as]A$termcap[ae]"
+chars[dA]="$termcap[as]B$termcap[ae]"
+chars[rA]="$termcap[as]C$termcap[ae]"
+chars[lA]="$termcap[as]D$termcap[ae]"
 
 
 ## Variables d'environnement ``classiques''
