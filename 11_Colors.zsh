@@ -45,16 +45,12 @@ set_prompt_colors ()
 	my_generic=${1:-$prompt_colors[generic]}
 
 	prompt_colors[path]="$my_generic;$color[bold]"			# pwd
-	#prompt_colors[term]="$my_generic"							# tty
 	prompt_colors[user]="$my_generic"							# login
 	prompt_colors[host]="$my_generic"							# hostname
-	#prompt_colors[hist]="$color[none]"									# history number
 	prompt_colors[arob]="$color[bold];$my_generic"	# <login>@<hostname>
 	prompt_colors[dies]="$my_generic"							# the bottom-end of the prompt
 	prompt_colors[doubledot]="$color[none]"							# separates pwd from git-branch
-	#prompt_colors[paren]="$color[cyan]"					# parenthesis (around tty)
-	prompt_colors[bar]="$my_generic;$color[bold]"				# horizontal bar
-	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date)
+	prompt_colors[border]="$my_generic;$color[bold]"				# horizontal bar
 	prompt_colors[error]="$color[bold];$color[yellow]"					# error code
 	prompt_colors[date]="$my_generic"							# full date
 

@@ -34,6 +34,29 @@ _c=m
 C_="%{$c_"
 _C="$_c%}"
 
+## Termcaps ###########################
+
+# Activates the alternate charset
+echo $termcap[eA]
+
+typeset -A chars
+
+chars['-']="$termcap[as]q$termcap[ae]"
+chars['|']="$termcap[as]x$termcap[ae]"
+
+chars[lr]="$termcap[as]j$termcap[ae]"
+chars[ur]="$termcap[as]k$termcap[ae]"
+chars[ul]="$termcap[as]l$termcap[ae]"
+chars[ll]="$termcap[as]m$termcap[ae]"
+
+chars['+']="$termcap[as]n$termcap[ae]"
+
+chars[lT]="$termcap[as]t$termcap[ae]"
+chars[rT]="$termcap[as]u$termcap[ae]"
+chars[bT]="$termcap[as]v$termcap[ae]"
+chars[tT]="$termcap[as]w$termcap[ae]"
+
+
 ## Variables d'environnement ``classiques''
 #
 # L'utilisation de la forme ${VARIABLE:+$VARIABLE:} permet d'accoler ``:''

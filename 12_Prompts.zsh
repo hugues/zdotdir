@@ -31,8 +31,8 @@ preexec ()
 
 expand_text()
 {
-	# strips the %{...%}
-	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
+	# strips the %{...%} and $termcap special keys
+	print -Pn -- $(echo $@ | sed "s/%{[^(%})]*%}//g;s/$termcap[as]//g;s/$termcap[ae]//g")
 }
 
 new_precmd()
@@ -48,18 +48,18 @@ new_precmd()
 	typeset -A ERROR DATE MAILS LOGIN HOST CWD GITINFO SVNINFO PRECMD
 	ERROR[color] = $prompt_colors[error]
 	ERROR[string] = "%(?;;%?)"
-	ERROR[pre] = "-"
+	ERROR[pre] = $chars['-']
 	ERROR[post] = 
-	ERROR[size] = ${#$(print -Pn $ERROR[pre]$ERROR[string]$ERROR[post])}
+	ERROR[size] = ${#$(expand_text $ERROR[pre]$ERROR[string]$ERROR[post])}
 }
 
 old_precmd()
 {
 	# Error
 	error=$(print -Pn "%(?;;-%?)")
-	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
+	[ "$DEBUG" = "yes" ] && echo -n "	Error code... ($error)"
 	ERRORSIZE=${#error}
-	ERROR="%(?;;"$C_$prompt_colors[bar]$_C"-"$C_$prompt_colors[error]$_C"%?)"
+	ERROR="%(?;;$C_$prompt_colors[border]$_C"-"$C_$prompt_colors[error]$_C%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -69,26 +69,26 @@ old_precmd()
 
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$C_$prompt_colors[bar]$_C"-"
+	DATE=$C_$prompt_colors[border]$_C"$chars[rT] "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[border]$_C" $chars[lT]"$C_$prompt_colors[border]$_C$chars['-']
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
 	
 	# Mailcheck
 	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
-	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[unread]$_C""@" } else if (LISTES > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[listes]$_C""@" } }'`")
+	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$prompt_colors[border]$_C'-'$C_$mail_colors[unread]$_C""@" } else if (LISTES > 0) { print "$C_$prompt_colors[border]$_C'-'$C_$mail_colors[listes]$_C""@" } }'`")
 	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
-	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
+	spaceleft=$((1 + $COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE + 6))
 
 	unset HBAR
 	for h in {1..$spaceleft}
 	do
-		HBAR=$HBAR-
+		HBAR=$HBAR$chars['-']
 	done
 	[ "$DEBUG" = "yes" ] && echo
 
@@ -104,7 +104,7 @@ old_precmd()
 	if [ "$SVNREV" != "" ]
 	then
 		SVNSTATUS="$(svn diff 2>&-)"
-		SVNSTATUS=${${SVNSTATUS:+$prompt_colors[not_up_to_date]}:-$prompt_colors[up_to_date]}
+		SVNSTATUS=${${SVNSTATUS:+$prompt_colors[not_up_to_date]}:$chars['-']$prompt_colors[up_to_date]}
 	fi
 	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
 	[ "$DEBUG" = "yes" ] && echo
@@ -160,9 +160,8 @@ old_precmd()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1="$MAILSTAT""$ERROR"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
+	PS1="$MAILSTAT""$ERROR"$C_$prompt_colors[border]$_C"$HBAR""$DATE
 "$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
-
 
 }
 
