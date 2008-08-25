@@ -1,7 +1,22 @@
 
 #for _col in {1..$COLUMNS} ; do echo -n "_" ; done ;\ echo;\
-preprint "événements" $color[bold] ; echo
-cmd_exists when && when w --calendar=~/.when/birthdays
+if cmd_exists when
+then
+
+	LATEST=`stat 2>&- --printf="%z\n" ~/.when/.today | cut -d' ' -f1`
+	TODAY=`date "+%Y-%m-%d"`	
+
+	if [ "$TODAY" != "$LATEST" ]
+	then
+		when w --calendar=~/.when/birthdays > ~/.when/.today
+	fi
+
+	if [ -s ~/.when/.today ]
+	then
+		preprint "événements" $color[bold] ; echo
+		cat ~/.when/.today
+	fi
+fi
 #cmd_exists calendar && calendar -A0 | sed "s/\(\*.*\)/[1m\1[0m/;s/\(\*.*\*\)/[33;1m\1[0m/" ;\
 
 cmd_exists screen && [ "$(find /var/run/screen/S-$USER/ ! -type d | wc -l)" -gt 0 ] &&\
@@ -16,3 +31,5 @@ screen -list
 #cmd_exists keychain && keychain --quiet --stop others --inherit any
 #keychain --quiet --quick id_dsa
 #keychain --quiet --quick 593F1F92
+
+true
