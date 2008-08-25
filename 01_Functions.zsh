@@ -50,9 +50,11 @@ preprint()
 	hbar=
 	for i in {1..$(($COLUMNS - ${#1} - 5))}
 	do
-		hbar=$hbar-
+		hbar=${hbar}q
 	done
-	print -Pn "${C_}$my_color${_C}${hbar}[ $1 ]-\r${C_}0${_C}"
+	hbar=$termcap[as]$hbar$termcap[ae]
+
+	print -Pn "${C_}$my_color${_C}${hbar}$termcap[as]u$termcap[ae] $1 $termcap[as]tq$termcap[ae]\r${C_}0${_C}"
 }
 
 get_git_branch ()
