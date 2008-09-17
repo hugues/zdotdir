@@ -1,4 +1,3 @@
-#!/bin/zsh
 ##
 ## Part of configuration files for Zsh4
 ## AUTHOR: Hugues Hiegel <hugues@hiegel.fr>
