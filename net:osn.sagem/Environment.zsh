@@ -1,13 +1,13 @@
 #--------[ Hashes ]-------------------------------------------------
-hash -d data=~/data
-hash -d targets=~/targets
+hash -d data=~/W0rk
+hash -d targets=/targets
 
 #--------[ Generic Config ]-----------------------------------------
 eval $(~data/sagem-script44/set-env.pl 2>/dev/null) && source ~/.env
 
 #--------[ Specific Config ]----------------------------------------
 export TARGET_PATH=~targets/target
-export KERNEL_PATH_BASE=~/Kernel/EXPORTS/kernel-
+export KERNEL_PATH_BASE=~data/Kernel/kernel-
 export COMP=ARCH=sh\ CROSS_COMPILE=sh4-linux-uclibc-
 export STLINUXROOT=/opt/STM/STLinux-2.2/devkit/sh4/
 
