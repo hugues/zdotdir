@@ -70,9 +70,16 @@ get_git_branch ()
 		[ "$my_git_branch" == "(no branch)" ] &&\
 			my_git_branch="($(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
 
-		# If neither on a named commit-ish, show abbreviated commit-id
-		[ "$my_git_branch" == "(undefined)" ] &&\
-			my_git_branch="($(git-rev-parse HEAD 2>&-))"
+		# If neither on a named commit-ish, show commit-id
+		if [ "$my_git_branch" == "(undefined)" ]
+		then
+			if [ -e $(git-rev-parse --git-dir)/.dotest-merge/git-rebase-todo ]
+			then
+				my_git_branch="(rebase: $(git-rev-parse HEAD 2>&-))"
+			else
+				my_git_branch="($(git-rev-parse HEAD 2>&-))"
+			fi
+		fi
 	fi
 
 	echo $my_git_branch
