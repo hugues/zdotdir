@@ -218,7 +218,7 @@ bindkey -s 'l' 'Q l\n'
 bindkey -s ' ' '\\ '
 
 bindkey -s 'g' 'Q git-status\n'
-bindkey -s 'G' 'Q git-repack\n'
+bindkey -s 'G' 'Q git-repack -d -a\n'
 
 bindkey -s 'S' 'Q svn status\n'
 
