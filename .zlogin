@@ -8,7 +8,7 @@ then
 
 	if [ "$TODAY" != "$LATEST" ]
 	then
-		when w --calendar=~/.when/birthdays > ~/.when/.today
+		when w --calendar=~/.when/birthdays | tail -n+3 > ~/.when/.today
 	fi
 
 	if [ -s ~/.when/.today ]
