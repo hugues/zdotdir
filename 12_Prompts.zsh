@@ -76,7 +76,7 @@ old_precmd()
 	
 	# Mailcheck
 	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
-	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[unread]$_C""@" } else if (LISTES > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[listes]$_C""@" } }'`")
+	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK|dev.null/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[unread]$_C""@" } else if (LISTES > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[listes]$_C""@" } }'`")
 	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
