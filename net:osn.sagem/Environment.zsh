@@ -12,6 +12,8 @@ export COMP=ARCH=sh\ CROSS_COMPILE=sh4-linux-uclibc-
 export STLINUXBASE=/opt/STM/STLinux-2.2
 export STLINUXROOT=$STLINUXBASE/devkit/sh4/
 
+export THIRDPARTYLIBS=~data/3rdparty/lib
+
 export PATH=$PATH:$STLINUXROOT/bin
 export PATH=$PATH:$STLINUXBASE/host/bin
 export PATH=$PATH:/opt/STM/ST40R3.1.1_patch1/bin
