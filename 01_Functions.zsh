@@ -57,28 +57,27 @@ preprint()
 
 get_git_branch ()
 {
-	local my_git_branch
+	local my_git_branch REBASE
 
 	[ "$( ( git-ls-tree HEAD . 2>&- ; git-ls-files . 2>&- ) | head -n 1)" == "" ] && return 
 
-	# Get current working GIT branch
-	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
+	# Rebase in progress ?
+	REBASE="";
+	[ -e $(git-rev-parse --git-dir)/../.dotest/rebasing ] && REBASE="rebase:"
 
-	if [ "$my_git_branch" != "" ]
+	# Get current working GIT branch
+	my_git_branch="$REBASE$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
+
+	if [ "$my_git_branch" != "$REBASE" ]
 	then
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
-		[ "$my_git_branch" == "(no branch)" ] &&\
-			my_git_branch="($(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
+		[ "$my_git_branch" == "$REBASE(no branch)" ] &&\
+			my_git_branch="($REBASE$(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
 
 		# If neither on a named commit-ish, show commit-id
-		if [ "$my_git_branch" == "(undefined)" ]
+		if [ "$my_git_branch" == "(${REBASE}undefined)" ]
 		then
-			if [ -e $(git-rev-parse --git-dir)/.dotest-merge/git-rebase-todo ]
-			then
-				my_git_branch="(rebase: $(git-rev-parse HEAD 2>&-))"
-			else
-				my_git_branch="($(git-rev-parse HEAD 2>&-))"
-			fi
+			my_git_branch="($REBASE$(git-rev-parse HEAD 2>&-))"
 		fi
 	fi
 
