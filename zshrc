@@ -30,7 +30,7 @@ mkdir -p $ZDOTDIR
 # the required processes each time we'll need.
 USER=${USER:-`whoami`}
 UID=${UID:-`id -u`}
-HOST=$£OST:r
+HOST=$HOST:r
 HOST=${HOST:-$(hostname -s)}
 DOMAIN=${DOMAIN:-${$(hostname -d 2>&-):-$(hostname -y 2>&-)}}
 [ "$DOMAIN" = "" -o "$DOMAIN" = "localdomain" -o "$DOMAIN" = "(none)" ] && DOMAIN=$(grep "^search " /etc/resolv.conf | cut -d' ' -f2)
