@@ -224,4 +224,5 @@ bindkey -s 'S' 'Q svn status\n'
 
 bindkey -s 'X' 'Q exec zsh\n'
 
-bindkey -s 'L' 'Q clear\n'
+# conflicts with "lowercase word"
+#bindkey -s 'L' 'Q clear\n'
