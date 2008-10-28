@@ -59,6 +59,10 @@ get_git_branch ()
 {
 	local my_git_branch REBASE
 
+	if [ ! -z "$DO_NOT_CHECK_GIT_BRANCH" ]
+	then return
+	fi
+
 	[ "$( ( git-ls-tree HEAD . 2>&- ; git-ls-files . 2>&- ) | head -n 1)" == "" ] && return 
 
 	# Rebase in progress ?
@@ -90,7 +94,11 @@ get_git_branch ()
 get_git_status ()
 {
 	local my_git_status cached not_up_to_date managment_folder
-	
+
+	if [ ! -z "$DO_NOT_CHECK_GIT_STATUS" ]
+	then return
+	fi
+
 	if [ "$(git-rev-parse --git-dir)" == "." ] ; then
 		echo "$git_colors[managment_folder]"
 		return

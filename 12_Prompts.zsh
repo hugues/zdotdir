@@ -103,8 +103,11 @@ old_precmd()
 	SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}	
 	if [ "$SVNREV" != "" ]
 	then
-		SVNSTATUS="$(svn diff 2>&-)"
-		SVNSTATUS=${${SVNSTATUS:+$prompt_colors[not_up_to_date]}:-$prompt_colors[up_to_date]}
+		if [ -z "$DO_NOT_CHECK_SVN_STATUS" ]
+		then
+			SVNSTATUS="$(svn diff 2>&-)"
+			SVNSTATUS=${${SVNSTATUS:+$prompt_colors[not_up_to_date]}:-$prompt_colors[up_to_date]}
+		fi
 	fi
 	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
 	[ "$DEBUG" = "yes" ] && echo
