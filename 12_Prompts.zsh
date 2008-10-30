@@ -22,17 +22,27 @@ set_prompt_colors $prompt_colors[generic]
 # precmd	: avant d'afficher le prompt
 #
 
+expand_text()
+{
+	# strips the %{...%}
+	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
+}
+
 preexec ()
 {
 	local my_sep=$([ "$TERM" = "putty" ] && echo "---" || echo "···")
     term_title " $my_sep $(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g')"
 	print -Pn "$C_$prompt_colors[exec]$_C"
-}
 
-expand_text()
-{
-	# strips the %{...%}
-	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
+	prompt_colors[date]="$prompt_colors[generic];$color[bold]"
+	update_prompt
+
+	local string="$(expand_text "$PROMPT$1")"
+	local lines=$(( (${#string} - 1) / $COLUMNS))
+	for i in {0..$lines} ; print -Pn "\e[1A"
+	print -Pn "\r$PROMPT"
+	print "$1"
+	prompt_colors[date]=$prompt_colors[generic]
 }
 
 new_precmd()
@@ -53,7 +63,7 @@ new_precmd()
 	ERROR[size] = ${#$(print -Pn $ERROR[pre]$ERROR[string]$ERROR[post])}
 }
 
-old_precmd()
+update_prompt()
 {
 	# Error
 	error=$(print -Pn "%(?;;-%?)")
@@ -166,12 +176,11 @@ old_precmd()
 	PS1="$MAILSTAT""$ERROR"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
 "$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
-
 }
 
 precmd()
 {
-	old_precmd
+	update_prompt
 }
 
 chpwd()
