@@ -220,7 +220,7 @@ bindkey -s ' ' '\\ '
 bindkey -s 'g' 'Q git-status\n'
 bindkey -s 'G' 'Q git-repack -d -a\n'
 
-bindkey -s 'S' 'Q svn status\n'
+bindkey -s 'S' 'Q sudo !!\n'
 
 bindkey -s 'X' 'Q exec zsh\n'
 
