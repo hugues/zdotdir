@@ -37,9 +37,8 @@ preexec ()
 	prompt_colors[date]="$prompt_colors[generic];$color[bold]"
 	update_prompt
 
-	local string="$(expand_text "$PROMPT$1")"
-	local lines=$(( (${#string} - 1) / $COLUMNS))
-	for i in {0..$lines} ; print -Pn "\e[1A"
+	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
+	for i in {1..$lines} ; print -Pn "\e[1A"
 	print -Pn "\r$PROMPT"
 	print "$1"
 	prompt_colors[date]=$prompt_colors[generic]
