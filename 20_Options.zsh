@@ -54,7 +54,7 @@ setopt Hash_Cmds
 setopt Hash_Dirs
 
 ## Gestion de l'historique
-unsetopt Extended_History
+setopt Extended_History
 setopt Hist_Expire_Dups_First
 setopt Hist_Ignore_All_Dups
 setopt Hist_Ignore_Space
