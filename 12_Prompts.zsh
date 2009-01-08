@@ -34,10 +34,9 @@ preexec ()
     term_title " $my_sep $(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g')"
 	print -Pn "$C_$prompt_colors[exec]$_C"
 
+	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
 	prompt_colors[date]="$prompt_colors[generic];$color[bold]"
 	update_prompt
-
-	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
 	for i in {1..$lines} ; print -Pn "\e[1A"
 	print -Pn "\r$PROMPT"
 	print "$1"
@@ -73,7 +72,6 @@ update_prompt()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
 	# Flush the term title
-    term_title
 	[ "$DEBUG" = "yes" ] && echo
 
 	# Date
@@ -180,6 +178,7 @@ update_prompt()
 precmd()
 {
 	update_prompt
+    term_title
 }
 
 chpwd()
