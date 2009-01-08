@@ -32,4 +32,5 @@ screen -list
 #keychain --quiet --quick id_dsa
 #keychain --quiet --quick 593F1F92
 
+chpwd
 true
