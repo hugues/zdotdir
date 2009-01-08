@@ -25,6 +25,7 @@ typeset -A prompt_colors git_colors mail_colors correct_colors
 PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
 PS1_USER_SSH=${PS1_USER_SSH:-$color[magenta]}
+PS1_USER_SCR=${PS1_USER_SCR:-$color[cyan]}
 prompt_colors[generic]=`print -Pn "%(! $PS1_ROOT $PS1_USER)"`
 
 normal_user && if ( [ "$SSH_TTY" != "" ] )
@@ -33,6 +34,10 @@ then
 	# which really are on the local machine or not.
 	# That's so good, use it ! :-)
 	prompt_colors[generic]=${PS1_USER_SSH:-$prompt_colors[generic]}
+fi
+normal_user && if ( [ "$TERM" = "screen" ] )
+then
+	prompt_colors[generic]=${PS1_USER_SCR:-$prompt_colors[generic]}
 fi
 
 # 
