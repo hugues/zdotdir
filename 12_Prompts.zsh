@@ -30,7 +30,7 @@ expand_text()
 
 preexec ()
 {
-	local my_sep=$([ "$TERM" = "putty" ] && echo "---" || echo "···")
+	local my_sep="---"
     term_title " $my_sep $(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g')"
 	print -Pn "$C_$prompt_colors[exec]$_C"
 
