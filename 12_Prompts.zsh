@@ -36,8 +36,12 @@ preexec ()
 
 	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
 	prompt_colors[date]="$prompt_colors[generic];$color[bold]"
-	update_prompt
-	for i in {1..$lines} ; print -Pn "\e[1A"
+	set_prompt_date
+	redisplay_prompt
+
+	local string="$(expand_text "$PROMPT$1")"
+	local lines=$(( (${#string} - 1) / $COLUMNS))
+	for i in {0..$lines} ; print -Pn "\e[1A"
 	print -Pn "\r$PROMPT"
 	print "$1"
 	prompt_colors[date]=$prompt_colors[generic]
@@ -61,6 +65,16 @@ new_precmd()
 	ERROR[size] = ${#$(print -Pn $ERROR[pre]$ERROR[string]$ERROR[post])}
 }
 
+set_prompt_date()
+{
+	# Date
+	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
+	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$C_$prompt_colors[bar]$_C"-"
+	DATEEXPAND=$(expand_text "$DATE")
+	DATESIZE=${#DATEEXPAND}
+	[ "$DEBUG" = "yes" ] && echo
+}
+
 update_prompt()
 {
 	# Error
@@ -72,14 +86,10 @@ update_prompt()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
 	# Flush the term title
+    term_title
 	[ "$DEBUG" = "yes" ] && echo
 
-	# Date
-	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$C_$prompt_colors[bar]$_C"-"
-	DATEEXPAND=$(expand_text "$DATE")
-	DATESIZE=${#DATEEXPAND}
-	[ "$DEBUG" = "yes" ] && echo
+	set_prompt_date
 	
 	# Mailcheck
 	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
@@ -165,7 +175,10 @@ update_prompt()
 	GITBRANCH=${GITBRANCH:+$C_$prompt_colors[doubledot]$_C $C_"$(get_git_status)"$_C$GITBRANCH}
 	CURDIR="$C_$prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
+}
 
+redisplay_prompt ()
+{
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
@@ -178,7 +191,7 @@ update_prompt()
 precmd()
 {
 	update_prompt
-    term_title
+	redisplay_prompt
 }
 
 chpwd()
