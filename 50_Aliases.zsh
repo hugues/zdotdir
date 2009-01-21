@@ -24,7 +24,16 @@ a -g .........=../../../../../../../..
 cmd_exists emacsclient && a e='emacsclient'
 cmd_exists emacs && a ne='emacs -nw'
 
-cmd_exists vim && a v='vim'
+if ( cmd_exists vim )
+then
+	if ( cmd_exists vimtab )
+	then
+		a vim='vimtab'
+		a v='vimtab'
+	else
+		a v='vim'
+	fi
+fi
 
 cmd_exists eject && a close='eject -t'
 
