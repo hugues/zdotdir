@@ -7,6 +7,10 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
-a port='sudo port'
-a ls='ls -FG'
-a aless='open -a /Applications/DarwinPorts/AquaLess.app'
+
+if [ "$OSTYPE" == "Darwin" ]
+then
+	a port='sudo port'
+	a ls='ls -FG'
+	a aless='open -a /Applications/DarwinPorts/AquaLess.app'
+fi
