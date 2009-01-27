@@ -98,9 +98,51 @@ update_prompt()
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
 
+	
+	if [ -e /proc/pmu/battery_0 ]
+	then
+		[ "$DEBUG" = "yes" ] && echo -n "	Battery..."
+		## Time
+		BATTERY_TIME=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
+		BATTERY=$(( $BATTERY_TIME / 3600 ))
+		BATTERY=$BATTERY"h"$(( ($BATTERY_TIME - ( $BATTERY * 3600 )) / 60 ))"m"
+		BATTERYTMP="-"$BATTERY
+		BATTERYSIZE=${#BATTERYTMP}
+
+		BATTERYCHARGING=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
+		if [ $BATTERYCHARGING -gt 0 ]
+		then
+			BATTERY="$C_$battery_colors[charging]$_C"$BATTERY
+			BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+		else
+			if [ $BATTERYCHARGING -lt 0 ]
+			then
+				if [ $BATTERY_TIME -lt 600 ]
+				then
+					BATTERY="$C_$battery_colors[critical]$_C"$BATTERY
+				else
+					BATTERY="$C_$battery_colors[uncharging]$_C"$BATTERY
+				fi
+				BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+			else
+				## Battery full
+				BATTERY=""
+				BATTERYSIZE=0
+			fi
+		fi
+		## Percentage
+		#BATTERY=$(( $(grep "^charge" /proc/pmu/battery_0 | cut -c14- ) * 100 / $(grep "^max_charge" /proc/pmu/battery_0 |cut -c14-) ))
+		#BATTERY="-$BATTERY%"
+		#BATTERYSIZE=${#BATTERY}
+		#BATTERY="$C_$prompt_colors[bar]$_C""$BATTERY%"
+		[ "$DEBUG" = "yes" ] && echo
+	else
+		BATTERY=
+	fi
+
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
-	spaceleft=$(($COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE))
+	spaceleft=$(($COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
 
 	unset HBAR
 	for h in {1..$spaceleft}
@@ -183,7 +225,7 @@ redisplay_prompt ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1="$MAILSTAT""$ERROR"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
+	PS1="$MAILSTAT""$ERROR""$BATTERY"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
 "$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 }
