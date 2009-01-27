@@ -26,12 +26,14 @@ cmd_exists emacs && a ne='emacs -nw'
 
 if ( cmd_exists vim )
 then
-	if ( cmd_exists vimtab )
+	a v='vim'
+
+	if ( vim --help | grep -E "+clientserver" )
 	then
-		a vim='vimtab'
-		a v='vimtab'
-	else
-		a v='vim'
+		if ( cmd_exists vimtab )
+		then
+			a vim='vimtab'
+		fi
 	fi
 fi
 
