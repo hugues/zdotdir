@@ -138,6 +138,7 @@ update_prompt()
 		[ "$DEBUG" = "yes" ] && echo
 	else
 		BATTERY=
+		BATTERYSIZE=0
 	fi
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
