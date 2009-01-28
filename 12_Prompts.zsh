@@ -35,7 +35,7 @@ preexec ()
 	print -Pn "$C_$prompt_colors[exec]$_C"
 
 	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
-	prompt_colors[date]="$prompt_colors[generic];$color[bold]"
+	prompt_colors[date]=$date_colors[exec]
 	set_prompt_date
 	redisplay_prompt
 
@@ -44,7 +44,7 @@ preexec ()
 	for i in {0..$lines} ; print -Pn "\e[1A"
 	print -Pn "\r$PROMPT"
 	print "$1"
-	prompt_colors[date]=$prompt_colors[generic]
+	prompt_colors[date]=$date_colors[normal]
 }
 
 new_precmd()

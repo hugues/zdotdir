@@ -7,7 +7,7 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
-typeset -A prompt_colors git_colors mail_colors correct_colors battery_colors
+typeset -A prompt_colors git_colors mail_colors correct_colors battery_colors date_colors
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
@@ -48,6 +48,8 @@ set_prompt_colors ()
 {
 	local my_generic
 	my_generic=${1:-$prompt_colors[generic]}
+	prompt_colors[bold_generic]="$my_generic;$color[bold]" ## Always bold generic color
+	prompt_colors[soft_generic]=$(echo "$my_generic" | tr ';' '\n' | grep -v "^1$" | tr '\n' ';' | sed 's/\;$//') ## Always soft generic color
 
 	prompt_colors[path]="$my_generic;$color[bold]"			# pwd
 	#prompt_colors[term]="$my_generic"							# tty
@@ -61,15 +63,18 @@ set_prompt_colors ()
 	prompt_colors[bar]="$my_generic;$color[bold]"				# horizontal bar
 	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date)
 	prompt_colors[error]="$color[bold];$color[yellow]"					# error code
-	prompt_colors[date]="$my_generic"							# full date
+
+	date_colors[normal]=$prompt_colors[soft_generic]
+	date_colors[exec]=$prompt_colors[bold_generic]
+	prompt_colors[date]=$date_colors[normal]							# full date
 
 	prompt_colors[cmd]="$color[none]"									# command prompt
 	prompt_colors[exec]="$color[none]"									# command output
 
-	battery_colors[charging]="$color[cyan];$color[bold]"
-	battery_colors[full]="$color[none]"
-	battery_colors[uncharging]="$color[normal];$color[bold]"
-	battery_colors[critical]="$color[red];$color[bold]"
+	battery_colors[full]="$prompt_colors[soft_generic]"
+	battery_colors[charging]="$prompt_colors[bold_generic]"
+	battery_colors[uncharging]="$prompt_colors[soft_generic]"
+	battery_colors[critical]="$color[bg-red];$prompt_colors[bold_generic]"
 
 	mail_colors[unread]="$color[yellow];$color[bold]"		# mail received
 	mail_colors[listes]="$my_generic;$color[bold]"		# less important mail received
