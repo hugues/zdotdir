@@ -117,7 +117,7 @@ update_prompt()
 		else
 			if [ $BATTERYCHARGING -lt 0 ]
 			then
-				if [ $BATTERY_TIME -lt 600 ]
+				if [ $BATTERY_TIME -lt 659 ]
 				then
 					BATTERY="$C_$battery_colors[critical]$_C"$BATTERY
 				else
@@ -126,8 +126,16 @@ update_prompt()
 				BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
 			else
 				## Battery full
-				BATTERY=""
-				BATTERYSIZE=0
+				BATTERY=$(grep "^AC Power" /proc/pmu/info | cut -c26)
+				if [ $BATTERY -ne 0 ]
+				then
+					BATTERY="⚡"
+					BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+					BATTERYSIZE=2
+				else
+					BATTERY=""
+					BATTERYSIZE=0
+				fi
 			fi
 		fi
 		## Percentage
