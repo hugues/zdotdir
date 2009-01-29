@@ -99,39 +99,45 @@ update_prompt()
 	[ "$DEBUG" = "yes" ] && echo
 
 	
-	if ( cmd_exists ibam && [ -e /proc/pmu/battery_0 ] )
+	if [ -e /proc/pmu/battery_0 ]
 	then
 		[ "$DEBUG" = "yes" ] && echo -n "	Battery..."
 		## Time
-
-		POWERADAPTER=$(grep "^AC Power" /proc/pmu/info | cut -c26)
-		ISCHARGING=$(grep "^current" /proc/pmu/battery_0 | cut -c14)
-		BATTERYTIME=$(ibam -r | head -n1 | cut -c30- | cut -d: -f1,2 | tr ':' 'h')
-
-		BATTERYTMP="-"$BATTERYTIME
+		BATTERY_TIME=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
+		BATTERY=$(( $BATTERY_TIME / 3600 ))
+		BATTERY=$BATTERY"h"$(( ($BATTERY_TIME - ( $BATTERY * 3600 )) / 60 ))"m"
+		BATTERYTMP="-"$BATTERY
 		BATTERYSIZE=${#BATTERYTMP}
-		BATTERYTIMEMIN=$(( $(echo $BATTERYTIME | cut -dh -f1) * 60 + $(echo $BATTERYTIME | cut -dh -f2) ))
 
-		if [ $POWERADAPTER -eq 1 -a $ISCHARGING -ne 0 ]
+		BATTERYCHARGING=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
+		if [ $BATTERYCHARGING -gt 0 ]
 		then
-			BATTERYCOLOR="charging"
+			BATTERY="$C_$battery_colors[charging]$_C"$BATTERY
+			BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
 		else
-			if [ $POWERADAPTER -eq 0 ]
+			if [ $BATTERYCHARGING -lt 0 ]
 			then
-				if [ $BATTERYTIMEMIN -le 10 ]
+				if [ $BATTERY_TIME -lt 659 ]
 				then
-					BATTERYCOLOR="critical"
+					BATTERY="$C_$battery_colors[critical]$_C"$BATTERY
 				else
-					BATTERYCOLOR="uncharging"
+					BATTERY="$C_$battery_colors[uncharging]$_C"$BATTERY
 				fi
+				BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
 			else
-				BATTERYTIME="⚡"
-				BATTERYSIZE=2
-				BATTERYCOLOR=charging
+				## Battery full
+				BATTERY=$(grep "^AC Power" /proc/pmu/info | cut -c26)
+				if [ $BATTERY -ne 0 ]
+				then
+					BATTERY="⚡"
+					BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+					BATTERYSIZE=2
+				else
+					BATTERY=""
+					BATTERYSIZE=0
+				fi
 			fi
 		fi
-
-		BATTERY="$C_$prompt_colors[bar]$_C"-"$C_$battery_colors[$BATTERYCOLOR]$_C$BATTERYTIME"
 
 		[ "$DEBUG" = "yes" ] && echo
 	else
