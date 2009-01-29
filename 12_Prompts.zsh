@@ -99,50 +99,39 @@ update_prompt()
 	[ "$DEBUG" = "yes" ] && echo
 
 	
-	if [ -e /proc/pmu/battery_0 ]
+	if ( cmd_exists ibam && [ -e /proc/pmu/battery_0 ] )
 	then
 		[ "$DEBUG" = "yes" ] && echo -n "	Battery..."
 		## Time
-		BATTERY_TIME=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
-		BATTERY=$(( $BATTERY_TIME / 3600 ))
-		BATTERY=$BATTERY"h"$(( ($BATTERY_TIME - ( $BATTERY * 3600 )) / 60 ))"m"
-		BATTERYTMP="-"$BATTERY
-		BATTERYSIZE=${#BATTERYTMP}
 
-		BATTERYCHARGING=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
-		if [ $BATTERYCHARGING -gt 0 ]
+		POWERADAPTER=$(grep "^AC Power" /proc/pmu/info | cut -c26)
+		BATTERYTIME=$(ibam -r | head -n1 | cut -c30- | cut -d: -f1,2 | tr ':' 'h')
+
+		BATTERYTMP="-"$BATTERYTIME
+		BATTERYSIZE=${#BATTERYTMP}
+		BATTERYTIMEMIN=$(( $(echo $BATTERYTIME | cut -dh -f1) * 60 + $(echo $BATTERYTIME | cut -dh -f2) ))
+
+		if [ $POWERADAPTER -eq 1 -a $BATTERYTIME != "0:00" ]
 		then
-			BATTERY="$C_$battery_colors[charging]$_C"$BATTERY
-			BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+			BATTERYCOLOR="charging"
 		else
-			if [ $BATTERYCHARGING -lt 0 ]
+			if [ $POWERADAPTER -eq 0 ]
 			then
-				if [ $BATTERY_TIME -lt 659 ]
+				if [ $BATTERYTIMEMIN -le 10 ]
 				then
-					BATTERY="$C_$battery_colors[critical]$_C"$BATTERY
+					BATTERYCOLOR="critical"
 				else
-					BATTERY="$C_$battery_colors[uncharging]$_C"$BATTERY
+					BATTERYCOLOR="uncharging"
 				fi
-				BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
 			else
-				## Battery full
-				BATTERY=$(grep "^AC Power" /proc/pmu/info | cut -c26)
-				if [ $BATTERY -ne 0 ]
-				then
-					BATTERY="⚡"
-					BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
-					BATTERYSIZE=2
-				else
-					BATTERY=""
-					BATTERYSIZE=0
-				fi
+				BATTERYTIME="⚡"
+				BATTERYSIZE=2
+				BATTERYCOLOR=charging
 			fi
 		fi
-		## Percentage
-		#BATTERY=$(( $(grep "^charge" /proc/pmu/battery_0 | cut -c14- ) * 100 / $(grep "^max_charge" /proc/pmu/battery_0 |cut -c14-) ))
-		#BATTERY="-$BATTERY%"
-		#BATTERYSIZE=${#BATTERY}
-		#BATTERY="$C_$prompt_colors[bar]$_C""$BATTERY%"
+
+		BATTERY="$C_$prompt_colors[bar]$_C"-"$C_$battery_colors[$BATTERYCOLOR]$_C$BATTERYTIME"
+
 		[ "$DEBUG" = "yes" ] && echo
 	else
 		BATTERY=
