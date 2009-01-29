@@ -105,13 +105,14 @@ update_prompt()
 		## Time
 
 		POWERADAPTER=$(grep "^AC Power" /proc/pmu/info | cut -c26)
+		ISCHARGING=$(grep "^current" /proc/pmu/battery_0 | cut -c14)
 		BATTERYTIME=$(ibam -r | head -n1 | cut -c30- | cut -d: -f1,2 | tr ':' 'h')
 
 		BATTERYTMP="-"$BATTERYTIME
 		BATTERYSIZE=${#BATTERYTMP}
 		BATTERYTIMEMIN=$(( $(echo $BATTERYTIME | cut -dh -f1) * 60 + $(echo $BATTERYTIME | cut -dh -f2) ))
 
-		if [ $POWERADAPTER -eq 1 -a $BATTERYTIME != "0:00" ]
+		if [ $POWERADAPTER -eq 1 -a $ISCHARGING -ne 0 ]
 		then
 			BATTERYCOLOR="charging"
 		else
