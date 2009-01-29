@@ -43,7 +43,7 @@ preexec ()
 	local lines=$(( (${#string} - 1) / $COLUMNS))
 	for i in {0..$lines} ; print -Pn "\e[1A"
 	print -Pn "\r$PROMPT"
-	print "$1"
+	print "${(q)1}"
 	prompt_colors[date]=$date_colors[normal]
 }
 
