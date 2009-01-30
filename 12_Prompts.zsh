@@ -153,11 +153,7 @@ update_prompt()
 				fi
 			fi
 		fi
-		## Percentage
-		#BATTERY=$(( $(grep "^charge" /proc/pmu/battery_0 | cut -c14- ) * 100 / $(grep "^max_charge" /proc/pmu/battery_0 |cut -c14-) ))
-		#BATTERY="-$BATTERY%"
-		#BATTERYSIZE=${#BATTERY}
-		#BATTERY="$C_$prompt_colors[bar]$_C""$BATTERY%"
+
 		[ "$DEBUG" = "yes" ] && echo
 	else
 		BATTERY=
