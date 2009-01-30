@@ -22,6 +22,8 @@ set_prompt_colors $prompt_colors[generic]
 # precmd	: avant d'afficher le prompt
 #
 
+SEPARATOR=$C_$prompt_colors[bar]$_C"-"
+
 expand_text()
 {
 	# strips the %{...%}
@@ -69,7 +71,7 @@ set_prompt_date()
 {
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$C_$prompt_colors[bar]$_C"-"
+	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$SEPARATOR
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
@@ -78,10 +80,10 @@ set_prompt_date()
 update_prompt()
 {
 	# Error
-	error=$(print -Pn "%(?;;-%?)")
+	error=$(print -Pn "%(?;;-%?)") ## MUST BE the first operation else we lose the error code...
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
-	ERROR="%(?;;"$C_$prompt_colors[bar]$_C"-"$C_$prompt_colors[error]$_C"%?)"
+	ERROR="%(?;;"$SEPARATOR$C_$prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -113,7 +115,7 @@ update_prompt()
 		if [ $BATTERYCHARGING -gt 0 ]
 		then
 			BATTERY="$C_$battery_colors[charging]$_C"$BATTERY
-			BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+			BATTERY="$SEPARATOR$BATTERY"
 		else
 			if [ $BATTERYCHARGING -lt 0 ]
 			then
@@ -123,14 +125,14 @@ update_prompt()
 				else
 					BATTERY="$C_$battery_colors[uncharging]$_C"$BATTERY
 				fi
-				BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+				BATTERY="$SEPARATOR$BATTERY"
 			else
 				## Battery full
 				BATTERY=$(grep "^AC Power" /proc/pmu/info | cut -c26)
 				if [ $BATTERY -ne 0 ]
 				then
 					BATTERY="⚡"
-					BATTERY="$C_$prompt_colors[bar]$_C"-"$BATTERY"
+					BATTERY="$SEPARATOR$BATTERY"
 					BATTERYSIZE=2
 				else
 					BATTERY=""
