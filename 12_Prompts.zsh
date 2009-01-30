@@ -105,7 +105,7 @@ update_prompt()
 	if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
 	then
 		[ "`strings /proc/$SSH_AGENT_PID/cmdline | head -n1`" = "ssh-agent" ] && \
-			AGENTS=$SEPARATOR$C_$prompt_colors[agents]$_C"★"
+			AGENTS=$C_$prompt_colors[agents]$_C"★"
 	fi
 	if [ "$GPG_AGENT_INFO" != "" ]
 	then
@@ -113,9 +113,10 @@ update_prompt()
 		if [ -e /proc/$GPG_AGENT_PID/cmdline ]
 		then
 			[ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ] && \
-				AGENTS=$AGENTS$SEPARATOR$C_$prompt_colors[agents]$_C"☆"
+				AGENTS=$AGENTS$C_$prompt_colors[agents]$_C"☆"
 		fi
 	fi
+	AGENTS=${AGENTS:+$SEPARATOR$AGENTS}
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	
