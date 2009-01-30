@@ -59,4 +59,4 @@ HISTFILE=$ZDOTDIR/.history.$USER.$HOSTNAME # Pour éviter les conflits de conf
 HISTSIZE=42000
 SAVEHIST=42000
 
-
+export GPG_TTY=`tty`
