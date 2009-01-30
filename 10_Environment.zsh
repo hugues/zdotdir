@@ -25,7 +25,7 @@ then
 	then
 		if [ -f ~/.keychain/startup.zsh ]
 		then
-			~/.keychain/startup.zsh --quiet
+			source ~/.keychain/startup.zsh --quiet
 		else
 			KEYCHAIN=~/.keychain/$(hostname)-sh
 			[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
