@@ -92,6 +92,19 @@ update_prompt()
 	[ "$DEBUG" = "yes" ] && echo
 
 	set_prompt_date
+
+	# GPG/SSH agents
+	AGENTS=""
+	if [ "$SSH_AGENT_PID" -gt 0 -a "`strings /proc/$SSH_AGENT_PID/cmdline | head -n1`" = "ssh-agent" ]
+	then
+		AGENTS=$SEPARATOR$C_$prompt_colors[agents]$_C"★"
+	fi
+	if [ "$GPG_AGENT_INFO" != "" -a "`strings /proc/$(echo $GPG_AGENT_INFO | cut -d: -f2)/cmdline | head -n1`" = "gpg-agent" ]
+	then
+		AGENTS=$AGENTS$SEPARATOR$C_$prompt_colors[agents]$_C"☆"
+	fi
+	AGENTSSIZE=$(expand_text $AGENTS)
+	AGENTSSIZE=$#AGENTSSIZE
 	
 	# Mailcheck
 	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
@@ -153,7 +166,7 @@ update_prompt()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
-	spaceleft=$(($COLUMNS - $ERRORSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
+	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
 
 	unset HBAR
 	for h in {1..$spaceleft}
@@ -236,7 +249,7 @@ redisplay_prompt ()
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
-	PS1="$MAILSTAT""$ERROR""$BATTERY"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
+	PS1="$AGENTS""$MAILSTAT""$ERROR""$BATTERY"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
 "$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 }
