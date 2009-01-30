@@ -39,6 +39,13 @@ preexec ()
 	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
 	prompt_colors[date]=$date_colors[exec]
 	set_prompt_date
+
+	spaceleft=$(($COLUMNS - $AGENTSSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
+	unset HBAR
+	for h in {1..$spaceleft}
+	do
+		HBAR=$HBAR-
+	done
 	redisplay_prompt
 
 	local string="$(expand_text "$PROMPT$1")"
@@ -177,7 +184,6 @@ update_prompt()
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
 	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
-
 	unset HBAR
 	for h in {1..$spaceleft}
 	do
