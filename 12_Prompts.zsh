@@ -95,13 +95,19 @@ update_prompt()
 
 	# GPG/SSH agents
 	AGENTS=""
-	if [ "$SSH_AGENT_PID" -gt 0 -a "`strings /proc/$SSH_AGENT_PID/cmdline | head -n1`" = "ssh-agent" ]
+	if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
 	then
-		AGENTS=$SEPARATOR$C_$prompt_colors[agents]$_C"★"
+		[ "`strings /proc/$SSH_AGENT_PID/cmdline | head -n1`" = "ssh-agent" ] && \
+			AGENTS=$SEPARATOR$C_$prompt_colors[agents]$_C"★"
 	fi
-	if [ "$GPG_AGENT_INFO" != "" -a "`strings /proc/$(echo $GPG_AGENT_INFO | cut -d: -f2)/cmdline | head -n1`" = "gpg-agent" ]
+	if [ "$GPG_AGENT_INFO" != "" ]
 	then
-		AGENTS=$AGENTS$SEPARATOR$C_$prompt_colors[agents]$_C"☆"
+		GPG_AGENT_PID="$(echo $GPG_AGENT_INFO | cut -d: -f2)"
+		if [ -e /proc/$GPG_AGENT_PID/cmdline ]
+		then
+			[ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ] && \
+				AGENTS=$AGENTS$SEPARATOR$C_$prompt_colors[agents]$_C"☆"
+		fi
 	fi
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
