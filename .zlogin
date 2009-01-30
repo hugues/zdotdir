@@ -28,9 +28,9 @@ screen -list
 
 #cmd_exists remind && remind -n
 #
-#cmd_exists keychain && keychain --quiet --stop others --inherit any
-#keychain --quiet --quick id_dsa
-#keychain --quiet --quick 593F1F92
+#cmd_exists keychain && eval $(keychain --eval --quiet --quick --inherit any-once --stop others)
+#cmd_exists keychain && keychain --quiet --quick --clear
+#keychain id_dsa 593F1F92
 
 chpwd
 true
