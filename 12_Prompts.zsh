@@ -138,42 +138,39 @@ update_prompt()
 	if [ -e /proc/pmu/battery_0 ]
 	then
 		[ "$DEBUG" = "yes" ] && echo -n "	Battery..."
-		## Time
-		BATTERY_TIME=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
-		BATTERY=$(( $BATTERY_TIME / 3600 ))
-		BATTERY=$BATTERY"h"$(( ($BATTERY_TIME - ( $BATTERY * 3600 )) / 60 ))"m"
-		BATTERYTMP="-"$BATTERY
-		BATTERYSIZE=${#BATTERYTMP}
 
-		BATTERYCHARGING=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
-		if [ $BATTERYCHARGING -gt 0 ]
+		POWERADAPTER=$(grep "^AC Power" /proc/pmu/info | cut -c26)
+
+		typeset -A battery
+		battery[remaining]=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
+		battery[remain_hrs]=$(( $battery[remaining] / 3600 ))
+		battery[remain_min]=$(( ($battery[remaining] - ( $battery[remain_hrs] * 3600 )) / 60 ))
+		[ "$battery[remain_min]" -lt 10 ] && battery[remain_min]="0"$battery[remain_min]
+		battery[remains]=$battery[remain_hrs]"h"$battery[remain_min]
+
+		BATTERYSIZE=$(( ${#battery[remains]} + 1 ))
+
+		battery[load]=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
+
+		if [ $POWERADAPTER -ne 0 ]
 		then
-			BATTERY="$C_$battery_colors[charging]$_C"$BATTERY
-			BATTERY="$SEPARATOR$BATTERY"
-		else
-			if [ $BATTERYCHARGING -lt 0 ]
+			battery[color]="charging"
+			if [ $battery[load] -eq 0 ]
 			then
-				if [ $BATTERY_TIME -lt 659 ]
-				then
-					BATTERY="$C_$battery_colors[critical]$_C"$BATTERY
-				else
-					BATTERY="$C_$battery_colors[uncharging]$_C"$BATTERY
-				fi
-				BATTERY="$SEPARATOR$BATTERY"
-			else
 				## Battery full
-				BATTERY=$(grep "^AC Power" /proc/pmu/info | cut -c26)
-				if [ $BATTERY -ne 0 ]
-				then
-					BATTERY="⚡"
-					BATTERY="$SEPARATOR$BATTERY"
-					BATTERYSIZE=2
-				else
-					BATTERY=""
-					BATTERYSIZE=0
-				fi
+				BATTERYSIZE=2
+				battery[remains]="⚡"
+			fi
+		else
+			if [ $battery[remaining] -lt 659 ]
+			then
+				battery[color]="critical"
+			else
+				battery[color]="uncharging"
 			fi
 		fi
+		BATTERY=$C_$prompt_colors[bar]$_C"-"$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
+		unset battery
 
 		[ "$DEBUG" = "yes" ] && echo
 	else
