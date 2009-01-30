@@ -21,20 +21,11 @@ export SHELL=`which zsh`
 ## Agent de clefs SSH/GPG
 if [ "$SUDO_USER" = "" ]
 then
-	if cmd_exists keychain
-	then
-		if [ -f ~/.keychain/startup.zsh ]
-		then
-			source ~/.keychain/startup.zsh --quiet
-		else
-			KEYCHAIN=~/.keychain/$(hostname)-sh
-			[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
-			[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
-			cmd_exists keychain && keychain --quiet --quick --inherit any --stop others
-			[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
-			[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
-		fi
-	fi
+	KEYCHAIN=~/.keychain/$(hostname)-sh
+	for file in $(find $KEYCHAIN:h -name "$(hostname)-sh" -o -name "$(hostname)-sh-*")
+	do
+		source $file
+	done
 fi
 
 ## Colors 
