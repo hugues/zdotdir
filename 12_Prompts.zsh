@@ -94,6 +94,13 @@ update_prompt()
 	set_prompt_date
 
 	# GPG/SSH agents
+
+	KEYCHAIN=~/.keychain/$(hostname)-sh
+	for file in $(find $KEYCHAIN:h -name "$(hostname)-sh" -o -name "$(hostname)-sh-*")
+	do
+		source $file
+	done
+
 	AGENTS=""
 	if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
 	then
