@@ -7,7 +7,7 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
-typeset -A prompt_colors git_colors mail_colors correct_colors battery_colors date_colors
+typeset -A prompt_colors git_colors mail_colors correct_colors battery_colors date_colors agent_colors
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
@@ -79,7 +79,8 @@ set_prompt_colors ()
 	mail_colors[unread]="$color[yellow];$color[bold]"		# mail received
 	mail_colors[listes]="$my_generic;$color[bold]"		# less important mail received
 
-	prompt_colors[agents]="$prompt_colors[bold_generic]"
+	agent_colors[has_keys]="$color[bold];$color[yellow]"
+	agent_colors[empty]="$prompt_colors[bold_generic]"
 
 	prompt_colors[up_to_date]="$my_generic"						# up-to-date
 	prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date

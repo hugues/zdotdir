@@ -111,16 +111,26 @@ update_prompt()
 	AGENTS=""
 	if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
 	then
-		[ "`strings /proc/$SSH_AGENT_PID/cmdline | head -n1`" = "ssh-agent" ] && \
-			AGENTS=$C_$prompt_colors[agents]$_C"★"
-	fi
-	if [ "$GPG_AGENT_INFO" != "" ]
-	then
-		GPG_AGENT_PID="$(echo $GPG_AGENT_INFO | cut -d: -f2)"
-		if [ -e /proc/$GPG_AGENT_PID/cmdline ]
+		if [ "`strings /proc/$SSH_AGENT_PID/cmdline | head -n1`" = "ssh-agent" ]
 		then
-			[ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ] && \
-				AGENTS=$AGENTS$C_$prompt_colors[agents]$_C"☆"
+			## We have a running ssh agent
+			# get list of keys
+			if [ "$( ssh-add -l | grep "^[[:digit:]]\+ \([[:digit:]a-f]\{2\}:\)\{15\}[[:digit:]a-f]\{2\} .* (.*)$" )" != "" ]
+			then
+				AGENTCOLOR="has_keys"
+			else
+				AGENTCOLOR="empty"
+			fi
+			AGENTS=$C_$agent_colors[$AGENTCOLOR]$_C"★"
+		fi
+	fi
+	GPG_AGENT_PID="$(echo $GPG_AGENT_INFO | cut -d: -f2)"
+	if [ "$GPG_AGENT_PID" != "" -a -e /proc/$GPG_AGENT_PID/cmdline ]
+	then
+		if [ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ]
+		then
+			AGENTCOLOR="has_keys"
+			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C"☆"
 		fi
 	fi
 	AGENTS=${AGENTS:+$SEPARATOR$AGENTS}
