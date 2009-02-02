@@ -28,7 +28,7 @@ if ( cmd_exists vim )
 then
 	a v='vim'
 
-	if ( vim --help | grep -E "+clientserver" )
+	if ( vim --version | grep -E "+clientserver" >/dev/null )
 	then
 		if ( cmd_exists vimtab )
 		then
