@@ -101,29 +101,43 @@ update_prompt()
 	set_prompt_date
 
 	# GPG/SSH agents
-
-	KEYCHAIN=~/.keychain/$(hostname)-sh
-	for file in $(find $KEYCHAIN:h -name "$(hostname)-sh" -o -name "$(hostname)-sh-*")
-	do
-		source $file
-	done
-
 	AGENTS=""
-	if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
+	[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
+	[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
+
+	# Check ssh-agent only if the env socket has been set and is accessible
+	if [ -S "$SSH_AUTH_SOCK" ]
 	then
-		if [ "`strings /proc/$SSH_AGENT_PID/cmdline | head -n1`" = "ssh-agent" ]
+		# Get keylist
+		SSH_AGENT_KEYLIST="$( ssh-add -l | grep "^[[:digit:]]\+ \([[:digit:]a-f]\{2\}:\)\{15\}[[:digit:]a-f]\{2\} .* (.*)$" )"
+
+		# Check if it is a forwarded agent
+		if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
 		then
-			## We have a running ssh agent
-			# get list of keys
-			if [ "$( ssh-add -l | grep "^[[:digit:]]\+ \([[:digit:]a-f]\{2\}:\)\{15\}[[:digit:]a-f]\{2\} .* (.*)$" )" != "" ]
+			# That's a local agent
+			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_keys"
+				AGENTCHAR="★"
 			else
 				AGENTCOLOR="empty"
+				AGENTCHAR="☆"
 			fi
-			AGENTS=$C_$agent_colors[$AGENTCOLOR]$_C"★"
+		else
+			# That's a forwarded agent
+			if [ "$SSH_AGENT_KEYLIST" != "" ]
+			then
+				AGENTCOLOR="has_keys"
+				AGENTCHAR="●"
+			else
+				AGENTCOLOR="empty"
+				AGENTCHAR="○"
+			fi
 		fi
+
+		AGENTS=$C_$agent_colors[$AGENTCOLOR]$_C"$AGENTCHAR"
 	fi
+
 	GPG_AGENT_PID="$(echo $GPG_AGENT_INFO | cut -d: -f2)"
 	if [ "$GPG_AGENT_PID" != "" -a -e /proc/$GPG_AGENT_PID/cmdline ]
 	then

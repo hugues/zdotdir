@@ -27,9 +27,8 @@ screen -list
 #[ -x ~/sbin//calendrier ] && ~/sbin/calendrier
 
 #cmd_exists remind && remind -n
-#
-#cmd_exists keychain && eval $(keychain --eval --quiet --quick --inherit any-once --stop others)
-#cmd_exists keychain && keychain --quiet --quick --clear
+
+cmd_exists keychain && eval $(keychain --eval --inherit any-once --stop others)
 #keychain id_dsa 593F1F92
 
 chpwd

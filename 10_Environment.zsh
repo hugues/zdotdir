@@ -19,14 +19,8 @@
 export SHELL=`which zsh`
 
 ## Agent de clefs SSH/GPG
-if [ "$SUDO_USER" = "" ]
-then
-	KEYCHAIN=~/.keychain/$(hostname)-sh
-	for file in $(find $KEYCHAIN:h -name "$(hostname)-sh" -o -name "$(hostname)-sh-*")
-	do
-		source $file
-	done
-fi
+KEYCHAIN=~/.keychain/$(hostname)-sh
+
 
 ## Colors 
 autoload colors && colors
