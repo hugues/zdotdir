@@ -48,9 +48,13 @@ TIMEFMT='`%J` -- %P cpu
  System	%S
   Total	%E'
 
+KEYTIMEOUT=1
+
+# Displays who is logging in or out
 WATCHFMT=$c_$color[bold]$_c"%n"$c_$color[none]$_c" has "$c_$color[bold]$_c"%a"$c_$color[none]$_c" %l from %M"
 WATCH=notme
 
+# Word delimiters
 WORDCHARS='*?-_~!#$%^' ## Caractères faisant partie des mots
                         ## J'ai viré les  '/()[]{}'
 
