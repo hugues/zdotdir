@@ -58,3 +58,14 @@ zle-line-init() { zle vi-cmd-mode }
 zle -N zle-line-init
 # Go see man zshzle for more details.
 
+zle-keymap-select()
+{
+	# $1      is the old keymap
+	# $KEYMAP is the new one
+
+	local curr="$([ "$KEYMAP" = "main" ] && echo "viins" || echo $KEYMAP)"
+
+	term_title " [$curr]"
+
+}
+zle -N zle-keymap-select
