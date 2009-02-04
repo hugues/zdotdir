@@ -50,11 +50,15 @@ test $TERM = 'xterm' &&
 # npo : which-command est sur ESC-? par defaut
 # Lancez ``bindkey'' pour en savoir plus !!
 
-main=viins
+set_keymap()
+{
+	main=$1
+	bindkey -A main $main
+}
 # Vi-mode
-bindkey -A main $main
+set_keymap viins
 
-for keymap in viins vicmd
+for keymap in viins vicmd emacs
 do
 	bindkey -M $keymap -s 'r' 'Q rehash\n'
 	bindkey -M $keymap -s 'R' 'Q reset\n'
