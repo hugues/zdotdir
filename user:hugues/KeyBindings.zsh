@@ -23,10 +23,6 @@ bindkey '[C' forward-word			# ESC right
 bindkey '[D' backward-word			# ESC left
 bindkey '[3~' kill-region			# ESC del
 
-# Pratique pour rehasher rapidement
-bindkey -s 'r' 'Q rehash\n'
-bindkey -s 'R' 'Q reset\n'
-
 test $TERM = 'rxvt' -o $TERM = 'xterm' -o $TERM = 'aterm' &&
 {
     bindkey '[1~' beginning-of-line	# home
@@ -43,12 +39,6 @@ test $TERM = 'xterm' &&
     bindkey 'OH' beginning-of-line	# home
     bindkey 'OF' end-of-line		# end-of-line
 }
-#bindkey '\C-t' gosmacs-transpose-chars	# J, ca c'est un truc pour toi
-# ne pas oublier de s'en servir :
-# vi-match-bracket est sur ^X^B par defaut
-# npo : quote-region est sur ESC-' par defaut
-# npo : which-command est sur ESC-? par defaut
-# Lancez ``bindkey'' pour en savoir plus !!
 
 set_keymap()
 {
