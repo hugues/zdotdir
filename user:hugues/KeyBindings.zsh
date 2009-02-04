@@ -82,11 +82,17 @@ do
 	bindkey -M $keymap -s 'S' 'Q sudo !!'
 
 	bindkey -M $keymap -s 'X' 'Q exec zsh\n'
+
+	bindkey -M $keymap -s 'OA' 'up-line-or-history'
+	bindkey -M $keymap -s 'OB' 'down-line-or-history'
+	bindkey -M $keymap -s 'OC' 'forward-word'
+	bindkey -M $keymap -s 'OD' 'backward-word'
+
+	bindkey -M $keymap "q" push-line
+	bindkey -M $keymap "Q" push-line
 done
 
-# redefines push-line
-bindkey -M viins "q" push-line
-bindkey -M viins "Q" push-line
+# redefines push-line for vicmd
 bindkey -M vicmd -s "q" "iq"
 bindkey -M vicmd -s "Q" "iQ"
 
