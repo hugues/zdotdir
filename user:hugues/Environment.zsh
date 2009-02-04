@@ -48,6 +48,8 @@ TIMEFMT='`%J` -- %P cpu
  System	%S
   Total	%E'
 
+KEYTIMEOUT=1 # 0.01s
+
 WATCHFMT=$c_$color[bold]$_c"%n"$c_$color[none]$_c" has "$c_$color[bold]$_c"%a"$c_$color[none]$_c" %l from %M"
 WATCH=notme
 
