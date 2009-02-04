@@ -50,12 +50,69 @@ test $TERM = 'xterm' &&
 # npo : which-command est sur ESC-? par defaut
 # Lancez ``bindkey'' pour en savoir plus !!
 
-bindkey -A vicmd main ; source $0:h/Bindings
-bindkey -s 'Q' 'ixpush-line'
-bindkey -s 'q' 'ixpush-line'
-bindkey -A viins main ; source $0:h/Bindings
+main=viins
+# Vi-mode
+bindkey -A main $main
+
+for keymap in viins vicmd
+do
+	bindkey -M $keymap -s 'r' 'Q rehash\n'
+	bindkey -M $keymap -s 'R' 'Q reset\n'
+
+	bindkey -M $keymap -s 't' 'Q todo\n'
+	#bindkey -M $keymap -s 'T' 'Q todo all -c\n'
+
+	bindkey -M $keymap -s 'é' ' 2>/dev/null '
+	bindkey -M $keymap -s '2' ' 2>&1 '
+
+	bindkey -M $keymap -s 'm' 'Q make\n'
+	bindkey -M $keymap -s 'M' 'Q make\n'
+
+	bindkey -M $keymap -s 'l' 'Q l\n'
+
+	bindkey -M $keymap -s ' ' '\\ '
+
+	bindkey -M $keymap -s 'g' 'Q git-status\n'
+	bindkey -M $keymap -s 'G' 'Q git-repack -d -a\n'
+
+	bindkey -M $keymap -s 'S' 'Q sudo !!'
+
+	bindkey -M $keymap -s 'X' 'Q exec zsh\n'
+done
+
+# redefines push-line
+bindkey -M viins "q" push-line
+bindkey -M viins "Q" push-line
+bindkey -M vicmd -s "q" "iq"
+bindkey -M vicmd -s "Q" "iQ"
+
+# Sets vicmd-mode vim-compliant
+bindkey -M vicmd "u" "undo"
+bindkey -M vicmd "" "redo"
+bindkey -M vicmd "j" "history-search-forward"
+bindkey -M viins "j" "history-search-forward"
+bindkey -M vicmd "k" "history-search-backward"
+bindkey -M viins "k" "history-search-backward"
+
+
+menuselect_vi-mode()
+{
+	# Sets menuselect vim-compliant
+	bindkey -M menuselect "j" "down-line-or-history"
+	bindkey -M menuselect "k" "up-line-or-history"
+	bindkey -M menuselect "h" "backward-char"
+	bindkey -M menuselect "l" "forward-char"
+}
 
 # Enters vi-cmd mode at each prompt
-zle-line-init() { zle vi-cmd-mode }
-zle -N zle-line-init
+#zle-line-init() { zle vi-cmd-mode }
+#zle -N zle-line-init
 
+# Show the current keymap used
+zle-keymap-select()
+{
+	local keymap=$( [ $KEYMAP = "main" ] && echo "$main" || echo $KEYMAP )
+	term_title " [$keymap]"
+}
+zle -N zle-keymap-select
+zle -N zle-line-init zle-keymap-select
