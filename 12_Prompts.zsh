@@ -8,6 +8,7 @@
 ## these files with or without this notice.
 ## 
 
+prompt_colors[generic]=`print -Pn "%(! $PS1_ROOT $PS1_USER)"`
 set_prompt_colors $prompt_colors[generic]
 
 ## Prompts
