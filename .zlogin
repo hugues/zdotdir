@@ -28,7 +28,7 @@ screen -list
 
 #cmd_exists remind && remind -n
 
-cmd_exists keychain && eval $(keychain --eval --inherit any-once --stop others)
+cmd_exists keychain && eval $(keychain --eval --inherit any-once --quick)
 #keychain id_dsa 593F1F92
 
 chpwd
