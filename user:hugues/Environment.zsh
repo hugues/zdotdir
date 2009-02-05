@@ -48,7 +48,7 @@ TIMEFMT='`%J` -- %P cpu
  System	%S
   Total	%E'
 
-KEYTIMEOUT=1 # 0,01 sec
+KEYTIMEOUT=0 # 0,00 sec
 
 # Displays who is logging in or out
 WATCHFMT=$c_$color[bold]$_c"%n"$c_$color[none]$_c" has "$c_$color[bold]$_c"%a"$c_$color[none]$_c" %l from %M"
