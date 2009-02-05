@@ -102,8 +102,8 @@ update_prompt()
 
 	# GPG/SSH agents
 	AGENTS=""
-	[ -f ${KEYCHAIN}     ] && source ${KEYCHAIN}
-	[ -f ${KEYCHAIN}-gpg ] && source ${KEYCHAIN}-gpg
+	[ -f "${KEYCHAIN}"     ] && source ${KEYCHAIN}
+	[ -f "${KEYCHAIN}-gpg" ] && source ${KEYCHAIN}-gpg
 
 	# Check ssh-agent only if the env socket has been set and is accessible
 	if [ -S "$SSH_AUTH_SOCK" ]
