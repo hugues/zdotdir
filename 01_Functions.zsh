@@ -129,7 +129,7 @@ normal_user ()
 	if [ -e /etc/login.defs ]
 	then
 		eval `grep -v '^[$#]' /etc/login.defs | grep "^UID_" | tr -d '[:blank:]' | sed 's/^[A-Z_]\+/&=/'`
-		[ \( $UID -ge $UID_MIN \) -a \( $UID -le $UID_MAX \) ]
+		[ \( $UID -ge $UID_MIN \) ]
 	else
 		[ "`whoami`" != "root" ]
 	fi
