@@ -66,10 +66,10 @@ if [ -d $ZDOTDIR ]; then
 				source $specific_script
 				[ "$DEBUG" = "yes" ] && echo
 			fi
-			if test -f $specific_script:r.gpg
+			if test -f $specific_script.gpg
 			then
-        		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/}... ";
-				gpg --decrypt $specific_script | source
+        		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/}.gpg... ";
+				eval $(gpg --decrypt $specific_script.gpg)
 				[ "$DEBUG" = "yes" ] && echo
 			fi
         done
