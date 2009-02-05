@@ -24,6 +24,7 @@ typeset -A prompt_colors git_colors mail_colors correct_colors battery_colors da
 
 PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
+PS1_SUDO=${PS1_SUDO:-$color[green]}
 PS1_USER_SSH=${PS1_USER_SSH:-$color[magenta]}
 PS1_USER_SCR=${PS1_USER_SCR:-$color[cyan]}
 
@@ -33,23 +34,6 @@ PS1_USER_SCR=${PS1_USER_SCR:-$color[cyan]}
 #
 set_prompt_colors ()
 {
-	prompt_colors[generic]=`print -Pn "%(! $PS1_ROOT $PS1_USER)"`
-
-	if normal_user
-	then
-		if ( [ "$SSH_TTY" != "" ] )
-		then
-			# This allows us to easily distinguish shells
-			# which really are on the local machine or not.
-			# That's so good, use it ! :-)
-			prompt_colors[generic]=${PS1_USER_SSH:-$prompt_colors[generic]}
-		fi
-		if ( [ "$TERM" = "screen" ] )
-		then
-			prompt_colors[generic]=${PS1_USER_SCR:-$prompt_colors[generic]}
-		fi
-	fi
-
 	local my_generic
 	my_generic=${1:-$prompt_colors[generic]}
 	prompt_colors[bold_generic]="$my_generic;$color[bold]" ## Always bold generic color
@@ -96,8 +80,6 @@ set_prompt_colors ()
 	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
 }
-
-set_prompt_colors
 
 correct_colors[error]="$color[red];$color[bold]"
 correct_colors[suggest]="$color[blue];$color[bold]"
