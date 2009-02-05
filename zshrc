@@ -60,10 +60,16 @@ if [ -d $ZDOTDIR ]; then
 					"host:$HOST/user:$SUDO_USER"
         do
             specific_script=${script:h}/$i/${${script:t}/??_/}
-            if test -f $specific_script
+			if test -f $specific_script
 			then
         		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/}... ";
 				source $specific_script
+				[ "$DEBUG" = "yes" ] && echo
+			fi
+			if test -f $specific_script:r.gpg
+			then
+        		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/}... ";
+				gpg --decrypt $specific_script | source
 				[ "$DEBUG" = "yes" ] && echo
 			fi
         done
