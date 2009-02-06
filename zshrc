@@ -69,7 +69,7 @@ if [ -d $ZDOTDIR ]; then
             if test -f $specific_script.gpg
 			then
         		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/} [CRYPTED]... ";
-				eval $(gpg --homedir=~/.gnupg --decrypt $specific_script.gpg)
+				eval $(gpg --decrypt $specific_script.gpg)
 				[ "$DEBUG" = "yes" ] && echo
 			fi
         done
