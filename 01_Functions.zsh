@@ -104,7 +104,7 @@ get_git_status ()
 		return
 	fi
 
-	if   [ "$(git-diff --cached 2>&- | grep '^diff ')" != "" ] ; then 
+	if   [ "$(git-diff --cached 2>&- | grep '^diff ' | head -n1 )" != "" ] ; then 
 		cached="yes"
 	fi
 	if [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
