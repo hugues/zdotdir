@@ -23,8 +23,8 @@ export STLINUXBASE=/opt/STM/STLinux-$STLINUXRELEASE
 export STLINUXROOT=$STLINUXBASE/devkit/sh4/
 
 #export FORGE=http://g178241@forge-urd44.osn.sagem/svn/
-#export GET_KERNEL_METHOD=svn
-export GET_KERNEL_METHOD=git
+export GET_KERNEL_METHOD=svn
+#export GET_KERNEL_METHOD=git
 
 export KERNEL_PATH_BASE=~work/Kernel/exports/
 export COMP=ARCH=sh\ CROSS_COMPILE=sh4-linux-
