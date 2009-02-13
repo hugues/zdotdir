@@ -27,14 +27,15 @@ term_title()
   [[ -t 1 ]] &&
     case $TERM in
       sun-cmd)
-        print -Pn "\e]l%n@%m %~$1\e\\"				# Never tested..
+        print -Pn "\e]l%n@%m %~$@\e\\"				# Never tested..
 		;;
       *term*|rxvt*|putty)
-	    print -Pn "\e]0;%n@%m (%l) %~$1\a"			# Sets term title
+	    print -Pn "\e]0;%n@%m (%l) %~$@\a"			# Sets term title
 		;;
 	  screen)
-	    print -Pn "\e]2;[SCREEN] %n@%m (%l) %~$1\a" # Sets term title
-		print -Pn "\ek%n@%m (%l) %~$1\e\\"			# Sets screen title
+	    print -Pn "\e]2;[SCREEN #n] %n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
+		[ $# -gt 0 ] && shift # discards separator
+		print -Pn "\ek${@:-%n@%m (%l) %~}\e\\"			# Sets screen title
 		;;
 	  *)
 	  	;;
