@@ -33,9 +33,11 @@ term_title()
 	    print -Pn "\e]0;%n@%m (%l) %~$@\a"			# Sets term title
 		;;
 	  screen)
-	    print -Pn "\e]2;[SCREEN #n] %n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
-		[ $# -gt 0 ] && shift # discards separator
-		print -Pn "\ek${@:-%n@%m (%l) %~}\e\\"			# Sets screen title
+		# hardstatus
+	    print -Pn "\e]2;[SCREEN #n] ?u(u) ?%n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
+		# caption
+		[ $# -gt 0 ] && shift # discards the first arg, which is the separator, if any
+		print -Pn "\ek${@:-%~}\e\\"
 		;;
 	  *)
 	  	;;
