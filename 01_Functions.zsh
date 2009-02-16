@@ -24,24 +24,34 @@ cmd_exists ()
 
 term_title()
 {
-  [[ -t 1 ]] &&
-    case $TERM in
-      sun-cmd)
-        print -Pn "\e]l%n@%m %~$@\e\\"				# Never tested..
-		;;
-      *term*|rxvt*|putty)
-	    print -Pn "\e]0;%n@%m (%l) %~$@\a"			# Sets term title
-		;;
-	  screen)
-		# hardstatus
-	    print -Pn "\e]2;[SCREEN #n] ?u(u) ?%n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
-		# caption
-		[ $# -gt 0 ] && shift # discards the first arg, which is the separator, if any
-		print -Pn "\ek${@:-%~}\e\\"
-		;;
-	  *)
-	  	;;
-    esac
+
+	# Jobs
+	typeset -A command
+	for word in ${=2} ; command[$#comand]=$word
+	if [ "$command[0]" = "fg" ]
+	then
+		lastjob=$(ps ft `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
+		set $1 $lastjob
+	fi
+
+	[[ -t 1 ]] &&
+		case $TERM in
+		  sun-cmd)
+			print -Pn "\e]l%n@%m %~$@\e\\"				# Never tested..
+			;;
+		  *term*|rxvt*|putty)
+			print -Pn "\e]0;%n@%m (%l) %~$@\a"			# Sets term title
+			;;
+		  screen)
+			# hardstatus
+			print -Pn "\e]2;[SCREEN #n] ?u(u) ?%n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
+			# caption
+			[ $# -gt 0 ] && shift # discards the first arg, which is the separator, if any
+			print -Pn "\ek${@:-%~}\e\\"
+			;;
+		  *)
+			;;
+		esac
 }
 
 preprint()
