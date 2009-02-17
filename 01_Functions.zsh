@@ -81,6 +81,7 @@ get_git_branch ()
 	# Rebase in progress ?
 	REBASE="";
 	[ -e $(git-rev-parse --git-dir)/../.dotest/rebasing ] && REBASE="rebase:"
+	[ -d $(git-rev-parse --git-dir)/rebase-merge ] && REBASE="rebase:"
 
 	# Get current working GIT branch
 	my_git_branch="$REBASE$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
