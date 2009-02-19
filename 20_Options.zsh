@@ -58,7 +58,7 @@ setopt Extended_History
 setopt Hist_Expire_Dups_First
 setopt Hist_Ignore_All_Dups
 setopt Hist_Ignore_Space
-setopt Hist_No_Functions
+unsetopt Hist_No_Functions
 unsetopt Hist_No_Store
 setopt Hist_Reduce_Blanks
 setopt Inc_Append_History
