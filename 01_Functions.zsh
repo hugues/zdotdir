@@ -42,7 +42,7 @@ term_title()
 		  *term*|rxvt*|putty)
 			print -Pn "\e]0;%n@%m (%l) %~$@\a"			# Sets term title
 			;;
-		  screen)
+		  screen*)
 			# hardstatus
 			print -Pn "\e]2;[SCREEN #n] ?u(u) ?%n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
 			# caption
