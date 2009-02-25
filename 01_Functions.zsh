@@ -113,7 +113,7 @@ get_git_status ()
 	then return
 	fi
 
-	if [ "$(git-rev-parse --git-dir)" == "." ] ; then
+	if [ "$(git-rev-parse --is-inside-git-dir)" == "true" ] ; then
 		echo "$git_colors[managment_folder]"
 		return
 	fi
