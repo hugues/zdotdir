@@ -28,59 +28,6 @@ PS1_SUDO=${PS1_SUDO:-$color[green]}
 PS1_USER_SSH=${PS1_USER_SSH:-$color[magenta]}
 PS1_USER_SCR=${PS1_USER_SCR:-$color[cyan]}
 
-# 
-# This func is intended to give a quick way to set the colors for the 
-# prompt inside a running zsh-session
-#
-set_prompt_colors ()
-{
-	local my_generic
-	my_generic=${1:-$prompt_colors[generic]}
-	prompt_colors[bold_generic]="$my_generic;$color[bold]" ## Always bold generic color
-	prompt_colors[soft_generic]=$(echo "$my_generic" | tr ';' '\n' | grep -v "^1$" | tr '\n' ';' | sed 's/\;$//') ## Always soft generic color
-
-	prompt_colors[path]="$my_generic;$color[bold]"			# pwd
-	#prompt_colors[term]="$my_generic"							# tty
-	prompt_colors[user]="$my_generic"							# login
-	prompt_colors[host]="$my_generic"							# hostname
-	#prompt_colors[hist]="$color[none]"									# history number
-	prompt_colors[arob]="$color[bold];$my_generic"	# <login>@<hostname>
-	prompt_colors[dies]="$my_generic"							# the bottom-end of the prompt
-	prompt_colors[doubledot]="$color[none]"							# separates pwd from git-branch
-	#prompt_colors[paren]="$color[cyan]"					# parenthesis (around tty)
-	prompt_colors[bar]="$my_generic;$color[bold]"				# horizontal bar
-	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date)
-	prompt_colors[error]="$color[bold];$color[yellow]"					# error code
-
-	date_colors[normal]=$prompt_colors[soft_generic]
-	date_colors[exec]=$prompt_colors[bold_generic]
-	prompt_colors[date]=$date_colors[normal]							# full date
-
-	prompt_colors[cmd]="$color[none]"									# command prompt
-	prompt_colors[exec]="$color[none]"									# command output
-
-	battery_colors[full]="$prompt_colors[soft_generic]"
-	battery_colors[charging]="$prompt_colors[bold_generic]"
-	battery_colors[uncharging]="$prompt_colors[soft_generic]"
-	battery_colors[critical]="$color[bg-red];$prompt_colors[bold_generic]"
-
-	mail_colors[unread]="$color[yellow];$color[bold]"		# mail received
-	mail_colors[listes]="$my_generic;$color[bold]"		# less important mail received
-
-	agent_colors[empty]="$prompt_colors[soft_generic]"
-	agent_colors[has_keys]="$color[bold];$color[yellow]"
-
-	prompt_colors[up_to_date]="$my_generic"						# up-to-date
-	prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date
-	prompt_colors[to_be_commited]="$color[yellow];$color[bold]"	# changes in cache
-
-	git_colors[managment_folder]="$color[red];$color[bold]"   # .git/... folder browsing
-	git_colors[cached]="$prompt_colors[to_be_commited]"                     # git changes in cache
-	git_colors[cached_and_not_up_to_date]="$prompt_colors[not_up_to_date];$color[bold]"
-	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
-	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
-}
-
 correct_colors[error]="$color[red];$color[bold]"
 correct_colors[suggest]="$color[blue];$color[bold]"
 
