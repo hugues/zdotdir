@@ -41,3 +41,7 @@ export PATH=~/local/bin:~/local/sbin:$PATH
 #--------[ Shared Folders ]-----------------------------------------
 hash -d K:=/media/osn01001/Projets_STB
 hash -d J:=/media/osn02001/Echanges
+
+# proxy
+export http_proxy="http://190.99.3.97:3128"
+export ftp_proxy=$http_proxy
