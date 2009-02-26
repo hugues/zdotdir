@@ -15,7 +15,7 @@
 export BC_ENV_ARGS="-q"
 
 ## Editeur par défaut
-export EDITOR=`which vim || which vi || which emacs`
+export EDITOR=`which -p vim || which -p vi || which -p emacs`
 export VISUAL=$EDITOR
 export FCEDIT=$EDITOR
 

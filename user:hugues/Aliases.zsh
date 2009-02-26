@@ -30,9 +30,9 @@ then
 
 	if ( vim --version | grep -E "+clientserver" >/dev/null )
 	then
-		if ( cmd_exists vimtab )
+		if ( cmd_exists vims )
 		then
-			a vim='vimtab'
+			a vim='vim --servername `print -P "%l"`'
 		fi
 	fi
 fi
