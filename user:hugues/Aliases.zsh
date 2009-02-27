@@ -7,9 +7,6 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
-alias a=alias
-a una=unalias
-
 a -g ¬ISO='LC_ALL=fr_FR'
 a -g ¬UTF='LC_ALL=fr_FR.UTF-8'
 

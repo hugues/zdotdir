@@ -7,3 +7,7 @@
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
 ## 
+
+alias a=alias
+a una=unalias
+
