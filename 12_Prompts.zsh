@@ -20,7 +20,7 @@ else
 		# That's so good, use it ! :-)
 		prompt_colors[generic]=${PS1_USER_SSH:-$PS1_USER}
 	fi
-	if ( [ "$TERM" = "screen" ] )
+	if ( echo "$TERM" | grep "^screen.*$" >/dev/null )
 	then
 		# Are we under a screen session ?
 		prompt_colors[generic]=${PS1_USER_SCR:-$PS1_USER}
