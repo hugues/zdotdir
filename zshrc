@@ -14,6 +14,7 @@
 # 
 # If you want to make user, host or network specific configurations,
 # add your specific scripts to the folders
+#  - "sys:$(uname -s)" for OS-specific conf,
 #  - "user:$(whoami)" for user-specific conf,
 #  - "host:$(hostname -s)" for host-specific conf,
 #  - "net:$(domainname)" for network-specific conf,
@@ -28,6 +29,7 @@ mkdir -p $ZDOTDIR
 # Useful environment variables which may be used
 # at any time - We compute them now to avoid calling
 # the required processes each time we'll need.
+OSNAME=`uname -s`
 USER=${USER:-`whoami`}
 UID=${UID:-`id -u`}
 HOST=$HOST:r
@@ -49,15 +51,24 @@ if [ -d $ZDOTDIR ]; then
 
         for i in	"net:$DOMAIN"\
 					"host:$HOST"\
+					"sys:$OSNAME"\
 					"user:$USER"\
 					"user:$SUDO_USER"\
 					"net:$DOMAIN/host:$HOST"\
+					"net:$DOMAIN/sys:$OSNAME"\
 					"net:$DOMAIN/user:$USER"\
 					"net:$DOMAIN/user:$SUDO_USER"\
+					"net:$DOMAIN/host:$HOST/sys:$OSNAME"\
 					"net:$DOMAIN/host:$HOST/user:$USER"\
 					"net:$DOMAIN/host:$HOST/user:$SUDO_USER"\
+					"net:$DOMAIN/host:$HOST/sys:$OSNAME"\
+					"net:$DOMAIN/host:$HOST/sys:$OSNAME/user:$USER"\
+					"net:$DOMAIN/host:$HOST/sys:$OSNAME/user:$SUDO_USER"\
+					"host:$HOST/sys:$OSNAME"\
 					"host:$HOST/user:$USER"\
-					"host:$HOST/user:$SUDO_USER"
+					"host:$HOST/user:$SUDO_USER"\
+					"host:$HOST/sys:$OSNAME/user:$USER"\
+					"host:$HOST/sys:$OSNAME/user:$SUDO_USER"
         do
             specific_script=${script:h}/$i/${${script:t}/??_/}
             if test -f $specific_script
