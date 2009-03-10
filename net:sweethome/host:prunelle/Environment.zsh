@@ -8,24 +8,6 @@
 ## these files with or without this notice.
 ## 
 
-if ( [ "`uname -s`" = "Darwin" ] )
-then
-	export DISPLAY=:0
-
-	## Fink / DarwinPorts
-
-	MANPATH=/usr/share/man
-	INFOPATH=/usr/share/info
-
-	for i in usr/X11R6 dp sw ; do
-		export PATH=$PATH:/$i/bin:/$i/sbin
-		export MANPATH=$MANPATH:/$i/share/man
-		export INFOPATH=$INFOPATH:/$i/share/info
-	done
-
-	typeset -gU PATH MANPATH INFOPATH
-fi
-
 PS1_USER="1"
 if [ "$OSTYPE" = "linux-gnu" ]
 then
