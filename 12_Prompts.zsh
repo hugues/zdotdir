@@ -46,8 +46,6 @@ set_prompt_colors
 # precmd	: avant d'afficher le prompt
 #
 
-SEPARATOR=$C_$prompt_colors[bar]$_C"-"
-
 expand_text()
 {
 	# strips the %{...%}
@@ -101,7 +99,7 @@ set_prompt_date()
 {
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$SEPARATOR
+	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$C_$prompt_colors[bar]$_C"-"
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
@@ -113,7 +111,7 @@ update_prompt()
 	error=$(print -Pn "%(?;;-%?)") ## MUST BE the first operation else we lose the error code...
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
-	ERROR="%(?;;"$SEPARATOR$C_$prompt_colors[error]$_C"%?)"
+	ERROR="%(?;;"$C_$prompt_colors[bar]$_C"-"$C_$prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -170,7 +168,7 @@ update_prompt()
 			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C"☆"
 		fi
 	fi
-	AGENTS=${AGENTS:+$SEPARATOR$AGENTS}
+	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C"-"$AGENTS}
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	
