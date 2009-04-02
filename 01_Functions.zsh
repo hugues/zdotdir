@@ -161,22 +161,27 @@ privileged_user ()
 set_prompt_colors ()
 {
 	local my_generic
+	# Get the generic color from cmdline, else from envvar...
 	my_generic=${1:-$prompt_colors[generic]}
-	prompt_colors[bold_generic]="$my_generic;$color[bold]" ## Always bold generic color
-	prompt_colors[soft_generic]=$(echo "$my_generic" | tr ';' '\n' | grep -v "^1$" | tr '\n' ';' | sed 's/\;$//') ## Always soft generic color
+	# ...then stores it to envvar. :)
+	prompt_colors[generic]=$my_generic
 
-	prompt_colors[path]="$my_generic;$color[bold]"			# pwd
-	#prompt_colors[term]="$my_generic"							# tty
-	prompt_colors[user]="$my_generic"							# login
-	prompt_colors[host]="$my_generic"							# hostname
-	#prompt_colors[hist]="$color[none]"									# history number
-	prompt_colors[arob]="$color[bold];$my_generic"	# <login>@<hostname>
-	prompt_colors[dies]="$my_generic"							# the bottom-end of the prompt
-	prompt_colors[doubledot]="$color[none]"							# separates pwd from git-branch
-	#prompt_colors[paren]="$color[cyan]"					# parenthesis (around tty)
-	prompt_colors[bar]="$my_generic;$color[bold]"				# horizontal bar
-	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date)
-	prompt_colors[error]="$color[bold];$color[yellow]"					# error code
+	# Get soft and bold values of generic color, whichever it is bold or not
+	prompt_colors[bold_generic]="$(echo "$prompt_colors[generic]" | tr ';' '\n' | grep -v "^$color[bold]$" | tr '\n' ';' | sed 's/\;$//');$color[bold]"
+	prompt_colors[soft_generic]="$(echo "$prompt_colors[generic]" | tr ';' '\n' | grep -v "^$color[bold]$" | tr '\n' ';' | sed 's/\;$//')"
+
+	prompt_colors[path]="$prompt_colors[generic];$color[bold]"			# pwd - bold generic
+	#prompt_colors[term]="$prompt_colors[generic]"							# tty - unused, see term title
+	prompt_colors[user]="$prompt_colors[generic]"							# login - generic
+	prompt_colors[host]="$prompt_colors[generic]"							# hostname - generic
+	#prompt_colors[hist]="$color[none]"									# history number - unused
+	prompt_colors[arob]="$color[bold];$prompt_colors[generic]"	# <login>@<hostname> - bold generic
+	prompt_colors[dies]="$prompt_colors[generic]"							# the bottom-end of the prompt - generic
+	prompt_colors[doubledot]="$color[none]"							# separates pwd from git-branch - none
+	#prompt_colors[paren]="$color[cyan]"					# parenthesis (around tty) - unused, see term title
+	prompt_colors[bar]="$prompt_colors[generic];$color[bold]"				# horizontal bar - bold generic
+	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date) - bar color
+	prompt_colors[error]="$color[bold];$color[yellow]"					# error code - bold yellow
 
 	date_colors[normal]=$prompt_colors[soft_generic]
 	date_colors[exec]=$prompt_colors[bold_generic]
@@ -191,12 +196,12 @@ set_prompt_colors ()
 	battery_colors[critical]="$color[bg-red];$prompt_colors[bold_generic]"
 
 	mail_colors[unread]="$color[yellow];$color[bold]"		# mail received
-	mail_colors[listes]="$my_generic;$color[bold]"		# less important mail received
+	mail_colors[listes]="$prompt_colors[generic];$color[bold]"		# less important mail received
 
 	agent_colors[empty]="$prompt_colors[soft_generic]"
 	agent_colors[has_keys]="$color[bold];$color[yellow]"
 
-	prompt_colors[up_to_date]="$my_generic"						# up-to-date
+	prompt_colors[up_to_date]="$prompt_colors[generic]"						# up-to-date
 	prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date
 	prompt_colors[to_be_commited]="$color[yellow];$color[bold]"	# changes in cache
 
