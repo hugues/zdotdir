@@ -31,6 +31,9 @@ export LC_ALL=${LC_ALL:-fr_FR.UTF-8}
 export LC_MESSAGES=${LC_MESSAGES:-fr_FR}
 unset LANG # Unuseful
 
+# Utilisation des commandes git-*
+[ -d /usr/lib/git-core ] && export PATH=$PATH:/usr/lib/git-core
+
 # Couleurs pour grep --color=auto
 export GREP_COLOR=$color[yellow]\;$color[bold]
 
