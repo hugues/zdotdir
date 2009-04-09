@@ -132,6 +132,14 @@ update_prompt()
 		# Get keylist
 		SSH_AGENT_KEYLIST="$( ssh-add -l | grep "^[[:digit:]]\+ \([[:digit:]a-f]\{2\}:\)\{15\}[[:digit:]a-f]\{2\} .* (.*)$" )"
 
+		local _is_multibyte_compliant
+		if ( echo ${(k)options} | grep "multibyte" >/dev/null && [ "$options[multibyte]" = "on" ] )
+		then
+			_is_multibyte_compliant=1
+		else
+			_is_multibyte_compliant=0
+		fi
+
 		# Check if it is a forwarded agent
 		if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
 		then
@@ -139,20 +147,20 @@ update_prompt()
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_keys"
-				AGENTCHAR=${AGENT_WITH_KEYS:-"★"}
+				AGENTCHAR=${AGENT_WITH_KEYS:-$( [ _is_multibyte_compliant ] && echo "★" || echo "§" )}
 			else
 				AGENTCOLOR="empty"
-				AGENTCHAR=${AGENT_EMPTY:-"☆"}
+				AGENTCHAR=${AGENT_EMPTY:-$( [ _is_multibyte_compliant ] && echo "☆" || echo "§" )}
 			fi
 		else
 			# That's a forwarded agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_keys"
-				AGENTCHAR=${AGENT_SOCK_WITH_KEYS:-"●"}
+				AGENTCHAR=${AGENT_SOCK_WITH_KEYS:-$( [ _is_multibyte_compliant ] && echo "●" || echo "@" )}
 			else
 				AGENTCOLOR="empty"
-				AGENTCHAR=${AGENT_SOCK_EMPTY:-"○"}
+				AGENTCHAR=${AGENT_SOCK_EMPTY:-$( [ _is_multibyte_compliant ] && echo "○" || echo "@" )}
 			fi
 		fi
 
@@ -165,7 +173,7 @@ update_prompt()
 		if [ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ]
 		then
 			AGENTCOLOR="has_keys"
-			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-"☆"}
+			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ _is_multibyte_compliant ] && echo "☆" || echo "G" )}
 		fi
 	fi
 	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C"-"$AGENTS}
