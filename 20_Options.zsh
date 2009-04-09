@@ -13,68 +13,106 @@
 # see man zshoptions(1) for more details ;-)
 #
 
+function _setopt() {
+	_test_and_set $1 on
+}
+function _unsetopt() {
+	_test_and_set $1 off
+}
+
+function _test_and_set() {
+	local option=${(L)1//_/} # lowercase and no '_'
+
+	case "$option" in
+		"no"*)
+			option=${option/no/}
+			# resets $1 and $2
+			set $option off
+			;;
+	esac
+
+	if ( echo ${(k)options} | grep $option >/dev/null )
+	then
+		# option exists, set it.
+		case "$2" in
+			on)
+				[ "$DEBUG" = "yes" ] && echo "setopt $option" >&2
+				setopt $option
+				;;
+			off)
+				[ "$DEBUG" = "yes" ] && echo "unsetopt $option" >&2
+				unsetopt $option
+				;;
+		esac
+	else
+		[ "$DEBUG" = "yes" ] && echo "$option not supported by this version of zsh !" >&2
+	fi
+}
+
+
+
 # J'ai pas très bien compris mais en gros ça va me permettre
 # d'être sûr de retrouver ma commande dans tous les cas...
-setopt Always_Last_Prompt
+_setopt Always_Last_Prompt
 
-setopt Always_to_End
+_setopt Always_to_End
 
 # Je préfère nettement faire un "export" sur les variables qui
 # m'intéressent plutôt qu'utiliser cette option, car ça fait un
 # peu porkasse quand même...
-unsetopt All_Export
+_unsetopt All_Export
 
 ## ``cd'' automatique
 # Si la commande n'existe pas et qu'elle correspond à
 # un dossier, zsh fait automatiquement un ``cd'' dessus.
 # Pour les fainéants qui ont la flemme de taper "cd " :-)
-setopt Auto_Cd
+_setopt Auto_Cd
 
 ## Envoie le signal CONT aux jobs passés en arrière-plan. 
-setopt Auto_Continue
+_setopt Auto_Continue
 
 ## Complétion automatique
-setopt Auto_List
-setopt Auto_Menu
+_setopt Auto_List
+_setopt Auto_Menu
 # Ces trucs sont pénibles car ils n'autorisent pas une
 # complétion "petit à petit".
-unsetopt Menu_Complete
-unsetopt Rec_Exact
+_unsetopt Menu_Complete
+_unsetopt Rec_Exact
 
-setopt Auto_Param_Keys
-unsetopt Auto_Param_Slash
-unsetopt Cd_Able_Vars
-setopt Complete_Aliases
-setopt Complete_in_Word
-unsetopt Correct
-setopt Correct_All
-unsetopt Equals
-setopt Extended_Glob
-setopt Hash_Cmds
-setopt Hash_Dirs
+_setopt Auto_Param_Keys
+_unsetopt Auto_Param_Slash
+_unsetopt Cd_Able_Vars
+_setopt Complete_Aliases
+_setopt Complete_in_Word
+_unsetopt Correct
+_setopt Correct_All
+_unsetopt Equals
+_setopt Extended_Glob
+_setopt Hash_Cmds
+_setopt Hash_Dirs
 
 ## Gestion de l'historique
-setopt Extended_History
-setopt Hist_Expire_Dups_First
-setopt Hist_Ignore_All_Dups
-setopt Hist_Ignore_Space
-unsetopt Hist_No_Functions
-unsetopt Hist_No_Store
-setopt Hist_Reduce_Blanks
-setopt Inc_Append_History
+_setopt Extended_History
+_setopt Hist_Expire_Dups_First
+_setopt Hist_Ignore_All_Dups
+_setopt Hist_Ignore_Space
+_unsetopt Hist_No_Functions
+_unsetopt Hist_No_Store
+_setopt Hist_Reduce_Blanks
+_setopt Inc_Append_History
 
 
-setopt Magic_Equal_Subst
-setopt Mail_Warning
-setopt Mark_Dirs
-setopt No_Bg_Nice
-setopt No_Hup
-setopt No_Prompt_Cr
-setopt Numeric_Glob_Sort
-unsetopt Prompt_Cr
-setopt Auto_Pushd
-setopt Pushd_Ignore_Dups
-setopt Glob
+_setopt Magic_Equal_Subst
+_setopt Mail_Warning
+_setopt Mark_Dirs
+_setopt No_Bg_Nice
+_setopt No_Hup
+_setopt No_Prompt_Cr
+_setopt Numeric_Glob_Sort
+_unsetopt Prompt_Cr
+_setopt Auto_Pushd
+_setopt Pushd_Ignore_Dups
+_setopt Glob
 
 ## Gestion de l'UTF-8 !!
-setopt MultiByte
+_setopt MultiByte
