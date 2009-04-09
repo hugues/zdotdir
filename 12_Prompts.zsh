@@ -139,20 +139,20 @@ update_prompt()
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_keys"
-				AGENTCHAR="★"
+				AGENTCHAR=${AGENT_WITH_KEYS:-"★"}
 			else
 				AGENTCOLOR="empty"
-				AGENTCHAR="☆"
+				AGENTCHAR=${AGENT_EMPTY:-"☆"}
 			fi
 		else
 			# That's a forwarded agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_keys"
-				AGENTCHAR="●"
+				AGENTCHAR=${AGENT_SOCK_WITH_KEYS:-"●"}
 			else
 				AGENTCOLOR="empty"
-				AGENTCHAR="○"
+				AGENTCHAR=${AGENT_SOCK_EMPTY:-"○"}
 			fi
 		fi
 
@@ -165,7 +165,7 @@ update_prompt()
 		if [ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ]
 		then
 			AGENTCOLOR="has_keys"
-			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C"☆"
+			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-"☆"}
 		fi
 	fi
 	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C"-"$AGENTS}
