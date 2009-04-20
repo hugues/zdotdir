@@ -326,11 +326,6 @@ precmd()
 	redisplay_prompt
 }
 
-chpwd()
-{
-    which todo > /dev/null 2>&1 && todo
-}
-
 
 # Prompt level 2
 PS2="$C_$color[yellow];$color[bold]$_C%_$C_$color[none];$color[cyan];$color[bold]$_C>$C_$color[none]$_C "

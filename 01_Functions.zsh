@@ -215,4 +215,32 @@ set_prompt_colors ()
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
 }
 
+chpwd()
+{
+	if cmd_exists when && [ -e .when/.today ]
+	then
+		LATEST=`stat 2>&- --printf="%z\n" .when/.today | cut -d' ' -f1`
+		TODAY=`date "+%Y-%m-%d"`
+
+		if [ "$TODAY" != "$LATEST" ]
+		then
+			when w --calendar=~/.when/birthdays | tail -n+3 > ~/.when/.today
+		fi
+
+		if [ -s ~/.when/.today ]
+		then
+			preprint "événements" $color[bold] ; echo
+			cat ~/.when/.today
+		fi
+	fi
+
+	if cmd_exists todo
+	then
+		if [ $(todo | wc -l) -gt 0 ]
+		then
+			preprint "todo" $color[bold] ; echo
+			todo
+		fi
+	fi
+}
 
