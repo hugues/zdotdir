@@ -1,1 +1,1 @@
-bindkey -s 'm' 'Q mails\n'
+[ -d ~$USER/.procmail ] && bindkey -s 'm' 'Q mails\n'
