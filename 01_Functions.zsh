@@ -47,7 +47,10 @@ term_title()
 			print -Pn "\e]2;[SCREEN #n] ?u(u) ?%n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
 			# caption
 			[ $# -gt 0 ] && shift # discards the first arg, which is the separator, if any
-			print -Pn "\ek${@:-%~}\e\\"
+			print -Pn "\ek"
+			[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
+			print -Pn "${@:-%~}"
+			print -Pn "\e\\"
 			;;
 		  *)
 			;;
