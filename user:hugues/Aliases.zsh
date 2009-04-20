@@ -52,7 +52,8 @@ a RT='find -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp"
 a grep='grep --color=auto'
 a egrep='egrep --color=auto'
 
-a hg='history -E 0| grep'
+# Was 'hg', but conflicts with Mercurial..
+a histg='history -E 0| grep'
 a lg='ls -lap | grep'
 
 a so='cd ${OLDPWD}'
