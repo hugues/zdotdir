@@ -19,9 +19,12 @@ then
 fi
 #cmd_exists calendar && calendar -A0 | sed "s/\(\*.*\)/[1m\1[0m/;s/\(\*.*\*\)/[33;1m\1[0m/" ;\
 
-cmd_exists screen && [ "$(find /var/run/screen/S-$USER/ ! -type d | wc -l)" -gt 0 ] &&\
-preprint "screen" $color[bold] && echo &&\
-screen -list
+cmd_exists screen && screen -list | strings | grep -v "^No Sockets found" > .tmp.screen-list
+[ -s .tmp.screen-list ] \
+&& preprint "screen" $color[bold] && echo \
+&& < .tmp.screen-list \
+&& rm -f .tmp.screen-list
+
 
 #preprint "calendrier" $color[bold] ; echo
 #[ -x ~/sbin//calendrier ] && ~/sbin/calendrier
