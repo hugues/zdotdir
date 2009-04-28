@@ -26,7 +26,8 @@ PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
 PS1_SUDO=${PS1_SUDO:-$color[green]}
 PS1_USER_SSH=${PS1_USER_SSH:-$color[magenta]}
-PS1_USER_SCR=${PS1_USER_SCR:-$color[cyan]}
+#PS1_USER_SCR=${PS1_USER_SCR:-$color[cyan]}
+PS1_USER_SCR=$PS1_USER
 
 correct_colors[error]="$color[red];$color[bold]"
 correct_colors[suggest]="$color[blue];$color[bold]"
