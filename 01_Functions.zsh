@@ -76,15 +76,19 @@ get_git_branch ()
 	local my_git_branch REBASE
 
 	if [ ! -z "$DO_NOT_CHECK_GIT_BRANCH" ]
-	then return
+	then
+		return
 	fi
 
-	[ "$( ( git-ls-tree HEAD . 2>&- ; git-ls-files . 2>&- ) | head -n 1)" == "" ] && return 
+	[ "$( git-ls-files . 2>&- | head -n1)" == "" -a ! -d .git -a "$(git-rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return 
+
+	GIT_DIR=$(git-rev-parse --git-dir)
 
 	# Rebase in progress ?
 	REBASE="";
-	[ -e $(git-rev-parse --git-dir)/../.dotest/rebasing ] && REBASE="rebase:"
-	[ -d $(git-rev-parse --git-dir)/rebase-merge ] && REBASE="rebase:"
+	[ -e $GIT_DIR/../.dotest/rebasing \
+	-o -d $GIT_DIR/rebase-merge ] && \
+		REBASE="rebase:"
 
 	# Get current working GIT branch
 	my_git_branch="$REBASE$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
@@ -100,6 +104,10 @@ get_git_branch ()
 		then
 			my_git_branch="($REBASE$(git-rev-parse HEAD 2>&-))"
 		fi
+	elif [ -f $GIT_DIR/HEAD ]
+	then
+		# On an initial commit !	
+		my_git_branch="<$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | cut -d' ' -f2))>"
 	fi
 
 	echo $my_git_branch
@@ -128,12 +136,16 @@ get_git_status ()
 		not_up_to_date="yes"
 	fi
 
+	GIT_DIR=$(git-rev-parse --git-dir 2>/dev/null)
+
 	if [ "$cached" != "" -a "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[cached_and_not_up_to_date]"
 	elif [ "$cached" != "" ] ; then
 		my_git_status="$git_colors[cached]"
 	elif [ "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[not_up_to_date]"
+	elif [ ! -s $GIT_DIR/$(cat $GIT_DIR/HEAD | cut -d' ' -f2) ] ; then
+		my_git_status="$git_colors[init_in_progress]"
 	else
 		my_git_status="$git_colors[up_to_date]"
 	fi
@@ -212,6 +224,7 @@ set_prompt_colors ()
 	git_colors[cached]="$prompt_colors[to_be_commited]"                     # git changes in cache
 	git_colors[cached_and_not_up_to_date]="$prompt_colors[not_up_to_date];$color[bold]"
 	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
+	git_colors[init_in_progress]="$color[black];$color[bold]"                        # initialization 
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
 }
 
