@@ -34,5 +34,4 @@ cmd_exists screen && screen -list | strings | grep -v "^No Sockets found" > .tmp
 cmd_exists keychain && eval $(keychain --eval --inherit any-once --quick)
 #keychain id_dsa 593F1F92
 
-chpwd
 true
