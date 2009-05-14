@@ -11,25 +11,7 @@
 prompt_colors[generic]=${PS1_USER:-}
 if privileged_user
 then
-	prompt_colors[generic]=${PS1_ROOT:-$color[red]}
-else
-	if ( [ "$SSH_TTY" != "" ] )
-	then
-		# This allows us to easily distinguish shells
-		# which really are on the local machine or not.
-		# That's so good, use it ! :-)
-		prompt_colors[generic]=${PS1_USER_SSH:-$PS1_USER}
-	fi
-	if ( echo "$TERM" | grep "^screen.*$" >/dev/null )
-	then
-		# Are we under a screen session ?
-		prompt_colors[generic]=${PS1_USER_SCR:-$PS1_USER}
-	fi
-	if ( [ ! -z "$SUDO_USER" ] )
-	then
-		# Are we sudo-ed under another user than root ?
-		prompt_colors[generic]=${PS1_SUDO:-$PS1_USER}
-	fi
+	prompt_colors[generic]=${PS1_ROOT:-$color[bold];$color[red]}
 fi
 
 set_prompt_colors

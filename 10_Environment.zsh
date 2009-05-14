@@ -29,6 +29,21 @@ _c=m
 C_="%{$c_"
 _C="$_c%}"
 
+# I hate kik00l0l colorized prompts, so I'm using a way to
+# give a dominant color for each part of the prompt, each of
+# these remain still configurable one by one.
+# Take a look to set_prompt_colors for these colorizations.
+#
+# To set the dominant color I'm using this :
+#
+#  - PS1_ROOT when we are root
+#  - PS1_USER for normal usage
+#
+# I'm storing the resulting dominant color in $prompt_colors[generic]
+
+PS1_ROOT=${PS1_ROOT:-$color[red]}
+PS1_USER=${PS1_USER:-$color[blue]}
+
 ## Variables d'environnement ``classiques''
 #
 # L'utilisation de la forme ${VARIABLE:+$VARIABLE:} permet d'accoler ``:''
@@ -54,3 +69,5 @@ HISTSIZE=42000
 SAVEHIST=42000
 
 export GPG_TTY=`tty`
+
+

@@ -27,7 +27,6 @@ then
 fi
 
 PS1_USER="1"
-PS1_USER_SSH="$PS1_USER"
 if [ "$OSTYPE" = "linux-gnu" ]
 then
 	PS1_ROOT="31"
