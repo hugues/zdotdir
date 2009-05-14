@@ -80,7 +80,7 @@ get_git_branch ()
 		return
 	fi
 
-	[ "$( git-ls-files . 2>&- | head -n1)" == "" -a ! -d .git -a "$(git-rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return 
+	[ "$( git-ls-files . 2>&- | head -n1)" == "" -a \( ! -d .git -o "$(git-rev-parse --git-dir)" != ".git" \) -a "$(git-rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return 
 
 	GIT_DIR=$(git-rev-parse --git-dir)
 
@@ -102,12 +102,11 @@ get_git_branch ()
 		# If neither on a named commit-ish, show commit-id
 		if [ "$my_git_branch" == "(${REBASE}undefined)" ]
 		then
-			my_git_branch="($REBASE$(git-rev-parse HEAD 2>&-))"
+			my_git_branch="($REBASE$(git-rev-parse --verify HEAD 2>&-))"
 		fi
-	elif [ -f $GIT_DIR/HEAD ]
-	then
-		# On an initial commit !	
-		my_git_branch="<$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | cut -d' ' -f2))>"
+	else
+		# Initial commit
+		my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
 	fi
 
 	echo $my_git_branch
@@ -144,7 +143,7 @@ get_git_status ()
 		my_git_status="$git_colors[cached]"
 	elif [ "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[not_up_to_date]"
-	elif [ ! -s $GIT_DIR/$(cat $GIT_DIR/HEAD | cut -d' ' -f2) ] ; then
+	elif [ "$(git-cat-file -t HEAD 2>/dev/null)" != "commit" ] ; then
 		my_git_status="$git_colors[init_in_progress]"
 	else
 		my_git_status="$git_colors[up_to_date]"
