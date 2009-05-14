@@ -1,0 +1,3 @@
+
+hash -d OpenWide=~/OpenWide/
+
