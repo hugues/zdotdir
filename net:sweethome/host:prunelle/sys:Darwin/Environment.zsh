@@ -16,10 +16,10 @@ export DISPLAY=:0
 MANPATH=/usr/share/man
 INFOPATH=/usr/share/info
 
-for i in usr/X11R6 dp sw ; do
-	export PATH=$PATH:/$i/bin:/$i/sbin
-	export MANPATH=$MANPATH:/$i/share/man
-	export INFOPATH=$INFOPATH:/$i/share/info
+for i in /dp /sw /usr/X11R6 ; do
+	export PATH=$i/bin:$i/sbin:$PATH
+	export MANPATH=$i/share/man:$MANPATH
+	export INFOPATH=/$i/share/info:$INFOPATH
 done
 
 typeset -gU PATH MANPATH INFOPATH
