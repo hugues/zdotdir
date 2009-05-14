@@ -22,8 +22,8 @@ fi
 cmd_exists screen && screen -list | strings | grep -v "^No Sockets found" > .tmp.screen-list
 [ -s .tmp.screen-list ] \
 && preprint "screen" $color[bold] && echo \
-&& < .tmp.screen-list \
-&& rm -f .tmp.screen-list
+&& < .tmp.screen-list
+[ -e .tmp.screen-list ] && rm -f .tmp.screen-list
 
 
 #preprint "calendrier" $color[bold] ; echo
