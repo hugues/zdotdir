@@ -80,7 +80,7 @@ get_git_branch ()
 		return
 	fi
 
-	[ "$( git-ls-files . 2>&- | head -n1)" == "" -a \( ! -d .git -o "$(git-rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git-rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return 
+	[ "$( git-ls-files . 2>&- | head -n1)" = "" -a \( ! -d .git -o "$(git-rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git-rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return 
 
 	GIT_DIR=$(git-rev-parse --git-dir)
 
@@ -96,11 +96,11 @@ get_git_branch ()
 	if [ "$my_git_branch" != "$REBASE" ]
 	then
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
-		[ "$my_git_branch" == "$REBASE(no branch)" ] &&\
+		[ "$my_git_branch" = "$REBASE(no branch)" ] &&\
 			my_git_branch="($REBASE$(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
 
 		# If neither on a named commit-ish, show commit-id
-		if [ "$my_git_branch" == "(${REBASE}undefined)" ]
+		if [ "$my_git_branch" = "(${REBASE}undefined)" ]
 		then
 			my_git_branch="($REBASE$(git-rev-parse --verify HEAD 2>&-))"
 		fi
@@ -123,7 +123,7 @@ get_git_status ()
 	then return
 	fi
 
-	if [ "$(git-rev-parse --is-inside-git-dir)" == "true" ] ; then
+	if [ "$(git-rev-parse --is-inside-git-dir)" = "true" ] ; then
 		echo "$git_colors[managment_folder]"
 		return
 	fi
