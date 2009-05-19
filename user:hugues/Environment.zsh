@@ -32,7 +32,10 @@ export LC_MESSAGES=${LC_MESSAGES:-fr_FR}
 unset LANG # Unuseful
 
 # Utilisation des commandes git-*
-[ -d /usr/lib/git-core ] && export PATH=$PATH:/usr/lib/git-core
+for i in local/libexec lib
+do
+	[ -d /usr/$i/git-core ] && export PATH=$PATH:/usr/$i/git-core
+done
 
 # Couleurs pour grep --color=auto
 export GREP_COLOR=$color[yellow]\;$color[bold]
