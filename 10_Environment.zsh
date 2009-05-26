@@ -54,8 +54,8 @@ PS1_USER=${PS1_USER:-$color[blue]}
 #export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/X11R6/lib/pkgconfig
 export PATH=$PATH:~/sbin:~/local/bin
 PATH=/sbin:/usr/sbin:$PATH
-export MANPATH=$MANPATH:~/man:~/local/share/man
-export INFOPATH=$INFOPATH:~/info:~/local/share/info
+export MANPATH=~/man:~/local/share/man:/usr/local/share/man:$MANPATH
+export INFOPATH=~/info:~/local/share/info:/usr/local/share/info:$INFOPATH
 [ "$DEBUG" = "yes" ] && export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}~/libs
 [ "$DEBUG" = "yes" ] && export PKG_CONFIG_PATH=${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}~/pkgconfig
 
