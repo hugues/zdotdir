@@ -215,7 +215,7 @@ do
 	bindkey -M $keymap -s ' ' '\\ '
 
 	bindkey -M $keymap -s 'g' 'Q git-status\n'
-	bindkey -M $keymap -s 'G' 'Q git-repack -d -a\n'
+	bindkey -M $keymap -s 'G' 'Q git-gc\n'
 
 	bindkey -M $keymap -s 'S' 'Q sudo !!'
 
