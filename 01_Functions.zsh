@@ -106,7 +106,12 @@ get_git_branch ()
 		fi
 	else
 		# Initial commit
-		my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
+		if [ -L $GIT_DIR/HEAD -a ! -f $GIT_DIR/HEAD ]
+		then
+			my_git_branch="$(basename $GIT_DIR/$(stat --printf="%N\n" $GIT_DIR/HEAD | tr '`' "'" | cut -d\' -f4))"
+		else
+			my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
+		fi
 	fi
 
 	echo $my_git_branch
