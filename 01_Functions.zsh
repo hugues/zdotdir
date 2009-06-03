@@ -114,6 +114,11 @@ get_git_branch ()
 		fi
 	fi
 
+	if [ "$(git-status 2>&- | grep "new file" | head -n1)" != "" ] ; then
+		# ADDED FILES
+		my_git_branch=$my_git_branch" (+)"
+	fi
+
 	echo $my_git_branch
 }
 
@@ -136,7 +141,7 @@ get_git_status ()
 	if   [ "$(git-diff --cached 2>&- | grep '^diff ' | head -n1 )" != "" ] ; then 
 		cached="yes"
 	fi
-	if [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
+	if [ "$(git-ls-files -m 2>&- | head -n1)" != "" ] ; then 
 		not_up_to_date="yes"
 	fi
 
