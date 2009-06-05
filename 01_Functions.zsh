@@ -106,7 +106,17 @@ get_git_branch ()
 		fi
 	else
 		# Initial commit
-		my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
+		if [ -L $GIT_DIR/HEAD -a ! -f $GIT_DIR/HEAD ]
+		then
+			my_git_branch="$(basename $GIT_DIR/$(stat --printf="%N\n" $GIT_DIR/HEAD | tr '`' "'" | cut -d\' -f4))"
+		else
+			my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
+		fi
+	fi
+
+	if [ "$(git-status 2>&- | grep "new file" | head -n1)" != "" ] ; then
+		# ADDED FILES
+		my_git_branch=$my_git_branch" (+)"
 	fi
 
 	echo $my_git_branch
@@ -131,7 +141,7 @@ get_git_status ()
 	if   [ "$(git-diff --cached 2>&- | grep '^diff ' | head -n1 )" != "" ] ; then 
 		cached="yes"
 	fi
-	if [ "$(git-ls-files -m 2>&-)" != "" ] ; then 
+	if [ "$(git-ls-files -m 2>&- | head -n1)" != "" ] ; then 
 		not_up_to_date="yes"
 	fi
 
