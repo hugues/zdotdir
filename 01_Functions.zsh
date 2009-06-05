@@ -73,7 +73,7 @@ preprint()
 
 get_git_branch ()
 {
-	local my_git_branch REBASE
+	local my_git_branch
 
 	if [ ! -z "$DO_NOT_CHECK_GIT_BRANCH" ]
 	then
@@ -84,25 +84,19 @@ get_git_branch ()
 
 	GIT_DIR=$(git-rev-parse --git-dir)
 
-	# Rebase in progress ?
-	REBASE="";
-	[ -e $GIT_DIR/../.dotest/rebasing \
-	-o -d $GIT_DIR/rebase-merge ] && \
-		REBASE="rebase:"
-
 	# Get current working GIT branch
-	my_git_branch="$REBASE$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
+	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
 
-	if [ "$my_git_branch" != "$REBASE" ]
+	if [ "$my_git_branch" != "" ]
 	then
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
-		[ "$my_git_branch" = "$REBASE(no branch)" ] &&\
-			my_git_branch="($REBASE$(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
+		[ "$my_git_branch" = "(no branch)" ] &&\
+			my_git_branch="($(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
 
 		# If neither on a named commit-ish, show commit-id
-		if [ "$my_git_branch" = "(${REBASE}undefined)" ]
+		if [ "$my_git_branch" = "(undefined)" ]
 		then
-			my_git_branch="($REBASE$(git-rev-parse --verify HEAD 2>&-))"
+			my_git_branch="($(git-rev-parse --verify HEAD 2>&-))"
 		fi
 	else
 		# Initial commit
@@ -112,6 +106,35 @@ get_git_branch ()
 		else
 			my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
 		fi
+	fi
+
+	# Rebase in progress ?
+	if [ -d $GIT_DIR/rebase-merge -o -d $GIT_DIR/rebase-apply ]
+	then
+		local rebase current last
+		local REBASE_DIR
+
+		if [ -d $GIT_DIR/rebase-merge ]
+		then
+			REBASE_DIR=$GIT_DIR/rebase-merge
+		else
+			REBASE_DIR=$GIT_DIR/rebase-apply
+		fi
+
+		if [ -d $GIT_DIR/rebase-merge ]
+		then
+			current=$(< $REBASE_DIR/done wc -l)
+			last=$(( $current + $(< $REBASE_DIR/git-rebase-todo grep -v "^#\|^[[:blank:]]*$" | wc -l) ))
+			rebase=$rebase$rebase_in_progress": "
+		else
+			current=$(cat $REBASE_DIR/next)
+			last=$(cat $REBASE_DIR/last)
+		fi
+
+		# Then the result
+		rebase="[rebase $current/$last: "$(git-name-rev $(cat $REBASE_DIR/onto) | awk '{ print $2 }')".."$(basename $(cat $REBASE_DIR/head-name))"]"
+
+		[ $current -gt 1 ] && my_git_branch=$rebase" "$my_git_branch || my_git_branch=$rebase
 	fi
 
 	if [ "$(git-status 2>&- | grep "new file" | head -n1)" != "" ] ; then
