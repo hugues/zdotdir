@@ -61,9 +61,14 @@ a so='cd ${OLDPWD}'
 #a x=exit
 
 a ls="ls $LS_OPTIONS"
-a l='ls -lh'
+a l='ls -lh' # human readable sizes
 a ll='ls -l'
 a la='ls -la'
+a lt='ls -lhtr' # sort by modification time, first at top
+a llt='ls -ltr'
+a lta='lt -a'
+a llta='llt -a'
+a lat='la -tr'
 a lc='ls -c'
 a lc1='\ls -c1'
 
