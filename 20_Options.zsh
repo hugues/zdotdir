@@ -91,6 +91,8 @@ _setopt Extended_Glob
 _setopt Hash_Cmds
 _setopt Hash_Dirs
 
+_setopt BraceCCL # Expansion des classes de caractères, comme {a-z} au même titre que {00..99}
+
 ## Gestion de l'historique
 _setopt Extended_History
 _setopt Hist_Expire_Dups_First
