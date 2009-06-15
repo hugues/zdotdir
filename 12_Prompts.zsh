@@ -227,6 +227,16 @@ update_prompt()
 	## Second line of prompt : don't let the path garbage the entire line
 	##
 
+	# get cvs tag
+	#
+	CVSTAG=""
+	[ "$DEBUG" = "yes" ] && echo -n "	CVS status..."
+	if [ -d CVS ]
+	then
+		CVSTAG=$(cat CVS/Tag)
+		CVSTAG=${CVSTAG:+ $C_$prompt_colors[up_to_date]$_C$CVSTAG}
+	fi
+
 	# get svn status
 	#
 	[ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
@@ -298,7 +308,7 @@ redisplay_prompt ()
 # Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
 # de pourrir le fenêtre de terminal avec un prompt à rallonge.
 	PS1="$AGENTS""$MAILSTAT""$ERROR""$BATTERY"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
-"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
+"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$CVSTAG$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 }
 
