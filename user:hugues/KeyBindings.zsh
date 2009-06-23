@@ -199,7 +199,7 @@ bindkey '\M-^@'-'\M-' self-insert
 for keymap in viins vicmd emacs
 do
 	bindkey -M $keymap -s 'r' 'Q rehash\n'
-	bindkey -M $keymap -s 'R' 'Q reset ; exec zsh\n'
+	bindkey -M $keymap -s 'R' 'Q reset\n'
 
 	bindkey -M $keymap -s 't' 'Q todo\n'
 	#bindkey -M $keymap -s 'T' 'Q todo all -c\n'
@@ -219,7 +219,7 @@ do
 
 	bindkey -M $keymap -s 'S' 'Q sudo !!'
 
-	bindkey -M $keymap -s 'X' 'Q reset ; exec zsh -l\n'
+	bindkey -M $keymap -s 'X' 'Q exec zsh -l\n'
 
 	bindkey -M $keymap -s 'OA' 'up-line-or-history'
 	bindkey -M $keymap -s 'OB' 'down-line-or-history'
