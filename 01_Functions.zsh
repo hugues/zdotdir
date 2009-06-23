@@ -73,7 +73,7 @@ preprint()
 
 get_git_branch ()
 {
-	local my_git_branch
+	local my_git_branch checkouted_branch="yes"
 
 	if [ ! -z "$DO_NOT_CHECK_GIT_BRANCH" ]
 	then
@@ -91,12 +91,13 @@ get_git_branch ()
 	then
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
 		[ "$my_git_branch" = "(no branch)" ] &&\
-			my_git_branch="($(git-name-rev HEAD 2>&- | awk '{ print $2 }' | sed 's,^tags/,,;s,^remotes/,,'))"
+			checkouted_branch="" && \
+			my_git_branch="$(git-name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,')"
 
 		# If neither on a named commit-ish, show commit-id
-		if [ "$my_git_branch" = "(undefined)" ]
+		if [ "$my_git_branch" = "undefined" ]
 		then
-			my_git_branch="($(git-rev-parse --verify HEAD 2>&-))"
+			my_git_branch="$(git-rev-parse --verify HEAD 2>&-)"
 		fi
 	else
 		# Initial commit
@@ -132,14 +133,15 @@ get_git_branch ()
 		fi
 
 		# Then the result
-		rebase="[rebase $current/$last: "$(git-name-rev $(cat $REBASE_DIR/onto) | awk '{ print $2 }')".."$(basename $(cat $REBASE_DIR/head-name))"]"
-
-		[ $current -gt 1 ] && my_git_branch=$rebase" "$my_git_branch || my_git_branch=$rebase
+		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only $(cat $REBASE_DIR/onto))".."$my_git_branch"] "$(basename $(cat $REBASE_DIR/head-name))
+	else
+		# No rebase in progress, put '(' ')' if needed
+		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
 	fi
 
 	if [ "$(git-status 2>&- | grep "new file" | head -n1)" != "" ] ; then
 		# ADDED FILES
-		my_git_branch=$my_git_branch" (+)"
+		my_git_branch=$my_git_branch
 	fi
 
 	echo $my_git_branch
@@ -156,7 +158,7 @@ get_git_status ()
 	then return
 	fi
 
-	if [ "$(git-rev-parse --is-inside-git-dir)" = "true" ] ; then
+	if [ "$(git-rev-parse --is-inside-git-dir)" = "true" -o "$(git-config --get core.bare)" = "true" ] ; then
 		echo "$git_colors[managment_folder]"
 		return
 	fi
