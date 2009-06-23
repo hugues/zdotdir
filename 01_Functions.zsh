@@ -289,5 +289,11 @@ chpwd()
 			todo
 		fi
 	fi
+
+	if ( cmd_exists git && test -d .git )
+	then
+		# Shows tracked branches and modified files
+		git-checkout HEAD
+	fi
 }
 
