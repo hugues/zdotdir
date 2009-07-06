@@ -73,7 +73,7 @@ a lc='ls -c'
 a lc1='\ls -c1'
 
 cmd_exists dict && a definition='dict -h dict.org'
-cmd_exists dict && a traduction='dict -h localhost -P-'
+cmd_exists dict && a traduction='dict -h hiegel.fr -P-'
 
 cmd_exists dosbox && a dosbox='dosbox -c "mount c \"`pwd`\"" -c "mount d /cdrom -t cdrom" -c "c:" '
 cmd_exists emacs && a gnus='emacs -f gnus'
