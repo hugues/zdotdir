@@ -36,7 +36,7 @@ expand_text()
 
 preexec ()
 {
-    term_title " --- " "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
+    term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 	print -Pn "$C_$prompt_colors[exec]$_C"
 
 	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
