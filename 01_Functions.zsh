@@ -52,7 +52,8 @@ term_title()
 		  	local _sep=""
 			[ $# -gt 0 ] && _sep=$1 && shift # gets and discards the separator, if any.
 			# hardstatus
-			print -Pn "\e]2;{+b W}SCREEN #n {-b W}| {R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
+			#print -Pn "\e]2;{+b W}SCREEN #n {-b W}| {R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
+			print -Pn "\e]2;{R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
 			# caption
 			print -Pn "\ek"
 			[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
