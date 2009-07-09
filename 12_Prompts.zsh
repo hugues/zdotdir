@@ -233,7 +233,7 @@ update_prompt()
 	[ "$DEBUG" = "yes" ] && echo -n "	CVS status..."
 	if [ -d CVS ]
 	then
-		CVSTAG=$(cat CVS/Tag)
+		CVSTAG=$(test -e CVS/Tag && cat CVS/Tag || basename $(cat CVS/Root 2>&- || echo "HEAD") )
 		CVSTAG=${CVSTAG:+ $C_$prompt_colors[up_to_date]$_C$CVSTAG}
 	fi
 
@@ -278,19 +278,28 @@ update_prompt()
 		if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
 		then
 			local unbreakablegittail
-			#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
+			if [ "$(echo $GITBRANCH | grep "^\[rebase ")" = "" ]
+			then
+				#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
 
-			if [ $GITBRANCH[-1] = ")" ]
-			then
-				unbreakablegittail=${${(M)GITBRANCH%\~*}}
-				[ "$unbreakablegittail" = "" -a $GITBRANCHSIZE -gt $minimalgitsize ] && unbreakablegittail=")"
+				if [ $GITBRANCH[-1] = ")" ]
+				then
+					unbreakablegittail=${${(M)GITBRANCH%\~*}}
+					[ "$unbreakablegittail" = "" -a $GITBRANCHSIZE -gt $minimalgitsize ] && unbreakablegittail=")"
+				fi
+				if [ $GITBRANCHSIZE -gt $minimalgitsize ]
+				then
+					GITBRANCHSIZE=$(( $spaceleft - $PATHSIZE ))
+					[ $GITBRANCHSIZE -lt $minimalgitsize ] && GITBRANCHSIZE=$minimalgitsize
+				fi
+				GITBRANCH=`print -Pn "%"$(($GITBRANCHSIZE - ${#unbreakablegittail}))">..>"${GITBRANCH%\~*}${unbreakablegittail:+"%"${#unbreakablegittail}"<<"$GITBRANCH}`
+			else
+
+				#
+				# TODO : réduire la taille du hash, s'il y en a un.
+				#
+
 			fi
-			if [ $GITBRANCHSIZE -gt $minimalgitsize ]
-			then
-				GITBRANCHSIZE=$(( $spaceleft - $PATHSIZE ))
-				[ $GITBRANCHSIZE -lt $minimalgitsize ] && GITBRANCHSIZE=$minimalgitsize
-			fi
-			GITBRANCH=`print -Pn "%"$(($GITBRANCHSIZE - ${#unbreakablegittail}))">..>"${GITBRANCH%\~*}${unbreakablegittail:+"%"${#unbreakablegittail}"<<"$GITBRANCH}`
 		fi
 	fi
 	#  then we reduce the path until it reaches the last path element,
