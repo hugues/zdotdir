@@ -8,6 +8,11 @@
 ## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
 ##
 
+
+export FULLNAME="Hugues Hiegel"
+export EMAIL=${FULLNAME:+$FULLNAME <}hugues@hiegel.fr${FULLNAME:+>}
+
+
 ## Options pour ``bc''
 # pour ne plus avoir
 # le message d'invite

@@ -24,15 +24,21 @@ cmd_exists ()
 
 term_title()
 {
-
 	# Jobs
 	typeset -A command
-	for word in ${=2} ; command[$#comand]=$word
+	for word in ${=@} ; command[$#comand]=$word
 	if [ "$command[0]" = "fg" ]
 	then
 		lastjob=$(ps ft `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
-		set $1 $lastjob
+		set $lastjob
 	fi
+	if [ "$command[0]" = "screen" ]
+	then
+		# discards screen args
+		set "SCREEN"
+	fi
+
+	[ ! "$@" = "" ] && set " |" $@
 
 	[[ -t 1 ]] &&
 		case $TERM in
@@ -43,10 +49,11 @@ term_title()
 			print -Pn "\e]0;%n@%m (%l) %~$@\a"			# Sets term title
 			;;
 		  screen*)
+		  	local _sep=""
+			[ $# -gt 0 ] && _sep=$1 && shift # gets and discards the separator, if any.
 			# hardstatus
-			print -Pn "\e]2;[SCREEN #n] ?u(u) ?%n@%m (%l) %~$@\a" # Sets hardstatus line (term title)
+			print -Pn "\e]2;{+b W}SCREEN #n {-b W}| {R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
 			# caption
-			[ $# -gt 0 ] && shift # discards the first arg, which is the separator, if any
 			print -Pn "\ek"
 			[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
 			print -Pn "${@:-%~}"
@@ -135,7 +142,7 @@ get_git_branch ()
 		# Then the result
 		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only $(cat $REBASE_DIR/onto))".."$my_git_branch"] "$(basename $(cat $REBASE_DIR/head-name))
 	else
-		# No rebase in progress, put '(' ')' if needed
+		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
 	fi
 
