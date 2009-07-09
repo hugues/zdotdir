@@ -129,7 +129,7 @@ get_git_branch ()
 			REBASE_DIR=$GIT_DIR/rebase-apply
 		fi
 
-		if [ -d $GIT_DIR/rebase-merge ]
+		if [ "$REBASE_DIR" = "$GIT_DIR/rebase-merge" ]
 		then
 			current=$(< $REBASE_DIR/done wc -l)
 			last=$(( $current + $(< $REBASE_DIR/git-rebase-todo grep -v "^#\|^[[:blank:]]*$" | wc -l) ))
