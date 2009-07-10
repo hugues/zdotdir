@@ -26,7 +26,7 @@ term_title()
 {
 	# Jobs
 	typeset -A command
-	for word in ${=@} ; command[$#comand]=$word
+	for word in ${=@} ; command[$#command]=$word
 	if [ "$command[0]" = "fg" ]
 	then
 		lastjob=$(ps ft `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
@@ -35,7 +35,7 @@ term_title()
 	if [ "$command[0]" = "screen" ]
 	then
 		# discards screen args
-		set "SCREEN"
+		set "screen"
 	fi
 
 	[ ! "$@" = "" ] && set " |" $@
