@@ -272,7 +272,7 @@ set_prompt_colors ()
 
 chpwd()
 {
-	if cmd_exists when && [ -e .when/.today ]
+	if cmd_exists when
 	then
 		LATEST=`stat 2>&- --printf="%z\n" .when/.today | cut -d' ' -f1`
 		TODAY=`date "+%Y-%m-%d"`
