@@ -100,7 +100,7 @@ get_git_branch ()
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
 		[ "$my_git_branch" = "(no branch)" ] &&\
 			checkouted_branch="" && \
-			my_git_branch="$(git-name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,')"
+			my_git_branch="$(git-name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,')"
 
 		# If neither on a named commit-ish, show commit-id
 		if [ "$my_git_branch" = "undefined" ]
