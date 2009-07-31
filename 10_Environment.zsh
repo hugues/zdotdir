@@ -70,4 +70,16 @@ SAVEHIST=42000
 
 export GPG_TTY=`tty`
 
+# Display guess
+CURRENT_DISPLAY=$(finger | tail -n+2 | grep -E $USER'[[:blank:]]+.*[[:blank:]]+tty[0-9][[:blank:]]+($DISPLAY)' | head -n1 | cut -d'(' -f2 | cut -d')' -f1)
+if [ "$DISPLAY" = "" -o "$CURRENT_DISPLAY" = "" ]
+then
+	GUESS_DISPLAY=$(finger | tail -n+2 | grep -E $USER'[[:blank:]]+.*[[:blank:]]+tty[0-9]' | head -n1 | cut -d'(' -f2 | cut -d')' -f1)
+	if [ "$GUESS_DISPLAY" != "" ]
+	then
+		export DISPLAY=$GUESS_DISPLAY
+	else
+		unset DISPLAY
+	fi
+fi
 
