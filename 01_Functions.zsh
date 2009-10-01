@@ -141,7 +141,7 @@ get_git_branch ()
 		fi
 
 		# Then the result
-		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only $(cat $REBASE_DIR/onto))".."$my_git_branch"] "$(basename $(cat $REBASE_DIR/head-name))
+		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only $(cat $REBASE_DIR/onto))".."$my_git_branch"] "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
 	else
 		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
