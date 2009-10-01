@@ -30,7 +30,7 @@ term_title()
 	if [ "$command[0]" = "fg" ]
 	then
 		lastjob=$(ps ft `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
-		set $lastjob
+		set "$lastjob"
 	fi
 	if [ "$command[0]" = "screen" ]
 	then
@@ -100,7 +100,7 @@ get_git_branch ()
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
 		[ "$my_git_branch" = "(no branch)" ] &&\
 			checkouted_branch="" && \
-			my_git_branch="$(git-name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,')"
+			my_git_branch="$(git-name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,')"
 
 		# If neither on a named commit-ish, show commit-id
 		if [ "$my_git_branch" = "undefined" ]
@@ -141,7 +141,7 @@ get_git_branch ()
 		fi
 
 		# Then the result
-		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only $(cat $REBASE_DIR/onto))".."$my_git_branch"] "$(basename $(cat $REBASE_DIR/head-name))
+		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only $(cat $REBASE_DIR/onto))".."$my_git_branch"] "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
 	else
 		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
@@ -187,7 +187,11 @@ get_git_status ()
 	elif [ "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[not_up_to_date]"
 	elif [ "$(git-cat-file -t HEAD 2>/dev/null)" != "commit" ] ; then
-		my_git_status="$git_colors[init_in_progress]"
+		if [ ! -z "$(git-ls-files)" ] ; then
+			my_git_status="$git_colors[cached]"
+		else
+			my_git_status="$git_colors[init_in_progress]"
+		fi
 	else
 		my_git_status="$git_colors[up_to_date]"
 	fi
