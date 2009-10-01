@@ -30,7 +30,7 @@ term_title()
 	if [ "$command[0]" = "fg" ]
 	then
 		lastjob=$(ps ft `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
-		set $lastjob
+		set "$lastjob"
 	fi
 	if [ "$command[0]" = "screen" ]
 	then
