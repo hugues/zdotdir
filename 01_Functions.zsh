@@ -187,7 +187,11 @@ get_git_status ()
 	elif [ "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[not_up_to_date]"
 	elif [ "$(git-cat-file -t HEAD 2>/dev/null)" != "commit" ] ; then
-		my_git_status="$git_colors[init_in_progress]"
+		if [ ! -z "$(git-ls-files)" ] ; then
+			my_git_status="$git_colors[cached]"
+		else
+			my_git_status="$git_colors[init_in_progress]"
+		fi
 	else
 		my_git_status="$git_colors[up_to_date]"
 	fi
