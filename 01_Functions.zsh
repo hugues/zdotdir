@@ -272,20 +272,23 @@ set_prompt_colors ()
 
 chpwd()
 {
-	if cmd_exists when
+	WHEN_FILE=~/.when/birthdays
+	TODAY_FILE=~/.when/.today
+
+	if cmd_exists when && [ -e $WHEN_FILE ]
 	then
-		LATEST=`stat 2>&- --printf="%z\n" .when/.today | cut -d' ' -f1`
+		LATEST=`stat 2>&- --printf="%z\n" $TODAY_FILE | cut -d' ' -f1`
 		TODAY=`date "+%Y-%m-%d"`
 
 		if [ "$TODAY" != "$LATEST" ]
 		then
-			when w --calendar=~/.when/birthdays | tail -n+3 > ~/.when/.today
+			when w --calendar=$WHEN_FILE | tail -n+3 > $TODAY_FILE
 		fi
 
-		if [ -s ~/.when/.today ]
+		if [ -s $TODAY_FILE ]
 		then
 			preprint "événements" $color[bold] ; echo
-			cat ~/.when/.today
+			cat $TODAY_FILE
 		fi
 	fi
 
