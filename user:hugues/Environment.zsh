@@ -10,7 +10,10 @@
 
 
 export FULLNAME="Hugues Hiegel"
-export EMAIL=${FULLNAME:+$FULLNAME <}hugues@hiegel.fr${FULLNAME:+>}
+export EMAIL="hugues@hiegel.fr"
+
+export GIT_AUTHOR_NAME=$FULLNAME
+export GIT_COMMITTER_NAME=$FULLNAME
 
 
 ## Options pour ``bc''
