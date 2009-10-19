@@ -34,7 +34,7 @@ USER=${USER:-`whoami`}
 UID=${UID:-`id -u`}
 HOST=$HOST:r
 HOST=${HOST:-$(hostname -s)}
-DOMAIN=${DOMAIN:-$(hostname -a | cut -d. -f2-)}
+DOMAIN=${DOMAIN:-$(hostname -a | sed 's/^[^\.]*\.\?//')}
 DOMAIN=${DOMAIN:-$(hostname -d 2>&-)}
 DOMAIN=${DOMAIN:-$(hostname -y 2>&-)}
 [ "$DOMAIN" = "" -o "$DOMAIN" = "localdomain" -o "$DOMAIN" = "(none)" ] && DOMAIN=$(grep "^search " /etc/resolv.conf | cut -d' ' -f2)
