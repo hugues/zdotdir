@@ -260,7 +260,9 @@ set_prompt_colors ()
 	mail_colors[listes]="$prompt_colors[generic];$color[bold]"		# less important mail received
 
 	agent_colors[empty]="$prompt_colors[soft_generic]"
+	agent_colors[remote_empty]="$color[bold];$color[black]"
 	agent_colors[has_keys]="$color[bold];$color[yellow]"
+	agent_colors[has_remote_keys]="$color[bold];$color[red]"
 
 	prompt_colors[up_to_date]="$prompt_colors[generic]"						# up-to-date
 	prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date

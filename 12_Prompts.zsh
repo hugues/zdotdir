@@ -138,10 +138,10 @@ update_prompt()
 			# That's a forwarded agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
-				AGENTCOLOR="has_keys"
+				AGENTCOLOR="has_remote_keys"
 				AGENTCHAR=${AGENT_SOCK_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "●" || echo "@" )}
 			else
-				AGENTCOLOR="empty"
+				AGENTCOLOR="remote_empty"
 				AGENTCHAR=${AGENT_SOCK_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "○" || echo "@" )}
 			fi
 		fi
