@@ -32,15 +32,16 @@ term_title()
 		lastjob=$(ps ft `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
 		set "$lastjob"
 	fi
-	if [ "$command[0]" = "screen" ]
+	if [ "$command[0]" = "screen" -o "$command[0]" = "tmux" ]
 	then
 		# discards screen args
-		set "screen"
+		set $command[0]
 	fi
 
 	[ ! "$@" = "" ] && set " |" $@
 
-	[[ -t 1 ]] &&
+	if [[ -t 1 ]]
+	then
 		case $TERM in
 		  sun-cmd)
 			print -Pn "\e]l%n@%m %~$@\e\\"				# Never tested..
@@ -49,20 +50,28 @@ term_title()
 			print -Pn "\e]0;%n@%m (%l) %~$@\a"			# Sets term title
 			;;
 		  screen*)
-		  	local _sep=""
+			local _sep=""
 			[ $# -gt 0 ] && _sep=$1 && shift # gets and discards the separator, if any.
-			# hardstatus
-			#print -Pn "\e]2;{+b W}SCREEN #n {-b W}| {R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
-			print -Pn "\e]2;{R}?u(u) ?{W}{r}%n{R}@{r}%m{-b W} ({+b c}%l{-b W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
-			# caption
-			print -Pn "\ek"
-			[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
-			print -Pn "${@:-%~}"
-			print -Pn "\e\\"
+			if [ ! -z "$TMUX" ]
+			then
+				# Tmux
+				print -Pn "\e]0;%n@%m (%l) %~${_sep:+$_sep #[fg=yellow,bold]}$@\a"			# Sets term title
+			else
+				# Classic screen
+				# hardstatus
+				#print -Pn "\e]2;{+b W}SCREEN #n {-b W}| {R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
+				print -Pn "\e]2;{R}?u(u) ?{W}{r}%n{R}@{r}%m{-b W} ({+b c}%l{-b W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
+				# caption
+				print -Pn "\ek"
+				[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
+				print -Pn "${@:-%~}"
+				print -Pn "\e\\"
+			fi
 			;;
 		  *)
 			;;
 		esac
+	fi
 }
 
 preprint()
