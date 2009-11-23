@@ -55,7 +55,8 @@ term_title()
 			if [ ! -z "$TMUX" ]
 			then
 				# Tmux
-				print -Pn "\e]0;%n@%m (%l) %~${_sep:+$_sep #[fg=yellow,bold]}$@\a"			# Sets term title
+				#print -Pn "\e]0;%n@%m (%l) %~${_sep:+$_sep #[fg=yellow,bold]}$@\a"			# Sets term title
+				print -Pn "\e]0;#[fg=red]%n#[fg=default,bold]@#[fg=red]%m#[default] (#[fg=cyan]%l#[fg=default]) #[fg=red]%~${_sep:+#[default,fg=default]$_sep #[fg=yellow,bold]$@}#[default,fg=default]\a"
 			else
 				# Classic screen
 				# hardstatus
@@ -150,7 +151,8 @@ get_git_branch ()
 		fi
 
 		# Then the result
-		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only $(cat $REBASE_DIR/onto))".."$my_git_branch"] "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
+		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null)".."$my_git_branch"]"
+		[ -r $REBASE_DIR/head-name ] && my_git_branch=$my_git_branch" "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
 	else
 		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
