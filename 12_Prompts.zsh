@@ -314,8 +314,6 @@ redisplay_prompt ()
 {
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
-# Note que pour le pwd, on n'affiche que les 4 derniers dossiers pour éviter
-# de pourrir le fenêtre de terminal avec un prompt à rallonge.
 	PS1="$AGENTS""$MAILSTAT""$ERROR""$BATTERY"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
 "$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$CVSTAG$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
