@@ -262,4 +262,4 @@ zle-keymap-select()
 	[ "$KEYMAP" != "main" ] && term_title " [$KEYMAP]" || term_title
 }
 zle -N zle-keymap-select
-zle -N zle-line-init zle-keymap-select
+#zle -N zle-line-init zle-keymap-select ## CRASHES UPON MULTILINE COMMAND...
