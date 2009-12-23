@@ -9,7 +9,7 @@
 ## 
 
 ## Mettez le nom de votre station de travail habituelle ici ##
-if { ! -e ~/.workstation ]
+if [ ! -e ~/.workstation ]
 then
 	echo >&2 "Quelle est votre station de travail attitrée ? (`hostname -s`) " && read $workstation
 	echo ${workstation:-$(hostname -s)} > ~/.workstation
