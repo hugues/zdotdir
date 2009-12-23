@@ -103,6 +103,7 @@ update_prompt()
 
 	set_prompt_date
 
+	[ "$DEBUG" = "yes" ] && echo -n "	Agents..."
 	# GPG/SSH agents
 	AGENTS=""
 	[ -r "${KEYCHAIN}"     ] && source ${KEYCHAIN}
@@ -161,6 +162,7 @@ update_prompt()
 	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C"-"$AGENTS}
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
+	[ "$DEBUG" = "yes" ] && echo
 	
 	# Mailcheck
 	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
