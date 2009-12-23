@@ -202,7 +202,7 @@ do
 	bindkey -M $keymap -s 'R' 'Q reset\n'
 
 	bindkey -M $keymap -s 't' 'Q todo\n'
-	#bindkey -M $keymap -s 'T' 'Q todo all -c\n'
+	bindkey -M $keymap -s 'T' 'Q todo all -c\n'
 
 	bindkey -M $keymap -s 'é' ' 2>/dev/null '
 	bindkey -M $keymap -s '2' ' 2>&1 '
@@ -226,30 +226,30 @@ do
 	bindkey -M $keymap -s 'OC' 'forward-word'
 	bindkey -M $keymap -s 'OD' 'backward-word'
 
-	bindkey -M $keymap "q" push-line
-	bindkey -M $keymap "Q" push-line
+	bindkey -M $keymap 'q' push-line
+	bindkey -M $keymap 'Q' push-line
 done
 
 # redefines push-line for vicmd
-bindkey -M vicmd -s "q" "iq"
-bindkey -M vicmd -s "Q" "iQ"
+bindkey -M vicmd -s 'q' 'iq'
+bindkey -M vicmd -s 'Q' 'iQ'
 
 # Sets vicmd-mode vim-compliant
-bindkey -M vicmd "u" "undo"
-bindkey -M vicmd "" "redo"
-bindkey -M vicmd "j" "history-search-forward"
-bindkey -M viins "j" "history-search-forward"
-bindkey -M vicmd "k" "history-search-backward"
-bindkey -M viins "k" "history-search-backward"
+bindkey -M vicmd 'u' 'undo'
+bindkey -M vicmd '' 'redo'
+bindkey -M vicmd 'j' 'history-search-forward'
+bindkey -M viins 'j' 'history-search-forward'
+bindkey -M vicmd 'k' 'history-search-backward'
+bindkey -M viins 'k' 'history-search-backward'
 
 
 menuselect_vi-mode()
 {
 	# Sets menuselect vim-compliant
-	bindkey -M menuselect "j" "down-line-or-history"
-	bindkey -M menuselect "k" "up-line-or-history"
-	bindkey -M menuselect "h" "backward-char"
-	bindkey -M menuselect "l" "forward-char"
+	bindkey -M menuselect 'j' 'down-line-or-history'
+	bindkey -M menuselect 'k' 'up-line-or-history'
+	bindkey -M menuselect 'h' 'backward-char'
+	bindkey -M menuselect 'l' 'forward-char'
 }
 
 # Enters vi-cmd mode at each prompt
@@ -259,7 +259,12 @@ menuselect_vi-mode()
 # Show the current keymap used
 zle-keymap-select()
 {
-	[ "$KEYMAP" != "main" ] && term_title " [$KEYMAP]" || term_title
+	if [ "$KEYMAP" != "main" ]
+	then
+		term_title " [$KEYMAP]"
+	else
+		term_title
+	fi
 }
 zle -N zle-keymap-select
 #zle -N zle-line-init zle-keymap-select ## CRASHES UPON MULTILINE COMMAND...
