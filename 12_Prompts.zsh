@@ -269,7 +269,7 @@ update_prompt()
 	PATHSIZE=${#PATHSIZE}
 	[ "$DEBUG" = "yes" ] && echo
 	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..."
-	spaceleft=`print -Pn "%n@%m  $ ls -laCdtrux $(expand_text "$DATE")"`
+	spaceleft=`print -Pn "$SHLVL - %n@%m  $ ls -laCdtrux $(expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	#minimalpathsize=`print -Pn "../%1~"`
 	#minimalpathsize=${#minimalpathsize}
@@ -317,7 +317,7 @@ redisplay_prompt ()
 ## Le prompt le plus magnifique du monde, et c'est le mien ! 
 # Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
 	PS1="$AGENTS""$MAILSTAT""$ERROR""$BATTERY"$C_$prompt_colors[bar]$_C"$HBAR""$DATE
-"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$CVSTAG$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
+$C_$(( 29 + $SHLVL ));1$_C${SHLVL}-$C_$prompt_color[default]$_C"$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m $CURDIR$CVSTAG$SVNREV$GITBRANCH "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 }
 
