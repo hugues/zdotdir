@@ -37,11 +37,11 @@ expand_text()
 preexec ()
 {
     term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
-	print -Pn "$C_$prompt_colors[exec]$_C"
 
 	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
 	prompt_colors[date]=$date_colors[exec]
 	set_prompt_date
+	prompt_colors[date]=$date_colors[normal]
 
 	spaceleft=$(($COLUMNS - $AGENTSSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
@@ -52,11 +52,13 @@ preexec ()
 	redisplay_prompt
 
 	local string="$(expand_text "$PROMPT$1")"
-	local lines=$(( (${#string} - 1) / $COLUMNS))
-	for i in {0..$lines} ; print -Pn "\e[1A"
+	local lines=$(( (${#string} - 1) / $COLUMNS + $(echo ${string} | wc -l) - 2 ))
+	for i in {0..$lines} ; print -Pn "\e[1A\e[2K"
 	print -Pn "\r$PROMPT"
-	print "${(q)1}"
-	prompt_colors[date]=$date_colors[normal]
+	print -Pn "$C_$color[cyan]$_C"
+	print "${1}"
+
+	print -Pn "$C_$prompt_colors[exec]$_C"
 }
 
 new_precmd()
