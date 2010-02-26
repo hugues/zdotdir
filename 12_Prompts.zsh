@@ -111,20 +111,20 @@ update_prompt()
 	[ -r "${KEYCHAIN}"     ] && source ${KEYCHAIN}
 	[ -r "${KEYCHAIN}-gpg" ] && source ${KEYCHAIN}-gpg
 
+
+	local _is_multibyte_compliant
+	if ( echo ${(k)options} | grep "multibyte" >/dev/null ) && [ "$options[multibyte]" = "on" ]
+	then
+		_is_multibyte_compliant="yes it is !"
+	else
+		_is_multibyte_compliant=""
+	fi
+
 	# Check ssh-agent only if the env socket has been set and is accessible
 	if [ -S "$SSH_AUTH_SOCK" ]
 	then
 		# Get keylist
 		SSH_AGENT_KEYLIST="$( ssh-add -l | grep "^[[:digit:]]\+ \([[:digit:]a-f]\{2\}:\)\{15\}[[:digit:]a-f]\{2\} .* (.*)$" )"
-
-		local _is_multibyte_compliant
-		if ( echo ${(k)options} | grep "multibyte" >/dev/null ) && [ "$options[multibyte]" = "on" ]
-		then
-			_is_multibyte_compliant="yes it is !"
-		else
-			_is_multibyte_compliant=""
-		fi
-
 		# Check if it is a forwarded agent
 		if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
 		then
