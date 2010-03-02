@@ -67,7 +67,7 @@ bindkey '^Q' push-line
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
 bindkey '^T' transpose-chars
-bindkey '^U' kill-whole-line
+bindkey '^U' backward-kill-line
 bindkey '^V' quoted-insert
 bindkey '^W' backward-kill-word
 bindkey '^X^B' vi-match-bracket
