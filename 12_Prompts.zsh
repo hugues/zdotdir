@@ -1,12 +1,12 @@
 ##
 ## Part of configuration files for Zsh 4
 ## by Hugues Hiegel <hugues@hiegel.fr>
-## 
+##
 ## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
 ##
 ## You are encouraged to use, modify, and redistribute
 ## these files with or without this notice.
-## 
+##
 
 prompt_colors[generic]=${PS1_USER:-}
 if privileged_user
@@ -49,14 +49,14 @@ preexec ()
 	do
 		HBAR=$HBAR-
 	done
-	redisplay_prompt
+	redefine_prompt
 
 	local string="$(expand_text "$PROMPT$1")"
 	local lines=$(( (${#string} - 1) / $COLUMNS + $(echo ${string} | wc -l) - 2 ))
 	for i in {0..$lines} ; print -Pn "\e[1A\e[2K"
 	print -Pn "\r$PROMPT"
 	print -Pn "$C_$color[cyan]$_C"
-	print "${1}"
+	print "${(q)1}" | sed "s/'$//;s/^'//"
 
 	print -Pn "$C_$prompt_colors[exec]$_C"
 }
@@ -64,7 +64,7 @@ preexec ()
 new_precmd()
 {
 	#
-	# Arrays 
+	# Arrays
 	# [0] prompt-style string
 	# [1] total size
 	# [2] color
@@ -75,7 +75,7 @@ new_precmd()
 	ERROR[color] = $prompt_colors[error]
 	ERROR[string] = "%(?;;%?)"
 	ERROR[pre] = "-"
-	ERROR[post] = 
+	ERROR[post] =
 	ERROR[size] = ${#$(print -Pn $ERROR[pre]$ERROR[string]$ERROR[post])}
 }
 
@@ -89,7 +89,7 @@ set_prompt_date()
 	[ "$DEBUG" = "yes" ] && echo
 }
 
-update_prompt()
+update_prompt_elements()
 {
 	# Error
 	error=$(print -Pn "%(?;;-%?)") ## MUST BE the first operation else we lose the error code...
@@ -165,7 +165,7 @@ update_prompt()
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
-	
+
 	# Mailcheck
 	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
 	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK|dev.null/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[unread]$_C""@" } else if (LISTES > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[listes]$_C""@" } }'`")
@@ -173,7 +173,7 @@ update_prompt()
 	MAILSTATSIZE=${#MAILSTATEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
 
-	
+
 	if [ -e /proc/pmu/battery_0 ]
 	then
 		[ "$DEBUG" = "yes" ] && echo -n "	Battery..."
@@ -314,10 +314,10 @@ update_prompt()
 	[ "$DEBUG" = "yes" ] && echo
 }
 
-redisplay_prompt ()
+redefine_prompt ()
 {
-## Le prompt le plus magnifique du monde, et c'est le mien ! 
-# Affiche l'user, l'host, le tty et le pwd. Rien que ça... 
+	## Le prompt le plus magnifique du monde, et c'est le mien !
+	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
 	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$prompt_colors[bar]$_C$HBAR$DATE"
 "$C_"30;1"$_C$SHLVL"-"$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m "$CURDIR$CVSTAG$SVNREV$GITBRANCH" "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
@@ -325,8 +325,8 @@ redisplay_prompt ()
 
 precmd()
 {
-	update_prompt
-	redisplay_prompt
+	update_prompt_elements
+	redefine_prompt
 }
 
 
