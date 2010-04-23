@@ -105,12 +105,14 @@ update_prompt_elements()
 
 	set_prompt_date
 
+	# DBUS
+	[ -e ~/.dbusrc ] && source ~/.dbusrc
+
 	[ "$DEBUG" = "yes" ] && echo -n "	Agents..."
 	# GPG/SSH agents
 	AGENTS=""
 	[ -r "${KEYCHAIN}"     ] && source ${KEYCHAIN}
 	[ -r "${KEYCHAIN}-gpg" ] && source ${KEYCHAIN}-gpg
-
 
 	local _is_multibyte_compliant
 	if ( echo ${(k)options} | grep "multibyte" >/dev/null ) && [ "$options[multibyte]" = "on" ]
