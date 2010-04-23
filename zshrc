@@ -96,3 +96,4 @@ then
 	[ "`pwd`" = ~$SUDO_USER ] && cd
 fi
 
+fortune fr
