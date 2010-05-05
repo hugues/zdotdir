@@ -13,14 +13,14 @@
 # see man zshoptions(1) for more details ;-)
 #
 
-function _setopt() {
-	_test_and_set $1 on
+function SetOPT() {
+	SetOPTifExists $1 on
 }
-function _unsetopt() {
-	_test_and_set $1 off
+function UnsetOPT() {
+	SetOPTifExists $1 off
 }
 
-function _test_and_set() {
+function SetOPTifExists() {
 	local option=${(L)1//_/} # lowercase and no '_'
 
 	case "$option" in
@@ -53,68 +53,68 @@ function _test_and_set() {
 
 # J'ai pas très bien compris mais en gros ça va me permettre
 # d'être sûr de retrouver ma commande dans tous les cas...
-_setopt Always_Last_Prompt
+SetOPT ALWAYS_LAST_PROMPT
 
-_setopt Always_to_End
+SetOPT ALWAYS_TO_END
 
 # Je préfère nettement faire un "export" sur les variables qui
 # m'intéressent plutôt qu'utiliser cette option, car ça fait un
 # peu porkasse quand même...
-_unsetopt All_Export
+UnsetOPT ALL_EXPORT
 
 ## ``cd'' automatique
 # Si la commande n'existe pas et qu'elle correspond à
 # un dossier, zsh fait automatiquement un ``cd'' dessus.
 # Pour les fainéants qui ont la flemme de taper "cd " :-)
-_setopt Auto_Cd
+SetOPT AUTO_CD
 
 ## Envoie le signal CONT aux jobs passés en arrière-plan. 
-_setopt Auto_Continue
+SetOPT AUTO_CONTINUE
 
 ## Complétion automatique
-_setopt Auto_List
-_setopt Auto_Menu
+SetOPT AUTO_LIST
+SetOPT AUTO_MENU
 # Ces trucs sont pénibles car ils n'autorisent pas une
 # complétion "petit à petit".
-_unsetopt Menu_Complete
-_unsetopt Rec_Exact
+UnsetOPT MENU_COMPLETE
+UnsetOPT REC_EXACT
 
-_setopt Auto_Param_Keys
-_unsetopt Auto_Param_Slash
-_unsetopt Cd_Able_Vars
-_setopt Complete_Aliases
-_setopt Complete_in_Word
-_unsetopt Correct
-_setopt Correct_All
-_unsetopt Equals
-_setopt Extended_Glob
-_setopt Hash_Cmds
-_setopt Hash_Dirs
+SetOPT AUTO_PARAM_KEYS
+UnsetOPT AUTO_PARAM_SLASH
+UnsetOPT CD_ABLE_VARS
+SetOPT COMPLETE_ALIASES
+SetOPT COMPLETE_IN_WORD
+UnsetOPT CORRECT
+SetOPT CORRECT_ALL
+UnsetOPT EQUALS
+SetOPT EXTENDED_GLOB
+SetOPT HASH_CMDS
+SetOPT HASH_DIRS
 
-_setopt BraceCCL # Expansion des classes de caractères, comme {a-z} au même titre que {00..99}
+SetOPT BRACECCL # EXPANSION DES CLASSES DE CARACTÈRES, COMME {A-Z} AU MÊME TITRE QUE {00..99}
 
 ## Gestion de l'historique
-_setopt Extended_History
-_setopt Hist_Expire_Dups_First
-_setopt Hist_Ignore_All_Dups
-_setopt Hist_Ignore_Space
-_unsetopt Hist_No_Functions
-_unsetopt Hist_No_Store
-_setopt Hist_Reduce_Blanks
-_setopt Inc_Append_History
+SetOPT EXTENDED_HISTORY
+SetOPT HIST_EXPIRE_DUPS_FIRST
+SetOPT HIST_IGNORE_ALL_DUPS
+SetOPT HIST_IGNORE_SPACE
+UnsetOPT HIST_NO_FUNCTIONS
+UnsetOPT HIST_NO_STORE
+SetOPT HIST_REDUCE_BLANKS
+SetOPT INC_APPEND_HISTORY
 
 
-_setopt Magic_Equal_Subst
-_setopt Mail_Warning
-_setopt Mark_Dirs
-_setopt No_Bg_Nice
-_setopt No_Hup
-_setopt No_Prompt_Cr
-_setopt Numeric_Glob_Sort
-_unsetopt Prompt_Cr
-_setopt Auto_Pushd
-_setopt Pushd_Ignore_Dups
-_setopt Glob
+SetOPT MAGIC_EQUAL_SUBST
+SetOPT MAIL_WARNING
+SetOPT MARK_DIRS
+SetOPT NO_BG_NICE
+SetOPT NO_HUP
+SetOPT NO_PROMPT_CR
+SetOPT NUMERIC_GLOB_SORT
+UnsetOPT PROMPT_CR
+SetOPT AUTO_PUSHD
+SetOPT PUSHD_IGNORE_DUPS
+SetOPT GLOB
 
 ## Gestion de l'UTF-8 !!
-_setopt MultiByte
+SetOPT MULTIBYTE
