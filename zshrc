@@ -96,5 +96,3 @@ then
 	[ "`pwd`" = ~$SUDO_USER ] && cd
 fi
 
-cmd_exists fortune && fortune fr
-

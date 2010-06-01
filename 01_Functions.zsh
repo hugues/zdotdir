@@ -19,7 +19,7 @@
 
 cmd_exists ()
 {
-	which $1 2>/dev/null >&2
+	whereis -b $1 2>/dev/null >&2
 }
 
 term_title()
@@ -78,15 +78,19 @@ term_title()
 preprint()
 {
 	local my_color i
-
-	my_color=${2-"$color[black];$color[bold]"}
+	my_color=${2-"$prompt_colors[generic]"}
 
 	hbar=
-	for i in {1..$(($COLUMNS - ${#1} - 5))}
+	for i in {1..$((80 - ${#1} - 5))}
 	do
 		hbar=$hbar-
 	done
-	print -Pn "${C_}$my_color${_C}${hbar}[ $1 ]-\r${C_}0${_C}"
+	if [ "$1" != "" ]
+	then
+		print -Pn "${C_}$my_color;1${_C}${hbar}[${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}]-\r${C_}0${_C}"
+	else
+		print -Pn "${C_}$my_color;1${_C}${hbar}-----${C_}0${_C}"
+	fi
 }
 
 get_git_branch ()
@@ -287,7 +291,7 @@ set_prompt_colors ()
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
 }
 
-chpwd()
+birthdays()
 {
 	WHEN_FILE=~/.when/birthdays
 	TODAY_FILE=~/.when/.today
@@ -304,24 +308,38 @@ chpwd()
 
 		if [ -s $TODAY_FILE ]
 		then
-			preprint "événements" $color[bold] ; echo
+			preprint "À ne pas manquer" $color[red] ; echo
 			cat $TODAY_FILE
-		fi
+			preprint "" $color[red] ; echo
+			echo
+		fi | sed 's/^/   /'
 	fi
+}
 
+todo()
+{
 	if cmd_exists todo
 	then
-		if [ $(todo | wc -l) -gt 0 ]
+		TODO=${=$(whereis -b todo | cut -d: -f2)}
+		if [ $($TODO $@ | wc -l) -gt 0 ]
 		then
-			preprint "todo" $color[bold] ; echo
-			todo
-		fi
+			preprint "À faire" $color[yellow] && echo
+			$TODO $@ --force-colour
+			preprint "" $color[yellow] && echo
+			echo
+		fi | sed 's/^/   /'
 	fi
+}
+
+chpwd()
+{
+
+	todo
 
 	if ( cmd_exists git && test -d .git )
 	then
 		# Shows tracked branches and modified files
-		git-checkout HEAD
+		git-checkout HEAD 2>&1 | sed 's/^/   /'
 	fi
 }
 
