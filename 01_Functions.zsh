@@ -81,7 +81,7 @@ preprint()
 	my_color=${2-"$prompt_colors[generic]"}
 
 	hbar=
-	for i in {1..$((80 - ${#1} - 5))}
+	for i in {1..$((74 - ${#1} - 5))}
 	do
 		hbar=$hbar-
 	done
