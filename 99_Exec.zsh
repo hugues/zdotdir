@@ -8,5 +8,13 @@
 ## these files with or without this notice.
 ## 
 
+if cmd_exists fortune
+then
+	preprint "Pensée du jour" && echo
+	fortune fr | fmt -s -w 74
+	preprint "" && echo
+	echo
+fi | sed 's/^/   /'
+
 chpwd
 
