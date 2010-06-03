@@ -19,7 +19,7 @@
 
 cmd_exists ()
 {
-	whereis -b $1 >/dev/null 2>&1
+	which -p $1 >/dev/null 2>&1
 }
 
 term_title()
