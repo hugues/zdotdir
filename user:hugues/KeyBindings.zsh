@@ -201,6 +201,8 @@ do
 	bindkey -M $keymap -s 'r' 'Q rehash\n'
 	bindkey -M $keymap -s 'R' 'Q reset\n'
 
+	bindkey -M $keymap -s 'w' 'Q when --calendar=~/.birthdays\n'
+
 	bindkey -M $keymap -s 't' 'Q todo\n'
 	bindkey -M $keymap -s 'T' 'Q todo all -c\n'
 
