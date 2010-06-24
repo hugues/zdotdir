@@ -214,6 +214,12 @@ get_git_status ()
 	echo $my_git_status
 }
 
+zsh_status ()
+{
+	cd ~/.zsh
+	echo "$(git describe --dirty="$(git diff | md5sum | sed 's/^\(.......\).*$/-D1rTY-\1/')" --always)"
+}
+
 normal_user ()
 {
 	if [ -e /etc/login.defs ]

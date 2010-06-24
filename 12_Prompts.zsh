@@ -323,8 +323,31 @@ redefine_prompt ()
 
 }
 
+ZSH_STATUS=$(zsh_status)
+if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
+then
+	echo -n $c_$prompt_colors[error]$_c
+	toilet -f bigmono9 "D1rTY Zsh.."
+	echo -n "	You should cleanup your working copy of ~/.zsh .."
+	echo $c_$prompt_colors[none]$_c
+	echo
+fi
+
 precmd()
 {
+	NEW_STATUS=$(zsh_status)
+	if [ $NEW_STATUS != $ZSH_STATUS ]
+	then
+		echo -n $c_$prompt_colors[error]$_c
+		if ( echo $NEW_STATUS | grep -q -- "-D1rTY-" )
+		then
+			echo -n "Zsh Up-To-Date but still WIP.."
+		else
+			echo -n "You should restart Zsh.."
+		fi
+		echo $c_$prompt_colors[none]$_c
+	fi
+
 	update_prompt_elements
 	redefine_prompt
 }
