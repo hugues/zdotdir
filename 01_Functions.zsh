@@ -217,7 +217,12 @@ get_git_status ()
 zsh_status ()
 {
 	cd ~/.zsh >/dev/null
-	echo "$(git describe --dirty="$((git cdiff ; git diff) | md5sum | sed 's/^\(.......\).*$/-D1rTY-\1/')" --always)"
+	_status="$(git describe --always)"
+	if [ "$( (git diff --cached ; git diff) | head -n1)" != "" ]
+	then
+		_status=$_status"-$( (git diff --cached ; git diff) | md5sum | sed 's/^\(.......\).*$/-D1rTY-\1/')"
+	fi
+	echo $_status
 }
 
 normal_user ()
