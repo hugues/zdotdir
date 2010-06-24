@@ -216,8 +216,8 @@ get_git_status ()
 
 zsh_status ()
 {
-	cd ~/.zsh
-	echo "$(git describe --dirty="$(git diff | md5sum | sed 's/^\(.......\).*$/-D1rTY-\1/')" --always)"
+	cd ~/.zsh >/dev/null
+	echo "$(git describe --dirty="$((git cdiff ; git diff) | md5sum | sed 's/^\(.......\).*$/-D1rTY-\1/')" --always)"
 }
 
 normal_user ()
@@ -264,6 +264,8 @@ set_prompt_colors ()
 	prompt_colors[bar]="$prompt_colors[generic];$color[bold]"				# horizontal bar - bold generic
 	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date) - bar color
 	prompt_colors[error]="$color[bold];$color[yellow]"					# error code - bold yellow
+
+	prompt_colors[warning]="$color[bold];$color[black]"
 
 	date_colors[normal]=$prompt_colors[soft_generic]
 	date_colors[exec]=$prompt_colors[bold_generic]
