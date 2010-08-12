@@ -107,7 +107,7 @@ get_git_branch ()
 		my_git_branch=$(grep merge .repo/manifests.git/config | awk '{print $3}')
 		if [ $my_git_branch != "" ]
 		then
-			echo $my_git_branch
+			echo "[$my_git_branch]"
 			return
 		fi
 	fi
