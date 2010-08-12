@@ -102,6 +102,16 @@ get_git_branch ()
 		return
 	fi
 
+	if [ -f ".repo/manifests.git/config" ]
+	then
+		my_git_branch=$(grep merge .repo/manifests.git/config | awk '{print $3}')
+		if [ $my_git_branch != "" ]
+		then
+			echo $my_git_branch
+			return
+		fi
+	fi
+
 	[ "$( ( git-ls-files ; git-ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \( ! -d .git -o "$(git-rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git-rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return 
 
 	GIT_DIR=$(git-rev-parse --git-dir)
