@@ -191,6 +191,12 @@ get_git_status ()
 	then return
 	fi
 
+	if [ -f ".repo/manifests.git/config" ]
+	then
+		echo "$git_colors[up_to_date]";
+		return
+	fi
+
 	if [ "$(git-rev-parse --is-inside-git-dir)" = "true" -o "$(git-config --get core.bare)" = "true" ] ; then
 		echo "$git_colors[managment_folder]"
 		return
