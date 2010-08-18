@@ -10,3 +10,5 @@
 #export PRINTER=Gertrude
 export PRINTER=Gertrude
 export NNTPSERVER=news.free.fr
+
+export MUSICPLAYER=musicplayer

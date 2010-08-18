@@ -73,5 +73,3 @@ WORDCHARS='*?-_~!#$%^' ## Caractères faisant partie des mots
                         ## J'ai viré les  '/()[]{}'
 
 export SUDO_PROMPT="%u has to enter passwd to become %U: "
-
-MUSICPLAYER=audacious
