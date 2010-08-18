@@ -18,9 +18,6 @@
 
 export SHELL=`which zsh`
 
-## Agent de clefs SSH/GPG
-KEYCHAIN=~/.keychain/$(hostname)-sh
-
 
 ## Colors 
 autoload colors && colors

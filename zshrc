@@ -39,6 +39,12 @@ DOMAIN=${DOMAIN:-$(hostname -d 2>&-)}
 DOMAIN=${DOMAIN:-$(hostname -y 2>&-)}
 [ "$DOMAIN" = "" -o "$DOMAIN" = "localdomain" -o "$DOMAIN" = "(none)" ] && DOMAIN=$(grep "^search " /etc/resolv.conf | cut -d' ' -f2)
 
+## Agent de clefs SSH/GPG
+KEYCHAIN=~/.keychain/$(hostname)-sh
+[ -r "${KEYCHAIN}"     ] && source ${KEYCHAIN}
+[ -r "${KEYCHAIN}-gpg" ] && source ${KEYCHAIN}-gpg
+
+
 DEBUG=${DEBUG:-no}
 
 export USER HOST DOMAIN UID
