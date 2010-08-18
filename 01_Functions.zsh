@@ -62,12 +62,12 @@ term_title()
 				# hardstatus
 				#print -Pn "\e]2;{+b W}SCREEN #n {-b W}| {R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
 				print -Pn "\e]2;{R}?u(u) ?{W}{r}%n{R}@{r}%m{-b W} ({+b c}%l{-b W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
-				# caption
-				print -Pn "\ek"
-				[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
-				print -Pn "${@:-%~}"
-				print -Pn "\e\\"
 			fi
+			# caption
+			print -Pn "\ek"
+			[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
+			print -Pn "${@:-%~}"
+			print -Pn "\e\\"
 			;;
 		  *)
 			;;
