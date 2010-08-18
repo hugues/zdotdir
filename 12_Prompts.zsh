@@ -120,6 +120,7 @@ update_prompt_elements()
 		_is_multibyte_compliant=""
 	fi
 
+	[ "$DEBUG" = "yes" ] && echo && echo -n "	......SSH"
 	# Check ssh-agent only if the env socket has been set and is accessible
 	if [ -S "$SSH_AUTH_SOCK" ]
 	then
@@ -152,6 +153,7 @@ update_prompt_elements()
 		AGENTS=$C_$agent_colors[$AGENTCOLOR]$_C"$AGENTCHAR"
 	fi
 
+	[ "$DEBUG" = "yes" ] && echo && echo -n "	......GPG"
 	GPG_AGENT_PID="$(echo $GPG_AGENT_INFO | cut -d: -f2)"
 	if [ "$GPG_AGENT_PID" != "" -a -e /proc/$GPG_AGENT_PID/cmdline ]
 	then
