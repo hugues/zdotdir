@@ -22,6 +22,25 @@ cmd_exists ()
 	which -p $1 >/dev/null 2>&1
 }
 
+git () {
+	GIT=$(which -p git)
+	case $1 in
+		init|clone)
+			;;
+		*)
+			if [ "$( ( $GIT ls-files ; $GIT ls-tree HEAD . ) 2>&- | head -n1)" = ""\
+				-a \( ! -d .git -o "$($GIT rev-parse --git-dir 2>&-)" != ".git" \)\
+				-a "$($GIT rev-parse --is-inside-git-dir 2>&-)" != "true" ]
+			then
+				echo >&2 "Not inside a git folder !"
+				return
+			fi
+			;;
+	esac
+
+	$(which -p git) $@
+}
+
 term_title()
 {
 	# Jobs
