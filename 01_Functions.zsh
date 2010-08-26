@@ -32,7 +32,7 @@ git () {
 				-a \( ! -d .git -o "$($GIT rev-parse --git-dir 2>&-)" != ".git" \)\
 				-a "$($GIT rev-parse --is-inside-git-dir 2>&-)" != "true" ]
 			then
-				echo >&2 "Not inside a git folder !"
+				echo >&2 "zsh: the current folder is not managed by git"
 				return
 			fi
 			;;
