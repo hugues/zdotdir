@@ -112,24 +112,25 @@ get_git_branch ()
 		fi
 	fi
 
-	[ "$( ( git-ls-files ; git-ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \( ! -d .git -o "$(git-rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git-rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return 
+	# Get git branch only from git managed folders (not ignored subfolders..)
+	[ "$( ( git ls-files ; git ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \( ! -d .git -o "$(git rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
 
-	GIT_DIR=$(git-rev-parse --git-dir)
+	GIT_DIR=$(git rev-parse --git-dir)
 
 	# Get current working GIT branch
-	my_git_branch="$(git-branch 2>&- | grep -E '^\* ' | cut -c3-)"
+	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
 
 	if [ "$my_git_branch" != "" ]
 	then
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
 		[ "$my_git_branch" = "(no branch)" ] &&\
 			checkouted_branch="" && \
-			my_git_branch="$(git-name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,')"
+			my_git_branch="$(git name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,')"
 
 		# If neither on a named commit-ish, show commit-id
 		if [ "$my_git_branch" = "undefined" ]
 		then
-			my_git_branch="$(git-rev-parse --verify HEAD 2>&-)"
+			my_git_branch="$(git rev-parse --verify HEAD 2>&-)"
 		fi
 	else
 		# Initial commit
@@ -157,7 +158,7 @@ get_git_branch ()
 		if [ "$REBASE_DIR" = "$GIT_DIR/rebase-merge" ]
 		then
 			current=$(< $REBASE_DIR/done wc -l)
-			last=$(( $current + $(< $REBASE_DIR/git-rebase-todo grep -v "^#\|^[[:blank:]]*$" | wc -l) ))
+			last=$(( $current + $(< $REBASE_DIR/git rebase-todo grep -v "^#\|^[[:blank:]]*$" | wc -l) ))
 			rebase=$rebase$rebase_in_progress": "
 		else
 			current=$(cat $REBASE_DIR/next)
@@ -165,14 +166,14 @@ get_git_branch ()
 		fi
 
 		# Then the result
-		my_git_branch="[rebase $current/$last: "$(git-name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null)".."$my_git_branch"]"
+		my_git_branch="[rebase $current/$last: "$(git name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null)".."$my_git_branch"]"
 		[ -r $REBASE_DIR/head-name ] && my_git_branch=$my_git_branch" "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
 	else
 		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
 	fi
 
-	if [ "$(git-status 2>&- | grep "new file" | head -n1)" != "" ] ; then
+	if [ "$(git status 2>&- | grep "new file" | head -n1)" != "" ] ; then
 		# ADDED FILES
 		my_git_branch=$my_git_branch
 	fi
@@ -197,19 +198,19 @@ get_git_status ()
 		return
 	fi
 
-	if [ "$(git-rev-parse --is-inside-git-dir)" = "true" -o "$(git-config --get core.bare)" = "true" ] ; then
+	if [ "$(git rev-parse --is-inside-git-dir)" = "true" -o "$(git config --get core.bare)" = "true" ] ; then
 		echo "$git_colors[managment_folder]"
 		return
 	fi
 
-	if   [ "$(git-diff --cached 2>&- | grep '^diff ' | head -n1 )" != "" ] ; then 
+	if   [ "$(git diff --cached 2>&- | grep '^diff ' | head -n1 )" != "" ] ; then 
 		cached="yes"
 	fi
-	if [ "$(git-ls-files -m 2>&- | head -n1)" != "" ] ; then 
+	if [ "$(git ls-files -m 2>&- | head -n1)" != "" ] ; then 
 		not_up_to_date="yes"
 	fi
 
-	GIT_DIR=$(git-rev-parse --git-dir 2>/dev/null)
+	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
 
 	if [ "$cached" != "" -a "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[cached_and_not_up_to_date]"
@@ -217,8 +218,8 @@ get_git_status ()
 		my_git_status="$git_colors[cached]"
 	elif [ "$not_up_to_date" != "" ] ; then
 		my_git_status="$git_colors[not_up_to_date]"
-	elif [ "$(git-cat-file -t HEAD 2>/dev/null)" != "commit" ] ; then
-		if [ ! -z "$(git-ls-files)" ] ; then
+	elif [ "$(git cat-file -t HEAD 2>/dev/null)" != "commit" ] ; then
+		if [ ! -z "$(git ls-files)" ] ; then
 			my_git_status="$git_colors[cached]"
 		else
 			my_git_status="$git_colors[init_in_progress]"
@@ -373,7 +374,7 @@ chpwd()
 	if ( cmd_exists git && test -d .git )
 	then
 		# Shows tracked branches and modified files
-		git-checkout HEAD 2>&1 | sed 's/^/   /'
+		git checkout HEAD 2>&1 | sed 's/^/   /'
 	fi
 }
 
