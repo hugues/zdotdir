@@ -61,24 +61,6 @@ preexec ()
 	print -Pn "$C_$prompt_colors[exec]$_C"
 }
 
-new_precmd()
-{
-	#
-	# Arrays
-	# [0] prompt-style string
-	# [1] total size
-	# [2] color
-	# [3] pre-string
-	# [4] post-string
-	#
-	typeset -A ERROR DATE MAILS LOGIN HOST CWD GITINFO SVNINFO PRECMD
-	ERROR[color] = $prompt_colors[error]
-	ERROR[string] = "%(?;;%?)"
-	ERROR[pre] = "-"
-	ERROR[post] =
-	ERROR[size] = ${#$(print -Pn $ERROR[pre]$ERROR[string]$ERROR[post])}
-}
-
 set_prompt_date()
 {
 	# Date
@@ -92,7 +74,6 @@ set_prompt_date()
 update_prompt_elements()
 {
 	# Error
-	error=$(print -Pn "%(?;;-%?)") ## MUST BE the first operation else we lose the error code...
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
 	ERROR="%(?;;"$C_$prompt_colors[bar]$_C"-"$C_$prompt_colors[error]$_C"%?)"
@@ -333,6 +314,9 @@ fi
 
 precmd()
 {
+	# this MUST BE the real first operation else we lose the error code...
+	error=$(print -Pn "%(?;;-%?)")
+
 	NEW_STATUS=$(zsh_status)
 	if [ $NEW_STATUS != $ZSH_STATUS ]
 	then
