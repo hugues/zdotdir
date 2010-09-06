@@ -61,7 +61,7 @@ typeset -gU PATH MANPATH INFOPATH PKG_CONFIG_PATH LD_LIBRARY_PATH
 
 ## Gestion de l'historique
 # Voir le fichier d'Options pour plus de contrôle là-dessus
-HISTFILE=$ZDOTDIR/.history.$USER.$HOSTNAME # Pour éviter les conflits de conf
+HISTFILE=$ZDOTDIR/.history.$USER.$HOST # Pour éviter les conflits de conf
 HISTSIZE=42000
 SAVEHIST=42000
 
