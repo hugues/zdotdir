@@ -30,15 +30,14 @@ set_prompt_colors
 
 expand_text()
 {
-	# strips the %{...%}
-	print -Pn -- "$(echo $@ | sed 's/%{[^(%})]*%}//g')"
+	# strips the %{...%} and newlines characters
+	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g')"
 }
 
 preexec ()
 {
     term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 
-	local lines="$(expand_text "$PROMPT$1" | sed "s/\\(.\{$COLUMNS\}\\)/\\1\\n/g" | wc -l)"
 	prompt_colors[date]=$date_colors[exec]
 	set_prompt_date
 	prompt_colors[date]=$date_colors[normal]
@@ -51,9 +50,8 @@ preexec ()
 	done
 	redefine_prompt
 
-	local string="$(expand_text "$PROMPT$1")"
-	local lines=$(( (${#string} - 1) / $COLUMNS + $(echo ${string} | wc -l) - 2 ))
-	for i in {0..$lines} ; print -Pn "\e[1A\e[2K"
+	local lines="$(($(expand_text "$PROMPT$1" | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
+	for i in {1..$lines} ; print -Pn "\e[1A\e[2K"
 	print -Pn "\r$PROMPT"
 	print -Pn "$C_$color[cyan]$_C"
 	print "${(q)1}" | sed "s/'$//;s/^'//"
