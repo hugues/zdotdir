@@ -13,6 +13,10 @@ if privileged_user
 then
 	prompt_colors[generic]=${PS1_ROOT:-$color[bold];$color[red]}
 fi
+if [ "$YEAHCONSOLE" = "true" ]
+then
+	prompt_colors[generic]=${PS1_YEAH}
+fi
 
 set_prompt_colors
 
@@ -293,6 +297,23 @@ update_prompt_elements()
 }
 
 redefine_prompt ()
+{
+	case "$YEAHCONSOLE" in
+		"true")
+			yeah_prompt
+			;;
+		*)
+			two_lines_prompt
+			;;
+	esac
+}
+
+yeah_prompt ()
+{
+	PS1=$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m "$CURDIR" "$C_$prompt_colors[dies]$_C">"$C_$prompt_colors[cmd]$_C" "
+}
+
+two_lines_prompt ()
 {
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...

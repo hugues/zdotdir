@@ -40,6 +40,7 @@ _C="$_c%}"
 
 PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
+PS1_YEAH="38;5;82"
 
 ## Variables d'environnement ``classiques''
 #
@@ -66,6 +67,12 @@ HISTSIZE=42000
 SAVEHIST=42000
 
 export GPG_TTY=`tty`
+
+# YeahConsole..
+if ( ps fx | grep $$ -B1 | grep -q yeahconsole )
+then
+	YEAHCONSOLE=true
+fi
 
 # Display guess
 CURRENT_DISPLAY=$(finger 2>&- | tail -n+2 | grep -E $USER'[[:blank:]]+.*[[:blank:]]+tty[0-9][[:blank:]]+($DISPLAY)' | head -n1 | cut -d'(' -f2 | cut -d')' -f1)
