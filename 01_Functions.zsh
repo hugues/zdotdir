@@ -71,22 +71,22 @@ term_title()
 		  screen*)
 			local _sep=""
 			[ $# -gt 0 ] && _sep=$1 && shift # gets and discards the separator, if any.
-			if [ ! -z "$TMUX" ]
-			then
+			#if [ ! -z "$TMUX" ]
+			#then
 				# Tmux
 				#print -Pn "\e]0;%n@%m (%l) %~${_sep:+$_sep #[fg=yellow,bold]}$@\a"			# Sets term title
 				print -Pn "\e]0;#[fg=red]%n#[fg=default,bold]@#[fg=red]%m#[default] (#[fg=cyan]%l#[fg=default]) #[fg=red]%~${_sep:+#[default,fg=default]$_sep #[fg=yellow,bold]$@}#[default,fg=default]\a"
-			else
+			#else
 				# Classic screen
 				# hardstatus
 				#print -Pn "\e]2;{+b W}SCREEN #n {-b W}| {R}?u(u) ?{W}{r}%n@%m{W} ({c}%l{W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
-				print -Pn "\e]2;{R}?u(u) ?{W}{r}%n{R}@{r}%m{-b W} ({+b c}%l{-b W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
+			#	print -Pn "\e]2;{R}?u(u) ?{W}{r}%n{R}@{r}%m{-b W} ({+b c}%l{-b W}) {R}%~{W}${_sep:+$_sep \{+b Y\}}$@{-b W}\a" # Sets hardstatus line (term title)
 				# caption
-				print -Pn "\ek"
-				[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
-				print -Pn "${@:-%~}"
-				print -Pn "\e\\"
-			fi
+			#	print -Pn "\ek"
+			#	[ "$SUDO_USER" != "" ] && print -Pn "($USER) "
+			#	print -Pn "${@:-%~}"
+			#	print -Pn "\e\\"
+			#fi
 			;;
 		  *)
 			;;
