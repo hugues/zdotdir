@@ -46,7 +46,7 @@ preexec ()
 	set_prompt_date
 	prompt_colors[date]=$date_colors[normal]
 
-	spaceleft=$(($COLUMNS - $AGENTSSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
+	spaceleft=$(($COLUMNS - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
 	for h in {1..$spaceleft}
 	do
@@ -148,13 +148,14 @@ update_prompt_elements()
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
 
-	# Mailcheck
-	[ "$DEBUG" = "yes" ] && echo -n "	Mails..."
-	MAILSTAT=$(eval echo "`[ -s ~/.procmail/procmail.log ] && < ~/.procmail/procmail.log awk 'BEGIN {RS="From" ; HAM=-1 ; LISTES=0 } !/JUNK|dev.null/ { HAM++ } /Listes|Newsletters|Notifications/ { LISTES++ } END { if ((HAM - LISTES) > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[unread]$_C""@" } else if (LISTES > 0) { print "$C_$prompt_colors[bar]$_C""-""$C_$mail_colors[listes]$_C""@" } }'`")
-	MAILSTATEXPAND=$(expand_text "$MAILSTAT")
-	MAILSTATSIZE=${#MAILSTATEXPAND}
-	[ "$DEBUG" = "yes" ] && echo
-
+	if [ "${PWD/$STSDKROOT/}" != "$PWD" ]
+	then
+		export STLINUX="-${DVD_PLATFORM:-?}-${DVD_BACKEND:-?}-${DVD_OS:-?}"
+		STLINUXSIZE=${#STLINUX}
+	else
+		unset STLINUX
+		STLINUXSIZE=0
+	fi
 
 	if [ -e /proc/pmu/battery_0 ]
 	then
@@ -201,7 +202,7 @@ update_prompt_elements()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
-	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $MAILSTATSIZE - $DATESIZE - $BATTERYSIZE))
+	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
 	for h in {1..$spaceleft}
 	do
@@ -317,7 +318,7 @@ two_lines_prompt ()
 {
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
-	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$prompt_colors[bar]$_C$HBAR$DATE"
+	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$prompt_colors[bar]$_C$STLINUX$HBAR$DATE"
 "$C_"30;1"$_C$SHLVL"-"$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m "$CURDIR$CVSTAG$SVNREV$GITBRANCH" "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 }
