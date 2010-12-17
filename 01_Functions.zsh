@@ -25,14 +25,14 @@ cmd_exists ()
 git () {
 	GIT=$(which -p git)
 	case $1 in
-		init|clone)
+		init|clone|config)
 			;;
 		*)
 			if [ "$( ( $GIT ls-files ; $GIT ls-tree HEAD . ) 2>&- | head -n1)" = ""\
 				-a \( ! -d .git -o "$($GIT rev-parse --git-dir 2>&-)" != ".git" \)\
 				-a "$($GIT rev-parse --is-inside-git-dir 2>&-)" != "true" ]
 			then
-				echo >&2 "zsh: the current folder is not managed by git"
+				echo >&2 "git $1: the current folder is not managed by git"
 				return
 			fi
 			;;
