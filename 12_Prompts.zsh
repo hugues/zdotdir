@@ -240,10 +240,16 @@ update_prompt_elements()
 	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
 	[ "$DEBUG" = "yes" ] && echo
 
+	# get hg status
+	[ "$DEBUG" = "yes" ] && echo -n "	HG status..."
+	HGBRANCH=$(get_gcl_branch hg)
+	[ ! -z "$HGBRANCH" ] && HGBRANCH=" "$HGBRANCH
+	[ "$DEBUG" = "yes" ] && echo
+
 	# get git status
 	#
 	[ "$DEBUG" = "yes" ] && echo -n "	GIT status..."
-	GITBRANCH=$(get_git_branch)
+	GITBRANCH=$(get_gcl_branch git)
 	GITBRANCHSIZE=${#GITBRANCH}
 	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
 	[ "$DEBUG" = "yes" ] && echo
@@ -319,7 +325,7 @@ two_lines_prompt ()
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
 	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$prompt_colors[bar]$_C$STLINUX$HBAR$DATE"
-"$C_"30;1"$_C$SHLVL"-"$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m "$CURDIR$CVSTAG$SVNREV$GITBRANCH" "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
+"$C_"30;1"$_C$SHLVL"-"$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 }
 

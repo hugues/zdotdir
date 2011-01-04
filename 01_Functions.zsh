@@ -112,14 +112,32 @@ preprint()
 	fi
 }
 
+get_gcl_branch ()
+{
+	case $1 in
+		git)
+			get_git_branch
+			;;
+		hg)
+			get_hg_branch
+			;;
+		*)
+			;;
+	esac
+}
+
+get_hg_branch ()
+{
+	HGROOT=$(hg root 2>/dev/null)
+	if [ ! -z "$HGROOT" ]
+	then
+		hg branch
+	fi
+}
+
 get_git_branch ()
 {
 	local my_git_branch checkouted_branch="yes"
-
-	if [ ! -z "$DO_NOT_CHECK_GIT_BRANCH" ]
-	then
-		return
-	fi
 
 	if [ -f ".repo/manifests.git/config" ]
 	then
