@@ -209,6 +209,9 @@ do
 	bindkey -M $keymap -s 'é' ' 2>/dev/null '
 	bindkey -M $keymap -s '2' ' 2>&1 '
 
+	bindkey -M $keymap -s 'c' 'Q ./configure\n'
+	bindkey -M $keymap -s '©' 'Q !?configure\n'
+
 	bindkey -M $keymap -s 'm' 'Q make\n'
 	bindkey -M $keymap -s 'M' 'Q make\n'
 
