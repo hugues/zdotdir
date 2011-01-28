@@ -219,7 +219,7 @@ do
 
 	bindkey -M $keymap -s ' ' '\\ '
 
-	bindkey -M $keymap -s 'g' 'Q git status .\n'
+	bindkey -M $keymap -s 'g' 'Q git st .\n'
 	bindkey -M $keymap -s 'G' 'Q git remote -v update\n'
 
 	bindkey -M $keymap -s 'S' 'Q sudo !!'
