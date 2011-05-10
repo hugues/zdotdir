@@ -320,6 +320,7 @@ set_prompt_colors ()
 	#prompt_colors[term]="$prompt_colors[generic]"							# tty - unused, see term title
 	prompt_colors[user]="$prompt_colors[generic]"							# login - generic
 	prompt_colors[host]="$prompt_colors[generic]"							# hostname - generic
+	prompt_colors[display]="$prompt_colors[generic]"							# hostname - generic
 	#prompt_colors[hist]="$color[none]"									# history number - unused
 	prompt_colors[arob]="$color[bold];$prompt_colors[generic]"	# <login>@<hostname> - bold generic
 	prompt_colors[dies]="$prompt_colors[generic]"							# the bottom-end of the prompt - generic
