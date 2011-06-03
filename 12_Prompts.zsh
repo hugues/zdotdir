@@ -231,7 +231,7 @@ update_prompt_elements()
 	SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}	
 	if [ "$SVNREV" != "" ]
 	then
-		if [ -z "$DO_NOT_CHECK_SVN_STATUS" ]
+		if [ ! -z "$CHECK_SVN_STATUS" ]
 		then
 			SVNSTATUS="$(svn diff 2>&-)"
 			SVNSTATUS=${${SVNSTATUS:+$prompt_colors[not_up_to_date]}:-$prompt_colors[up_to_date]}
