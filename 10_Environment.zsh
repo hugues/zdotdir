@@ -87,3 +87,4 @@ then
 	fi
 fi
 
+export COLUMNS
