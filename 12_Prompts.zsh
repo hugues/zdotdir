@@ -325,7 +325,7 @@ two_lines_prompt ()
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
 	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$prompt_colors[bar]$_C$STLINUX$HBAR$DATE"
-"$C_"30;1"$_C$SHLVL"-"$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m"$C_$prompt_colors[display]$_C"($DISPLAY) "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
+"$C_"30;1"$_C$SHLVL"-"$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m"$C_$prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
 
 }
 
