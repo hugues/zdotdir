@@ -23,7 +23,7 @@ export GIT_COMMITTER_NAME=$FULLNAME
 export BC_ENV_ARGS="-q"
 
 ## Editeur par défaut
-export EDITOR=`which -p vim || which -p vi || which -p emacs`
+export EDITOR=`\which -p vim || \which -p vi || \which -p emacs`
 export VISUAL=$EDITOR
 export FCEDIT=$EDITOR
 
