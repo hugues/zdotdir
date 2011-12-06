@@ -1,1 +1,0 @@
-../net:osn.sagem/Prompts.zsh

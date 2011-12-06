@@ -1,3 +1,0 @@
-
-a vim=$EDITOR
-
