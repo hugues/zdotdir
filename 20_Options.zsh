@@ -13,6 +13,10 @@
 # see man zshoptions(1) for more details ;-)
 #
 
+# Funky run-help hooks
+autoload run-help-git
+autoload run-help-svn
+
 function SetOPT() {
 	SetOPTifExists $1 on
 }
