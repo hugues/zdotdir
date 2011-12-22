@@ -332,10 +332,11 @@ two_lines_prompt ()
 ZSH_STATUS=$(zsh_status)
 if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 then
-	echo -n $c_$prompt_colors[warning]$_c
-	toilet -f bigmono9 "D1rTY Zsh.."
-	echo $c_$prompt_colors[none]$_c
-	echo
+	set_prompt_colors "$color[black]"
+	#echo -n $c_$prompt_colors[warning]$_c
+	#toilet -f bigmono9 "D1rTY Zsh.."
+	#echo $c_$prompt_colors[none]$_c
+	#echo
 fi
 
 precmd()
@@ -348,16 +349,15 @@ precmd()
 	then
 		if ! ( echo $NEW_STATUS | grep -q -- "-D1rTY-" )
 		then
-			echo -n $c_$prompt_colors[warning]$_c
-			echo -n "You should restart Zsh.."
-			echo $c_$prompt_colors[none]$_c
+			# You should restart Zsh
+			set_prompt_colors "38;5;54"
 		fi
+
 	else
 		if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 		then
-			echo -n $c_$prompt_colors[warning]$_c
-			echo -n "Your Zsh working copy is not clean.."
-			echo $c_$prompt_colors[none]$_c
+			# Your Zsh working copy is not clean
+			set_prompt_colors "38;5;81"
 		fi
 	fi
 
