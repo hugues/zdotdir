@@ -116,14 +116,14 @@ update_prompt_elements()
 				AGENTCHAR=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
 			else
 				AGENTCOLOR="empty"
-				AGENTCHAR=${AGENT_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✓" || echo "S" )}
+				AGENTCHAR=${AGENT_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✘" || echo "S" )}
 			fi
 		else
 			# That's a forwarded agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_remote_keys"
-				AGENTCHAR=${AGENT_SOCK_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✘" || echo "@" )}
+				AGENTCHAR=${AGENT_SOCK_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✓" || echo "@" )}
 			else
 				AGENTCOLOR="remote_empty"
 				AGENTCHAR=${AGENT_SOCK_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✗" || echo "O" )}
