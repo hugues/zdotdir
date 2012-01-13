@@ -46,6 +46,7 @@ a mmv='noglob zmv -W'
 
 normal_user && cmd_exists apt-get && a apt-get='sudo apt-get'
 normal_user && cmd_exists pacman && a pacman='sudo pacman'
+normal_user && cmd_exists yum && a yum='sudo yum'
 
 a rt='find -maxdepth 1 -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
 a RT='find -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
