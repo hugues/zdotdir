@@ -4,7 +4,7 @@
 
 if [ -d $ZDOTDIR/zsh-syntax-highlighting ]
 then
-	unfunction preexec
+	#unfunction preexec
 
 	ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 	source $ZDOTDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
