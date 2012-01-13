@@ -394,7 +394,7 @@ set_prompt_colors ()
 	git_colors[init_in_progress]="$color[black];$color[bold]"                        # initialization
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
 
-	guilt_colors[applied]=$color[red]";"$color[bold]
+	guilt_colors[applied]=$git_colors[cached]
 	guilt_colors[unapplied]=$color[black]
 }
 
