@@ -233,13 +233,13 @@ get_guilt_series ()
 			guilt=" "$C_$guilt_colors[applied]$_C
 			while [ $applied -gt 0 ]
 			do
-				guilt=$guilt"+"
+				guilt=$guilt"·"
 				applied=$(($applied - 1))
 			done
 			guilt=$guilt$C_$guilt_colors[unapplied]$_C
 			while [ $unapplied -gt 0 ]
 			do
-				guilt=$guilt"-"
+				guilt=$guilt"·"
 				unapplied=$(($unapplied - 1))
 			done
 			guilt=$guilt$C_$colors[none]$_C
@@ -394,7 +394,7 @@ set_prompt_colors ()
 	git_colors[init_in_progress]="$color[black];$color[bold]"                        # initialization
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
 
-	guilt_colors[applied]=$git_colors[cached]
+	guilt_colors[applied]=$color[red]";"$color[bold]
 	guilt_colors[unapplied]=$color[black]
 }
 
