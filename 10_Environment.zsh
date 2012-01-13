@@ -25,6 +25,8 @@ c_='['$color[none]";"
 _c=m
 C_="%{$c_"
 _C="$_c%}"
+T_=$termcap[as]
+_T=$termcap[ae]
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of

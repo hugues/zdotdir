@@ -35,12 +35,12 @@ set_prompt_colors
 expand_text()
 {
 	# strips the %{...%} and newlines characters
-	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g')"
+	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g;s/'$termcap[ae]'//g;s/'$termcap[as]'//g')"
 }
 
 preexec ()
 {
-    term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
+	term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 
 	prompt_colors[date]=$date_colors[exec]
 	set_prompt_date
@@ -48,10 +48,12 @@ preexec ()
 
 	spaceleft=$(($COLUMNS - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
+	HBAR=$T_
 	for h in {1..$spaceleft}
 	do
-		HBAR=$HBAR-
+		HBAR=${HBAR}q
 	done
+	HBAR=$HBAR$_T
 	redefine_prompt
 
 	local lines="$(($(expand_text "$PROMPT$1" | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
@@ -61,13 +63,13 @@ preexec ()
 	print "${(q)1}" | sed "s/'$//;s/^'//"
 
 	print -Pn "$C_$prompt_colors[exec]$_C"
-}
+ }
 
 set_prompt_date()
 {
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C"[ "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" ]"$C_$prompt_colors[bar]$_C"-"
+	DATE=$C_$prompt_colors[braces]$_C$T_"u"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"tq"$_T
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
@@ -78,7 +80,7 @@ update_prompt_elements()
 	# Error
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
-	ERROR="%(?;;"$C_$prompt_colors[bar]$_C"-"$C_$prompt_colors[error]$_C"%?)"
+	ERROR="%(?;;"$C_$prompt_colors[bar]$_C$T_"q"$_T$C_$prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -143,7 +145,7 @@ update_prompt_elements()
 			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ $_is_multibyte_compliant ] && echo "⚡" || echo "G" )}
 		fi
 	fi
-	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C"-"$AGENTS}
+	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C$T_"q"$_T$AGENTS}
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
@@ -191,7 +193,7 @@ update_prompt_elements()
 				battery[color]="uncharging"
 			fi
 		fi
-		BATTERY=$C_$prompt_colors[bar]$_C"-"$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
+		BATTERY=$C_$prompt_colors[bar]$_C$T_"q"$_T$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
 		unset battery
 
 		[ "$DEBUG" = "yes" ] && echo
@@ -204,10 +206,12 @@ update_prompt_elements()
 	# First line of prompt, calculation of the remaining place
 	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
+	HBAR=$T_
 	for h in {1..$spaceleft}
 	do
-		HBAR=$HBAR-
+		HBAR=$HBAR"q"
 	done
+	HBAR=$HBAR$_T
 	[ "$DEBUG" = "yes" ] && echo
 
 	##
