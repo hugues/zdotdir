@@ -218,6 +218,37 @@ get_git_branch ()
 	echo $my_git_branch
 }
 
+get_guilt_series ()
+{
+	# Guilt
+	#
+	guilt=""
+
+	if cmd_exists guilt
+	then
+		applied=$(guilt applied 2>/dev/null | wc -l)
+		unapplied=$(guilt unapplied 2>/dev/null | wc -l)
+		if [ $(($applied + $unapplied)) -gt 0 ]
+		then
+			guilt=" "$C_$guilt_colors[applied]$_C
+			while [ $applied -gt 0 ]
+			do
+				guilt=$guilt"+"
+				applied=$(($applied - 1))
+			done
+			guilt=$guilt$C_$guilt_colors[unapplied]$_C
+			while [ $unapplied -gt 0 ]
+			do
+				guilt=$guilt"-"
+				unapplied=$(($unapplied - 1))
+			done
+			guilt=$guilt$C_$colors[none]$_C
+		fi
+	fi
+
+	echo $guilt
+}
+
 # We *must* have previously checked that
 # we obtained a correct GIT branch with
 # a call to `get_git_branch`
@@ -362,6 +393,9 @@ set_prompt_colors ()
 	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
 	git_colors[init_in_progress]="$color[black];$color[bold]"                        # initialization
 	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
+
+	guilt_colors[applied]=$git_colors[cached]
+	guilt_colors[unapplied]=$color[black]
 }
 
 birthdays()

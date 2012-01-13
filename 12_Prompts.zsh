@@ -298,7 +298,7 @@ update_prompt_elements()
 	#  then we reduce the path until it reaches the last path element,
 	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
-	GITBRANCH=${GITBRANCH:+ $C_"$(get_git_status)"$_C$GITBRANCH}
+	GITBRANCH=${GITBRANCH:+ $C_"$(get_git_status)"$_C$GITBRANCH}"$(get_guilt_series)"
 	CURDIR="$C_$prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
 }
