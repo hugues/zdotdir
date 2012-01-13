@@ -31,26 +31,26 @@ ZSH_HIGHLIGHT_STYLES[function]="fg=cyan,bold"
 ZSH_HIGHLIGHT_STYLES[alias]="fg=cyan"
 ZSH_HIGHLIGHT_STYLES[command]="fg=normal"
 ZSH_HIGHLIGHT_STYLES[hashed-command]="fg=normal,bold"
-ZSH_HIGHLIGHT_STYLES[path]="fg=normal,bold"
+ZSH_HIGHLIGHT_STYLES[path]="fg=normal"
 ZSH_HIGHLIGHT_STYLES[precommand]="fg=normal,underline"
 ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=cyan,underline"
 
 ZSH_HIGHLIGHT_STYLES[history-expansion]="fg=blue"
 
-ZSH_HIGHLIGHT_STYLES[globbing]="fg=yellow"
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=cyan"
 
 ZSH_HIGHLIGHT_STYLES[commandseparator]="none"
 
 ZSH_HIGHLIGHT_STYLES[cursor]="bold"
 
-ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=yellow"
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="none"
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="green"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="yellow"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=green,bold"
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=yellow,bold"
+ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=blue,bold"
 
 
 ZSH_HIGHLIGHT_STYLES[root]="standout"
 
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="none"
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=green,bold"
 
 ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=red,bold"
