@@ -224,7 +224,7 @@ get_guilt_series ()
 	#
 	guilt=""
 
-	if cmd_exists guilt
+	if ( cmd_exists guilt && guilt status >/dev/null 2>&- )
 	then
 		applied=$(guilt applied 2>/dev/null | wc -l)
 		unapplied=$(guilt unapplied 2>/dev/null | wc -l)
