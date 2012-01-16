@@ -43,7 +43,7 @@ preexec ()
 	term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 
 	prompt_colors[date]=$date_colors[exec]
-	set_prompt_date
+	set_prompt_date "-"
 	prompt_colors[date]=$date_colors[normal]
 
 	spaceleft=$(($COLUMNS - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
@@ -67,9 +67,12 @@ preexec ()
 
 set_prompt_date()
 {
+	begin=${${1:+j}:-k}
+	end=${${1:+m}:-l}
+
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C$T_"u"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"tq"$_T
+	DATE=$C_$prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"${end}q"$_T
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
