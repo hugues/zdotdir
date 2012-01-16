@@ -99,14 +99,16 @@ preprint()
 	local my_color i
 	my_color=${2-"$prompt_colors[generic]"}
 
-	hbar=
+	hbar=$termcap[as]
 	for i in {1..$((74 - ${#1} - 5))}
 	do
-		hbar=$hbar-
+		hbar=${hbar}q
 	done
+	hbar=${hbar}$termcap[ae]
+
 	if [ "$1" != "" ]
 	then
-		print -Pn "${C_}$my_color;1${_C}${hbar}[${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}]-\r${C_}0${_C}"
+		print -Pn "${C_}$my_color;1${_C}${hbar}$termcap[as]u$termcap[ae]${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$termcap[as]tq$termcap[ae]\r${C_}0${_C}"
 	else
 		print -Pn "${C_}$my_color;1${_C}${hbar}-----${C_}0${_C}"
 	fi
