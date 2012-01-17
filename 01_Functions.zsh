@@ -48,7 +48,7 @@ term_title()
 	for word in ${=@} ; command[$#command]=$word
 	if [ "$command[0]" = "fg" ]
 	then
-		lastjob=$(ps ft `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
+		lastjob=$(ps t `tty` | grep "[0-9]\+[[:blank:]]\+`tty | sed 's/\/dev\///'`[[:blank:]]\+T.\? \+.:..  \\\_ " | tail -n1 | cut -c32-)
 		set "$lastjob"
 	fi
 	if [ "$command[0]" = "screen" -o "$command[0]" = "tmux" ]
@@ -99,18 +99,18 @@ preprint()
 	local my_color i
 	my_color=${2-"$prompt_colors[generic]"}
 
-	hbar=$termcap[as]
+	hbar=$T_
 	for i in {1..$((74 - ${#1} - 5))}
 	do
-		hbar=${hbar}q
+		hbar=${hbar}$_t_q
 	done
-	hbar=${hbar}$termcap[ae]
+	hbar=${hbar}$_T[ae]
 
 	if [ "$1" != "" ]
 	then
-		print -Pn "${C_}$my_color;1${_C}${hbar}$termcap[as]u$termcap[ae]${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$termcap[as]tq$termcap[ae]\r${C_}0${_C}"
+		print -Pn "${C_}$my_color;1${_C}${hbar}$_t_u${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$_t_t$_t_q\r${C_}0${_C}"
 	else
-		print -Pn "${C_}$my_color;1${_C}${hbar}-----${C_}0${_C}"
+		print -Pn "${C_}$my_color;1${_C}${hbar}$_t_q$_t_q$_t_q$_t_q$_t_q${C_}0${_C}"
 	fi
 }
 

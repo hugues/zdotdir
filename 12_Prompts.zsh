@@ -35,7 +35,7 @@ set_prompt_colors
 expand_text()
 {
 	# strips the %{...%} and newlines characters
-	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g;s/'$termcap[ae]'//g;s/'$termcap[as]'//g')"
+	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g;s/'$T_'//g;s/'$_T'//g')"
 }
 
 preexec ()
@@ -51,7 +51,7 @@ preexec ()
 	HBAR=$T_
 	for h in {1..$spaceleft}
 	do
-		HBAR=${HBAR}q
+		HBAR=${HBAR}$_t_q
 	done
 	HBAR=$HBAR$_T
 	redefine_prompt
@@ -67,12 +67,12 @@ preexec ()
 
 set_prompt_date()
 {
-	begin=${${1:+j}:-k}
-	end=${${1:+m}:-l}
+	begin=${${1:+$_t_j}:-$_t_k}
+	end=${${1:+$_t_m}:-$_t_l}
 
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"${end}q"$_T
+	DATE=$C_$prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"${end}$_t_q"$_T
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
@@ -83,7 +83,7 @@ update_prompt_elements()
 	# Error
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
-	ERROR="%(?;;"$C_$prompt_colors[bar]$_C$T_"q"$_T$C_$prompt_colors[error]$_C"%?)"
+	ERROR="%(?;;"$C_$prompt_colors[bar]$_C$T_"$_t_q"$_T$C_$prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -148,7 +148,7 @@ update_prompt_elements()
 			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ $_is_multibyte_compliant ] && echo "⚡" || echo "G" )}
 		fi
 	fi
-	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C$T_"q"$_T$AGENTS}
+	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C$T_"$_t_q"$_T$AGENTS}
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
@@ -196,7 +196,7 @@ update_prompt_elements()
 				battery[color]="uncharging"
 			fi
 		fi
-		BATTERY=$C_$prompt_colors[bar]$_C$T_"q"$_T$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
+		BATTERY=$C_$prompt_colors[bar]$_C$T_"$_t_q"$_T$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
 		unset battery
 
 		[ "$DEBUG" = "yes" ] && echo
@@ -212,7 +212,7 @@ update_prompt_elements()
 	HBAR=$T_
 	for h in {1..$spaceleft}
 	do
-		HBAR=$HBAR"q"
+		HBAR=$HBAR"$_t_q"
 	done
 	HBAR=$HBAR$_T
 	[ "$DEBUG" = "yes" ] && echo

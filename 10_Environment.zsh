@@ -25,8 +25,18 @@ c_='['$color[none]";"
 _c=m
 C_="%{$c_"
 _C="$_c%}"
-T_=$termcap[as]
-_T=$termcap[ae]
+
+unset _t_
+[ $TERM = "urxvt" ] && _t_=yes
+T_=${_t_:+$termcap[as]}
+_T=${_t_:+$termcap[ae]}
+_t_q=${${_t_:+q}:--}
+_t_j=${${_t_:+j}:-[}
+_t_k=${${_t_:+k}:-[}
+_t_l=${${_t_:+l}:-]}
+_t_m=${${_t_:+m}:-]}
+_t_t=${${_t_:+t}:-]}
+_t_u=${${_t_:+u}:-]}
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
@@ -77,7 +87,7 @@ HISTSIZE=$(( $SAVEHIST * 1.10 ))
 export GPG_TTY=`tty`
 
 # YeahConsole..
-if ( ps fx | grep $$ -B1 | grep -q yeahconsole )
+if ( ps x | grep $$ -B1 | grep -q yeahconsole )
 then
 	YEAHCONSOLE=true
 fi
