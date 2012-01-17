@@ -26,17 +26,17 @@ _c=m
 C_="%{$c_"
 _C="$_c%}"
 
-unset _t_
-[ $TERM = "urxvt" ] && _t_=yes
-T_=${_t_:+$termcap[as]}
-_T=${_t_:+$termcap[ae]}
-_t_q=${${_t_:+q}:--}
-_t_j=${${_t_:+j}:-[}
-_t_k=${${_t_:+k}:-[}
-_t_l=${${_t_:+l}:-]}
-_t_m=${${_t_:+m}:-]}
-_t_t=${${_t_:+t}:-]}
-_t_u=${${_t_:+u}:-]}
+unset has_termcaps
+[ $TERM = "urxvt" -o $TERM = "screen" ] && has_termcaps="true"
+T_=${has_termcaps:+$termcap[as]}
+_T=${has_termcaps:+$termcap[ae]}
+_t_q=${${has_termcaps:+q}:--}
+_t_j=${${has_termcaps:+j}:-[}
+_t_k=${${has_termcaps:+k}:-[}
+_t_l=${${has_termcaps:+l}:-]}
+_t_m=${${has_termcaps:+m}:-]}
+_t_t=${${has_termcaps:+t}:-]}
+_t_u=${${has_termcaps:+u}:-[}
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
