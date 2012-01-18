@@ -58,10 +58,6 @@ a egrep='egrep --color=auto'
 a histg='history -E 0| grep'
 a lg='ls -lap | grep'
 
-a so='cd ${OLDPWD}'
-
-#a x=exit
-
 a ls="ls $LS_OPTIONS"
 a l='ls -lh' # human readable sizes
 a ll='ls -l'

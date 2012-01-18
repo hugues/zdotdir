@@ -206,9 +206,6 @@ do
 	bindkey -M $keymap -s 't' 'Q todo\n'
 	bindkey -M $keymap -s 'T' 'Q todo all -c\n'
 
-	bindkey -M $keymap -s 'é' ' 2>/dev/null '
-	bindkey -M $keymap -s '2' ' 2>&1 '
-
 	bindkey -M $keymap -s 'c' 'Q ./configure\n'
 	bindkey -M $keymap -s '©' 'Q !?configure\n'
 
