@@ -1,3 +1,3 @@
 
-hash -d OpenWide=~/OpenWide/
+hash -d work=/work/$USER
 
