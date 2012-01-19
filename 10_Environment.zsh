@@ -27,7 +27,7 @@ C_="%{$c_"
 _C="$_c%}"
 
 unset has_termcaps
-[ $TERM = "urxvt" -o $TERM = "screen" ] && has_termcaps="true"
+[ $TERM = "rxvt-unicode" -o $TERM = "screen" ] && has_termcaps="true"
 T_=${has_termcaps:+$termcap[as]}
 _T=${has_termcaps:+$termcap[ae]}
 _t_q=${${has_termcaps:+q}:--}
