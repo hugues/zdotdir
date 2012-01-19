@@ -412,13 +412,11 @@ birthdays()
 
 	if cmd_exists when && [ -e $WHEN_FILE ]
 	then
-		LATEST=`stat 2>&- --printf="%z\n" $TODAY_FILE | cut -d' ' -f1`
-		TODAY=`date "+%Y-%m-%d"`
-
-		if [ "$TODAY" != "$LATEST" ]
-		then
-			when w --calendar=$WHEN_FILE | tail -n+3 > $TODAY_FILE
-		fi
+		when --calendar=$WHEN_FILE $@ | tail -n+3 | \
+		sed 's/^\(aujourd.hui *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1;33'$_c'\1\2'$c_'0'$_c'/;
+                  s/^\(demain *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1'$_c'\1\2'$c_'0'$_c'/;
+                    s/^\(hier *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][        ]*\)\(.*\)/'$c_'3'$_c'\1\2'$c_'0'$_c'/' \
+		> $TODAY_FILE
 
 		if [ -s $TODAY_FILE ]
 		then
