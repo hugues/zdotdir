@@ -295,7 +295,12 @@ get_git_status ()
 			my_git_status="$git_colors[init_in_progress]"
 		fi
 	else
-		my_git_status="$git_colors[up_to_date]"
+		if [ -f $GIT_DIR/MERGE_HEAD ]
+		then
+			my_git_status="$git_colors[cached]"
+		else
+			my_git_status="$git_colors[up_to_date]"
+		fi
 	fi
 
 	echo $my_git_status
@@ -394,7 +399,7 @@ set_prompt_colors ()
 	git_colors[cached_and_not_up_to_date]="$prompt_colors[not_up_to_date];$color[bold]"
 	git_colors[not_up_to_date]="$prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
 	git_colors[init_in_progress]="$color[black];$color[bold]"                        # initialization
-	git_colors[up_to_date]="$prompt_colors[up_to_date]"                                     # git up-to-date
+	git_colors[up_to_date]="$prompt_colors[up_to_date];$color[normal]"                                     # git up-to-date
 
 	guilt_colors[applied]=$git_colors[cached]
 	guilt_colors[unapplied]=$color[black]
