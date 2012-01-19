@@ -51,7 +51,7 @@ preexec ()
 	HBAR=$T_
 	for h in {1..$spaceleft}
 	do
-		HBAR=${HBAR}$_t_q
+		HBAR=${HBAR}$_tq_
 	done
 	HBAR=$HBAR$_T
 	redefine_prompt
@@ -67,12 +67,12 @@ preexec ()
 
 set_prompt_date()
 {
-	begin=${${1:+$_t_j}:-$_t_k}
-	end=${${1:+$_t_m}:-$_t_l}
+	begin=${${1:+$_tj_}:-$_tk_}
+	end=${${1:+$_tm_}:-$_tl_}
 
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"${end}$_t_q"$_T
+	DATE=$C_$prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"${end}$_tq_"$_T
 	DATEEXPAND=$(expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
@@ -83,7 +83,7 @@ update_prompt_elements()
 	# Error
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
-	ERROR="%(?;;"$C_$prompt_colors[bar]$_C$T_"$_t_q"$_T$C_$prompt_colors[error]$_C"%?)"
+	ERROR="%(?;;"$C_$prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -148,7 +148,7 @@ update_prompt_elements()
 			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ $_is_multibyte_compliant ] && echo "⚡" || echo "G" )}
 		fi
 	fi
-	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C$T_"$_t_q"$_T$AGENTS}
+	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C$T_"$_tq_"$_T$AGENTS}
 	AGENTSSIZE=$(expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
@@ -196,7 +196,7 @@ update_prompt_elements()
 				battery[color]="uncharging"
 			fi
 		fi
-		BATTERY=$C_$prompt_colors[bar]$_C$T_"$_t_q"$_T$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
+		BATTERY=$C_$prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
 		unset battery
 
 		[ "$DEBUG" = "yes" ] && echo
@@ -212,7 +212,7 @@ update_prompt_elements()
 	HBAR=$T_
 	for h in {1..$spaceleft}
 	do
-		HBAR=$HBAR"$_t_q"
+		HBAR=$HBAR"$_tq_"
 	done
 	HBAR=$HBAR$_T
 	[ "$DEBUG" = "yes" ] && echo
@@ -343,21 +343,21 @@ then
 	echo -n $c_$prompt_colors[warning]$_c
 	#toilet -f bigmono9 "D1rTY Zsh.."
 
-	HBAR=$(for i in {1..13} ; echo -n $_t_q)
-	VBAR=$T_$_t_x$_T
+	HBAR=$(for i in {1..13} ; echo -n - "$_tq_")
+	VBAR=$T_$_tx_$_T
 
 	echo -n "	"
-	echo -n $T_$_t_l
+	echo -n $T_$_tl_
 	echo -n $HBAR
-	echo -n $_t_k$_T
+	echo -n $_tk_$_T
 	echo
 	echo "	$VBAR WARNING !!  $VBAR"
 	echo "	$VBAR D1rTY Zsh.. $VBAR"
 
 	echo -n "	"
-	echo -n $T_$_t_m
+	echo -n $T_$_tm_
 	echo -n $HBAR
-	echo -n $_t_j$_T
+	echo -n $_tj_$_T
 	echo
 	echo $c_$prompt_colors[none]$_c
 fi

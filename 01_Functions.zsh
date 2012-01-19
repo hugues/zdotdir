@@ -102,15 +102,15 @@ preprint()
 	hbar=$T_
 	for i in {1..$((74 - ${#1} - 5))}
 	do
-		hbar=${hbar}$_t_q
+		hbar=${hbar}$_tq_
 	done
 	hbar=${hbar}$_T
 
 	if [ "$1" != "" ]
 	then
-		print -Pn "${C_}$my_color;1${_C}${hbar}$T_$_t_u$_T${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$T_$_t_t$_t_q$_T\r${C_}0${_C}"
+		print -Pn "${C_}$my_color;1${_C}${hbar}$T_$_tj_$_T${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$T_$_tm_$_tq_$_T\r${C_}0${_C}"
 	else
-		print -Pn "${C_}$my_color;1${_C}${hbar}$T_$_t_q$_t_q$_t_q$_t_q$_t_q$_T${C_}0${_C}"
+		print -Pn "${C_}$my_color;1${_C}${hbar}$T_$_tq_$_tq_$_tq_$_tq_$_tq_$_T${C_}0${_C}"
 	fi
 }
 

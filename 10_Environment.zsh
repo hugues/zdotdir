@@ -30,14 +30,14 @@ unset has_termcaps
 [ $TERM = "rxvt-unicode" -o $TERM = "screen" ] && has_termcaps="true"
 T_=${has_termcaps:+$termcap[as]}
 _T=${has_termcaps:+$termcap[ae]}
-_t_q=${${has_termcaps:+q}:--}
-_t_j=${${has_termcaps:+j}:-[}
-_t_k=${${has_termcaps:+k}:-[}
-_t_l=${${has_termcaps:+l}:-]}
-_t_m=${${has_termcaps:+m}:-]}
-_t_t=${${has_termcaps:+t}:-]}
-_t_u=${${has_termcaps:+u}:-[}
-_t_x=${${has_termcaps:+x}:-|}
+_tq_=${${has_termcaps:+"q"}:-"-"}
+_tj_=${${has_termcaps:+"j"}:-"'"}
+_tk_=${${has_termcaps:+"k"}:-"."}
+_tl_=${${has_termcaps:+"l"}:-","}
+_tm_=${${has_termcaps:+"m"}:-"\`"}
+_tt_=${${has_termcaps:+"t"}:-"]"}
+_tu_=${${has_termcaps:+"u"}:-"["}
+_tx_=${${has_termcaps:+"x"}:-"|"}
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
