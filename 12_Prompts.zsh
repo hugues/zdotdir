@@ -339,11 +339,27 @@ two_lines_prompt ()
 ZSH_STATUS=$(zsh_status)
 if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 then
-	set_prompt_colors "$color[black]"
-	#echo -n $c_$prompt_colors[warning]$_c
+	echo
+	echo -n $c_$prompt_colors[warning]$_c
 	#toilet -f bigmono9 "D1rTY Zsh.."
-	#echo $c_$prompt_colors[none]$_c
-	#echo
+
+	HBAR=$(for i in {1..13} ; echo -n $_t_q)
+	VBAR=$T_$_t_x$_T
+
+	echo -n "	"
+	echo -n $T_$_t_l
+	echo -n $HBAR
+	echo -n $_t_k$_T
+	echo
+	echo "	$VBAR WARNING !!  $VBAR"
+	echo "	$VBAR D1rTY Zsh.. $VBAR"
+
+	echo -n "	"
+	echo -n $T_$_t_m
+	echo -n $HBAR
+	echo -n $_t_j$_T
+	echo
+	echo $c_$prompt_colors[none]$_c
 fi
 
 precmd()
@@ -351,20 +367,16 @@ precmd()
 	# this MUST BE the real first operation else we lose the error code...
 	error=$(print -Pn "%(?;;-%?)")
 
+	# d1RtY Zsh ...
+	( echo $NEW_STATUS | grep -q -- "-D1rTY-" ) && set_prompt_colors "38;5;$(( $RANDOM % ( 88 - 16 ) + 16))"
+
 	NEW_STATUS=$(zsh_status)
-	if [ $NEW_STATUS != $ZSH_STATUS ]
+	if ! ( echo $NEW_STATUS | grep -q -- "-D1rTY-" )
 	then
-		if ! ( echo $NEW_STATUS | grep -q -- "-D1rTY-" )
+		if [ $NEW_STATUS != $ZSH_STATUS ]
 		then
 			# You should restart Zsh
 			set_prompt_colors "38;5;54"
-		fi
-
-	else
-		if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
-		then
-			# Your Zsh working copy is not clean
-			set_prompt_colors "38;5;81"
 		fi
 	fi
 

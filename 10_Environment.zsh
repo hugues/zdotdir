@@ -37,6 +37,7 @@ _t_l=${${has_termcaps:+l}:-]}
 _t_m=${${has_termcaps:+m}:-]}
 _t_t=${${has_termcaps:+t}:-]}
 _t_u=${${has_termcaps:+u}:-[}
+_t_x=${${has_termcaps:+x}:-|}
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of

@@ -368,7 +368,7 @@ set_prompt_colors ()
 	prompt_colors[braces]="$prompt_colors[bar]"							# braces (around date) - bar color
 	prompt_colors[error]="$color[bold];$color[yellow]"					# error code - bold yellow
 
-	prompt_colors[warning]="$color[bold];$color[black]"
+	prompt_colors[warning]="$color[bold];$color[yellow]"
 
 	date_colors[normal]=$prompt_colors[soft_generic]
 	date_colors[exec]=$prompt_colors[bold_generic]
