@@ -405,14 +405,13 @@ set_prompt_colors ()
 	guilt_colors[unapplied]=$color[black]
 }
 
-birthdays()
+when()
 {
-	WHEN_FILE=~/.when/birthdays
 	TODAY_FILE=~/.when/.today
 
-	if cmd_exists when && [ -e $WHEN_FILE ]
+	if cmd_exists when
 	then
-		when --calendar=$WHEN_FILE $@ | tail -n+3 | \
+		$(which -p when) $@ | tail -n+3 | \
 		sed 's/^\(aujourd.hui *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1;33'$_c'\1\2'$c_'0'$_c'/;
                   s/^\(demain *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1'$_c'\1\2'$c_'0'$_c'/;
                     s/^\(hier *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][        ]*\)\(.*\)/'$c_'3'$_c'\1\2'$c_'0'$_c'/' \
