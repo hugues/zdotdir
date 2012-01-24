@@ -49,7 +49,7 @@ done
 export GREP_COLOR=$color[yellow]\;$color[bold]
 export GREP_COLORS="sl="":cx="$color[cyan]":ms="$color[yellow]";"$color[bold]":mc="$color[red]";"$color[bold]""
 
-cmd_exists dircolors && eval $(dircolors ~/.dir_colors)
+__cmd_exists dircolors && eval $(dircolors ~/.dir_colors)
 export TZ="Europe/Paris"
 export TIME_STYLE="+%Y-%b-%d %H:%M:%S"
 

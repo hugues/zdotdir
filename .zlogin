@@ -1,6 +1,6 @@
 
-cmd_exists keychain && eval $(keychain --eval --inherit any-once --quick)
+__cmd_exists keychain && eval $(keychain --eval --inherit any-once --quick)
 
-cmd_exists when && when
+__cmd_exists when && when
 
 true

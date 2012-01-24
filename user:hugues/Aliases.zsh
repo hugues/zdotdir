@@ -18,23 +18,23 @@ a -g .......=../../../../../..
 a -g ........=../../../../../../..
 a -g .........=../../../../../../../..
 
-cmd_exists emacsclient && a e='emacsclient'
-cmd_exists emacs && a ne='emacs -nw'
+__cmd_exists emacsclient && a e='emacsclient'
+__cmd_exists emacs && a ne='emacs -nw'
 
-if ( cmd_exists vim )
+if ( __cmd_exists vim )
 then
 	a v='vim'
 
 	if ( vim --version | grep -- "+clientserver" >/dev/null )
 	then
-		if ( cmd_exists vims )
+		if ( __cmd_exists vims )
 		then
 			a vim='vim --servername `print -P "%l"`'
 		fi
 	fi
 fi
 
-cmd_exists eject && a close='eject -t'
+__cmd_exists eject && a close='eject -t'
 
 a goto='cd -P' ## Resolve symlinks
 
@@ -44,9 +44,9 @@ a cp && una cp ## Dé-assigne les alias de ``cp''
 autoload zmv
 a mmv='noglob zmv -W'
 
-normal_user && cmd_exists apt-get && a apt-get='sudo apt-get'
-normal_user && cmd_exists pacman && a pacman='sudo pacman'
-normal_user && cmd_exists yum && a yum='sudo yum'
+__normal_user && __cmd_exists apt-get && a apt-get='sudo apt-get'
+__normal_user && __cmd_exists pacman && a pacman='sudo pacman'
+__normal_user && __cmd_exists yum && a yum='sudo yum'
 
 a _rt='find -maxdepth 1 -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
 a _RT='find -type f \( -name "*~" -o -name ".*~" -o -name "#*#" -o -name ".*.swp" \) -exec rm -vf \{\} \;'
@@ -70,17 +70,17 @@ a lat='la -tr'
 a lc='ls -c'
 a lc1='\ls -c1'
 
-cmd_exists dict && a definition='dict -h dict.org'
-cmd_exists dict && a traduction='dict -h hiegel.fr -P-'
+__cmd_exists dict && a definition='dict -h dict.org'
+__cmd_exists dict && a traduction='dict -h hiegel.fr -P-'
 
-cmd_exists dosbox && a dosbox='dosbox -c "mount c \"`pwd`\"" -c "mount d /cdrom -t cdrom" -c "c:" '
-cmd_exists emacs && a gnus='emacs -f gnus'
+__cmd_exists dosbox && a dosbox='dosbox -c "mount c \"`pwd`\"" -c "mount d /cdrom -t cdrom" -c "c:" '
+__cmd_exists emacs && a gnus='emacs -f gnus'
 
 #a make='make -j'
 
 ## Suffixes Aliases
 # I don't like this, I never used it.
 #
-cmd_exists editdiff && a -s patch=editdiff
+__cmd_exists editdiff && a -s patch=editdiff
 a -s c=$EDITOR
 a -s h=$EDITOR

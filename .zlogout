@@ -1,4 +1,4 @@
 #!/bin/zsh
 
-#cmd_exists keychain && keychain --quick --clear
+#__cmd_exists keychain && keychain --quick --clear
 

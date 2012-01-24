@@ -201,10 +201,10 @@ do
 	bindkey -M $keymap -s 'r' 'Q rehash\n'
 	bindkey -M $keymap -s 'R' 'Q reset\n'
 
-	cmd_exists when && \
+	__cmd_exists when && \
 	bindkey -M $keymap -s 'w' 'Q when\n'
 
-	cmd_exists todo && (
+	__cmd_exists todo && (
 	bindkey -M $keymap -s 't' 'Q todo\n'
 	bindkey -M $keymap -s 'T' 'Q todo all -c\n'
 	)

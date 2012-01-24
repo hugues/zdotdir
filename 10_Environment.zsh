@@ -13,7 +13,7 @@
 ##
 ## ma politique pour l'export des variables est très simple :
 ## si elle a pour vocation d'être utilisée en dehors de Zsh,
-## on l'exporte. SInon pas. 
+## on l'exporte. Sinon pas.
 ##
 
 export SHELL=`which zsh`
@@ -42,14 +42,14 @@ _tx_=${${has_termcaps:+"x"}:-"|"}
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
 # these remain still configurable one by one.
-# Take a look to set_prompt_colors for these colorizations.
+# Take a look to _set_prompt_colors (01_Internals) for these colorizations.
 #
 # To set the dominant color I'm using this :
 #
 #  - PS1_ROOT when we are root
 #  - PS1_USER for normal usage
 #
-# I'm storing the resulting dominant color in $prompt_colors[generic]
+# I'm storing the resulting dominant color in $_prompt_colors[generic]
 
 PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
@@ -90,17 +90,17 @@ export GPG_TTY=`tty`
 # YeahConsole..
 if ( ps x | grep $$ -B1 | grep -q yeahconsole )
 then
-	YEAHCONSOLE=true
+	_yeahconsole=true
 fi
 
 # Display guess
-CURRENT_DISPLAY=$(finger 2>&- | tail -n+2 | grep -E $USER'[[:blank:]]+.*[[:blank:]]+tty[0-9][[:blank:]]+($DISPLAY)' | head -n1 | cut -d'(' -f2 | cut -d')' -f1)
-if [ "$DISPLAY" = "" -a "$CURRENT_DISPLAY" = "" ]
+_current_display=$(finger 2>&- | tail -n+2 | grep -E $USER'[[:blank:]]+.*[[:blank:]]+tty[0-9][[:blank:]]+($DISPLAY)' | head -n1 | cut -d'(' -f2 | cut -d')' -f1)
+if [ "$DISPLAY" = "" -a "$_current_display" = "" ]
 then
-	GUESS_DISPLAY=$(finger 2>&- | tail -n+2 | grep -E $USER'[[:blank:]]+.*[[:blank:]]+tty[0-9]' | head -n1 | cut -d'(' -f2 | cut -d')' -f1)
-	if [ "$GUESS_DISPLAY" != "" ]
+	_guess_display=$(finger 2>&- | tail -n+2 | grep -E $USER'[[:blank:]]+.*[[:blank:]]+tty[0-9]' | head -n1 | cut -d'(' -f2 | cut -d')' -f1)
+	if [ "$_guess_display" != "" ]
 	then
-		export DISPLAY=$GUESS_DISPLAY
+		export DISPLAY=$_guess_display
 	else
 		unset DISPLAY
 	fi

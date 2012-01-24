@@ -8,14 +8,15 @@
 ## these files with or without this notice.
 ##
 
-prompt_colors[generic]=${PS1_USER:-}
-if privileged_user
+_prompt_colors[generic]=${PS1_USER:-}
+
+if __privileged_user
 then
-	prompt_colors[generic]=${PS1_ROOT:-$color[bold];$color[red]}
+	_prompt_colors[generic]=${PS1_ROOT:-$color[bold];$color[red]}
 fi
-if [ "$YEAHCONSOLE" = "true" ]
+if [ "$_yeahconsole" = "true" ]
 then
-	prompt_colors[generic]=${PS1_YEAH}
+	_prompt_colors[generic]=${PS1_YEAH}
 fi
 
 set_prompt_colors
@@ -32,7 +33,19 @@ set_prompt_colors
 # precmd	: avant d'afficher le prompt
 #
 
-expand_text()
+chpwd()
+{
+
+	__cmd_exists todo && todo
+
+	if ( __cmd_exists git && test -d .git )
+	then
+		# Shows tracked branches and modified files
+		git checkout HEAD 2>&1 | sed 's/^/   /'
+	fi
+}
+
+__expand_text()
 {
 	# strips the %{...%} and newlines characters
 	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g;s/'$T_'//g;s/'$_T'//g')"
@@ -40,11 +53,11 @@ expand_text()
 
 preexec ()
 {
-	term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
+	__term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 
-	prompt_colors[date]=$date_colors[exec]
-	set_prompt_date "-"
-	prompt_colors[date]=$date_colors[normal]
+	_prompt_colors[date]=$_date_colors[exec]
+	__set_prompt_date "-"
+	_prompt_colors[date]=$_date_colors[normal]
 
 	spaceleft=$(($COLUMNS - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
@@ -54,44 +67,44 @@ preexec ()
 		HBAR=${HBAR}$_tq_
 	done
 	HBAR=$HBAR$_T
-	redefine_prompt
+	__redefine_prompt
 
-	local lines="$(($(expand_text "$PROMPT$1" | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
+	local lines="$(($(__expand_text "$PROMPT$1" | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
 	for i in {1..$lines} ; print -Pn "\e[1A\e[2K"
 	print -Pn "\r$PROMPT"
 	print -Pn "$C_$color[cyan]$_C"
 	print "${(q)1}" | sed "s/'$//;s/^'//"
 
-	print -Pn "$C_$prompt_colors[exec]$_C"
+	print -Pn "$C_$_prompt_colors[exec]$_C"
  }
 
-set_prompt_date()
+__set_prompt_date()
 {
 	begin=${${1:+$_tj_}:-$_tk_}
 	end=${${1:+$_tm_}:-$_tl_}
 
 	# Date
 	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
-	DATE=$C_$prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$prompt_colors[braces]$_C" "$C_$prompt_colors[bar]$_C$T_"${end}$_tq_"$_T
-	DATEEXPAND=$(expand_text "$DATE")
+	DATE=$C_$_prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$_prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$_prompt_colors[braces]$_C" "$C_$_prompt_colors[bar]$_C$T_"${end}$_tq_"$_T
+	DATEEXPAND=$(__expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
 	[ "$DEBUG" = "yes" ] && echo
 }
 
-update_prompt_elements()
+__update_prompt_elements()
 {
 	# Error
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#error}
-	ERROR="%(?;;"$C_$prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$prompt_colors[error]$_C"%?)"
+	error="%(?;;"$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$_prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
 	# Flush the term title
-    term_title
+    __term_title
 	[ "$DEBUG" = "yes" ] && echo
 
-	set_prompt_date
+	__set_prompt_date
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Agents..."
 	# GPG/SSH agents
@@ -135,7 +148,7 @@ update_prompt_elements()
 			fi
 		fi
 
-		AGENTS=$C_$agent_colors[$AGENTCOLOR]$_C"$AGENTCHAR"
+		AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AGENTCHAR"
 	fi
 
 	[ "$DEBUG" = "yes" ] && echo && echo -n "	......GPG"
@@ -145,11 +158,11 @@ update_prompt_elements()
 		if [ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ]
 		then
 			AGENTCOLOR="has_keys"
-			AGENTS=$AGENTS$C_$agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ $_is_multibyte_compliant ] && echo "⚡" || echo "G" )}
+			AGENTS=$AGENTS$C_$_agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ $_is_multibyte_compliant ] && echo "⚡" || echo "G" )}
 		fi
 	fi
-	AGENTS=${AGENTS:+$C_$prompt_colors[bar]$_C$T_"$_tq_"$_T$AGENTS}
-	AGENTSSIZE=$(expand_text $AGENTS)
+	AGENTS=${AGENTS:+$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$AGENTS}
+	AGENTSSIZE=$(__expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
 
@@ -196,8 +209,8 @@ update_prompt_elements()
 				battery[color]="uncharging"
 			fi
 		fi
-		BATTERY=$C_$prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$battery_colors[$battery[color]]$_C"$battery[remains]"
-		unset battery
+		BATTERY=$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$_battery_colors[$battery[color]]$_C"$battery[remains]"
+		unset BATTERY
 
 		[ "$DEBUG" = "yes" ] && echo
 	else
@@ -228,7 +241,7 @@ update_prompt_elements()
 	if [ -d CVS ]
 	then
 		CVSTAG=$(test -e CVS/Tag && cat CVS/Tag || basename $(cat CVS/Root 2>&- || echo "HEAD") )
-		CVSTAG=${CVSTAG:+ $C_$prompt_colors[up_to_date]$_C$CVSTAG}
+		CVSTAG=${CVSTAG:+ $C_$_prompt_colors[up_to_date]$_C$CVSTAG}
 	fi
 
 	# get svn status
@@ -241,22 +254,22 @@ update_prompt_elements()
 		if [ ! -z "$CHECK_SVN_STATUS" ]
 		then
 			SVNSTATUS="$(svn diff 2>&-)"
-			SVNSTATUS=${${SVNSTATUS:+$prompt_colors[not_up_to_date]}:-$prompt_colors[up_to_date]}
+			SVNSTATUS=${${SVNSTATUS:+$_prompt_colors[not_up_to_date]}:-$_prompt_colors[up_to_date]}
 		fi
 	fi
-	SVNREV=${SVNREV:+$C_$prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
+	SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
 	[ "$DEBUG" = "yes" ] && echo
 
 	# get hg status
 	[ "$DEBUG" = "yes" ] && echo -n "	HG status..."
-	HGBRANCH=$(get_gcl_branch hg)
+	HGBRANCH=$(__get_gcl_branch hg)
 	[ ! -z "$HGBRANCH" ] && HGBRANCH=" "$HGBRANCH
 	[ "$DEBUG" = "yes" ] && echo
 
 	# get git status
 	#
 	[ "$DEBUG" = "yes" ] && echo -n "	GIT status..."
-	GITBRANCH=$(get_gcl_branch git)
+	GITBRANCH=$(__get_gcl_branch git)
 	GITBRANCHSIZE=${#GITBRANCH}
 	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
 	[ "$DEBUG" = "yes" ] && echo
@@ -267,7 +280,7 @@ update_prompt_elements()
 	PATHSIZE=${#PATHSIZE}
 	[ "$DEBUG" = "yes" ] && echo
 	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..."
-	spaceleft=`print -Pn "$SHLVL - %n@%m  $ ls -laCdtrux $(expand_text "$DATE")"`
+	spaceleft=`print -Pn "$SHLVL - %n@%m  $ ls -laCdtrux $(__expand_text "$DATE")"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	#minimalpathsize=`print -Pn "../%1~"`
 	#minimalpathsize=${#minimalpathsize}
@@ -305,43 +318,43 @@ update_prompt_elements()
 	#  then we reduce the path until it reaches the last path element,
 	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
-	GITBRANCH=${GITBRANCH:+ $C_"$(get_git_status)"$_C$GITBRANCH}"$(get_guilt_series)"
-	CURDIR="$C_$prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
+	GITBRANCH=${GITBRANCH:+ $C_"$(__get_git_status)"$_C$GITBRANCH}"$(__get_guilt_series)"
+	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
 }
 
-redefine_prompt ()
+__redefine_prompt ()
 {
-	case "$YEAHCONSOLE" in
+	case "$_yeahconsole" in
 		"true")
-			yeah_prompt
+			__yeah_prompt
 			;;
 		*)
-			two_lines_prompt
+			__two_lines_prompt
 			;;
 	esac
 }
 
-yeah_prompt ()
+__yeah_prompt ()
 {
-	PS1=$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m "$CURDIR" "$C_$prompt_colors[dies]$_C">"$C_$prompt_colors[cmd]$_C" "
+	PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
 }
 
-two_lines_prompt ()
+__two_lines_prompt ()
 {
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
-	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$prompt_colors[bar]$_C$STLINUX$HBAR$DATE"
-"$C_$prompt_color[default]$_C$C_$prompt_colors[user]$_C"%n"$C_$prompt_colors[arob]$_C"@"$C_$prompt_colors[host]$_C"%m"$C_$prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$prompt_colors[dies]$_C"%#"$C_$prompt_colors[cmd]$_C" "
+	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$_prompt_colors[bar]$_C$STLINUX$HBAR$DATE"
+"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
 }
 
-ZSH_STATUS=$(zsh_status)
+ZSH_STATUS=$(__zsh_status)
 if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 then
 	set_prompt_colors "38;5;54"
 	echo
-	echo -n $c_$prompt_colors[warning]$_c
+	echo -n $c_$_prompt_colors[warning]$_c
 	#toilet -f bigmono9 "D1rTY Zsh.."
 
 	HBAR=$(for i in {1..13} ; echo -n - "$_tq_")
@@ -360,7 +373,7 @@ then
 	echo -n $HBAR
 	echo -n $_tj_$_T
 	echo
-	echo $c_$prompt_colors[none]$_c
+	echo $c_$_prompt_colors[none]$_c
 fi
 
 precmd()
@@ -368,8 +381,8 @@ precmd()
 	# this MUST BE the real first operation else we lose the error code...
 	error=$(print -Pn "%(?;;-%?)")
 
-	update_prompt_elements
-	redefine_prompt
+	__update_prompt_elements
+	__redefine_prompt
 }
 
 
@@ -383,8 +396,8 @@ PS3="?# "
 PS4="+%N:%i> "
 
 # Prompt de droite, pour l'heure et le code d'erreur de la dernière commande
-#RPS1="%(?;;"$C_$prompt_colors[error]$_C"%?"$C_$color[none]$_C")"
+#RPS1="%(?;;"$C_$_prompt_colors[error]$_C"%?"$C_$color[none]$_C")"
 
 # Ultime : prompt de correction :-)
-SPROMPT="zsh: $C_$correct_colors[error]$_C'%R'$C_$color[none]$_C ? Vous ne vouliez pas plutôt $C_$correct_colors[suggest]$_C'%r'$C_$color[none]$_C ? [%BN%byae] "
+SPROMPT="zsh: $C_$_correct_colors[error]$_C'%r'$C_$color[none]$_C ? Vous ne vouliez pas plutôt $C_$_correct_colors[suggest]$_C'%r'$C_$color[none]$_C ? [%BN%byae] "
 
