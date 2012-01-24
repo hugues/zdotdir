@@ -41,9 +41,9 @@ when()
 
 	if [ -s $TODAY_FILE ]
 	then
-		preprint "À ne pas manquer" $color[red] ; echo
+		__preprint "À ne pas manquer" $color[red] ; echo
 		cat $TODAY_FILE
-		preprint "" $color[red] ; echo
+		__preprint "" $color[red] ; echo
 		echo
 	fi | sed 's/^/   /'
 }
@@ -54,9 +54,9 @@ todo()
 	TODO=${=$(whereis -b todo | cut -d: -f2)}
 	if [ $($TODO $@ | wc -l) -gt 0 ]
 	then
-		preprint "À faire" $color[yellow] && echo
+		__preprint "À faire" $color[yellow] && echo
 		$TODO $@ --force-colour
-		preprint "" $color[yellow] && echo
+		__preprint "" $color[yellow] && echo
 		echo
 	fi | sed 's/^/   /'
 }

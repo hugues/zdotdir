@@ -10,9 +10,9 @@
 
 if __cmd_exists fortune
 then
-	preprint "Pensée du jour" && echo
+	__preprint "Pensée du jour" && echo
 	fortune fr | fmt -s -w 74
-	preprint "" && echo
+	__preprint "" && echo
 	echo
 fi | sed 's/^/   /'
 
