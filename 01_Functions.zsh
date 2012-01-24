@@ -19,11 +19,11 @@
 
 cmd_exists ()
 {
-	\which -p $1 >/dev/null 2>&1
+	which -p $1 >/dev/null 2>&1
 }
 
 git () {
-	GIT=$(\which -p git)
+	GIT=$(which -p git)
 	case $1 in
 		init|clone|config)
 			;;
@@ -38,7 +38,7 @@ git () {
 			;;
 	esac
 
-	$(\which -p git) $@
+	$(which -p git) $@
 }
 
 term_title()

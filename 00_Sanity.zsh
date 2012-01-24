@@ -17,3 +17,6 @@ umask 027
 #  sanity
 [[ -t 0 ]] && /bin/stty erase  "^H" intr  "^C" susp "^Z" dsusp "^Y" stop "^S" start "^Q" kill "^U"  >& /dev/null
 
+# unalias shitty alias
+unalias which
+
