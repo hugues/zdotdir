@@ -26,18 +26,19 @@ ZSH_HIGHLIGHT_STYLES[bracket-level-4]="fg=blue"
 ZSH_HIGHLIGHT_STYLES[bracket-level-5]="fg=magenta"
 ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]="fg=white,underline,bold"
 
-ZSH_HIGHLIGHT_STYLES[builtin]="fg=cyan,bold,underline"
-ZSH_HIGHLIGHT_STYLES[function]="fg=cyan,bold"
-ZSH_HIGHLIGHT_STYLES[alias]="fg=cyan"
-ZSH_HIGHLIGHT_STYLES[command]="fg=normal"
-ZSH_HIGHLIGHT_STYLES[hashed-command]="fg=normal,bold"
-ZSH_HIGHLIGHT_STYLES[path]="fg=normal"
-ZSH_HIGHLIGHT_STYLES[precommand]="fg=normal,underline"
-ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=cyan,underline"
+ZSH_HIGHLIGHT_STYLES[precommand]="fg=blue,bold"
+
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=normal,bold,underline"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=normal,bold"
+ZSH_HIGHLIGHT_STYLES[command]="fg=cyan"
+ZSH_HIGHLIGHT_STYLES[hashed-command]="fg=cyan,bold"
+ZSH_HIGHLIGHT_STYLES[alias]="fg=cyan,underline"
+ZSH_HIGHLIGHT_STYLES[function]="fg=cyan,bold,underline"
 
 ZSH_HIGHLIGHT_STYLES[history-expansion]="fg=blue"
 
-ZSH_HIGHLIGHT_STYLES[globbing]="fg=cyan"
+ZSH_HIGHLIGHT_STYLES[path]="fg=blue"
+ZSH_HIGHLIGHT_STYLES[globbing]="fg=blue,bold"
 
 ZSH_HIGHLIGHT_STYLES[commandseparator]="none"
 
@@ -52,5 +53,5 @@ ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=blue,bold"
 
 ZSH_HIGHLIGHT_STYLES[root]="standout"
 
-
 ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=red,bold"
+
