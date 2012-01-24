@@ -339,6 +339,7 @@ two_lines_prompt ()
 ZSH_STATUS=$(zsh_status)
 if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 then
+	set_prompt_colors "38;5;54"
 	echo
 	echo -n $c_$prompt_colors[warning]$_c
 	#toilet -f bigmono9 "D1rTY Zsh.."
@@ -366,19 +367,6 @@ precmd()
 {
 	# this MUST BE the real first operation else we lose the error code...
 	error=$(print -Pn "%(?;;-%?)")
-
-	# d1RtY Zsh ...
-	( echo $NEW_STATUS | grep -q -- "-D1rTY-" ) && set_prompt_colors "38;5;$(( $RANDOM % ( 88 - 16 ) + 16))"
-
-	NEW_STATUS=$(zsh_status)
-	if ! ( echo $NEW_STATUS | grep -q -- "-D1rTY-" )
-	then
-		if [ $NEW_STATUS != $ZSH_STATUS ]
-		then
-			# You should restart Zsh
-			set_prompt_colors "38;5;54"
-		fi
-	fi
 
 	update_prompt_elements
 	redefine_prompt
