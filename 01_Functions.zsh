@@ -405,47 +405,43 @@ set_prompt_colors ()
 	guilt_colors[unapplied]=$color[black]
 }
 
+cmd_exists when && \
 when()
 {
 	TODAY_FILE=~/.when/.today
 
-	if cmd_exists when
-	then
-		$(which -p when) $@ | tail -n+3 | \
-		sed 's/^\(aujourd.hui *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1;33'$_c'\1\2'$c_'0'$_c'/;
-                  s/^\(demain *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1'$_c'\1\2'$c_'0'$_c'/;
-                    s/^\(hier *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][        ]*\)\(.*\)/'$c_'3'$_c'\1\2'$c_'0'$_c'/' \
-		> $TODAY_FILE
+	$(which -p when) $@ | tail -n+3 | \
+	sed 's/^\(aujourd.hui *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1;33'$_c'\1\2'$c_'0'$_c'/;
+			  s/^\(demain *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][    ]*\)\(.*\)/'$c_'1'$_c'\1\2'$c_'0'$_c'/;
+				s/^\(hier *[0-9][0-9][0-9][0-9] [A-Z][a-z]\+ [0-9][0-9][        ]*\)\(.*\)/'$c_'3'$_c'\1\2'$c_'0'$_c'/' \
+	> $TODAY_FILE
 
-		if [ -s $TODAY_FILE ]
-		then
-			preprint "À ne pas manquer" $color[red] ; echo
-			cat $TODAY_FILE
-			preprint "" $color[red] ; echo
-			echo
-		fi | sed 's/^/   /'
-	fi
+	if [ -s $TODAY_FILE ]
+	then
+		preprint "À ne pas manquer" $color[red] ; echo
+		cat $TODAY_FILE
+		preprint "" $color[red] ; echo
+		echo
+	fi | sed 's/^/   /'
 }
 
+cmd_exists todo && \
 todo()
 {
-	if cmd_exists todo
+	TODO=${=$(whereis -b todo | cut -d: -f2)}
+	if [ $($TODO $@ | wc -l) -gt 0 ]
 	then
-		TODO=${=$(whereis -b todo | cut -d: -f2)}
-		if [ $($TODO $@ | wc -l) -gt 0 ]
-		then
-			preprint "À faire" $color[yellow] && echo
-			$TODO $@ --force-colour
-			preprint "" $color[yellow] && echo
-			echo
-		fi | sed 's/^/   /'
-	fi
+		preprint "À faire" $color[yellow] && echo
+		$TODO $@ --force-colour
+		preprint "" $color[yellow] && echo
+		echo
+	fi | sed 's/^/   /'
 }
 
 chpwd()
 {
 
-	todo
+	cmd_exists todo && todo
 
 	if ( cmd_exists git && test -d .git )
 	then
