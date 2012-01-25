@@ -43,6 +43,9 @@ chpwd()
 		# Shows tracked branches and modified files
 		git checkout HEAD 2>&1 | sed 's/^/   /'
 	fi
+
+
+	hash -d trash=$TRASH$(readlink -f $PWD)
 }
 
 __expand_text()

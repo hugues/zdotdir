@@ -10,56 +10,80 @@
 
 TRASH=$ZDOTDIR/.trash
 
-move_to_trash ()
+delete ()
 {
-	FOLDER=$TRASH/$PWD
+	local element real_element
 
 	for element in $@
 	do
-		if [ -e $element ]
+		real_element=$(readlink -f $(dirname $element))/$(basename $element)
+		if [ -e $real_element ]
 		then
 			echo "Deleting $element..."
-			mkdir -p $FOLDER/${element:h}
-			mv -f $element $FOLDER/${element:h}/.
+			if [ ! -d $real_element ]
+			then
+				mkdir -p $TRASH${real_element:h}
+			else
+				mkdir -p $TRASH$real_element
+			fi
+			mv $element $TRASH$real_element
+		else
+			echo "Skipping unknown '$element' ..."
 		fi
 	done
 }
 
-list_deleted_elements ()
+lsdel ()
 {
-	FOLDER=$TRASH/$PWD
+	local LS_OPTS __ARG
+	while [ $# -gt 0 ]
+	do
+		typeset -A __ARG
+		__ARG=$1
+		shift
 
-	if [ -d $FOLDER ]
-	then
-			ls -lad $(find $FOLDER -maxdepth 1 ! -wholename $FOLDER) | sed "s:$FOLDER/::"
-	else
-		echo "Nothing found in trash."
-	fi
+		[ $__ARG == "--" ] && break
+
+		if [ $__ARG[1] == "-" ]
+		then
+			LS_OPTS="$LS_OPTS $__ARG"
+		else
+			set -- ${@:-"--"} $__ARG
+		fi
+	done
+
+
+	for element in ${@:-.}
+	do
+		element=$(readlink -f $element)
+		[ ! -d $element ] && element_dir=${element:h} || element_dir=$element
+		if [ -e $TRASH$element ]
+		then
+				echo "Deleted from $element_dir:"
+				ls ${=LS_OPTS} $TRASH$element | sed "s'$TRASH$element_dir/''"
+		else
+			echo "Nothing found in trash for '$element'."
+		fi
+	done
 }
 
-undelete_from_trash ()
+undel ()
 {
-	FOLDER=$TRASH/$PWD
 
 	for element in $@
 	do
-		if [ -e $FOLDER/$element ]
+		if [ -e ~trash/$element ]
 		then
 			echo "Getting back $element..."
 			mkdir -p ${element:h}
-			mv $FOLDER/$element .
-			rmdir --ignore-fail-on-non-empty -p $FOLDER 
+			mv ~trash/$element .
+			rmdir --ignore-fail-on-non-empty -p ~trash 2>&-
 		else
 			echo "Not found in trash: $element"
 		fi
 	done
 }
 
-alias delete='move_to_trash'
-alias undelete='undelete_from_trash'
-alias lsdeleted='list_deleted_elements'
+alias lldel='lsdel -l'
+alias ldel='lsdel -lh'
 
-alias cdtrash='cd $TRASH/$PWD'
-alias sotrash='cd ${PWD/$TRASH/}'
-
-hash -d trash=$TRASH
