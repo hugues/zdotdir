@@ -266,9 +266,9 @@ zle-keymap-select()
 {
 	if [ "$KEYMAP" != "main" ]
 	then
-		term_title " [$KEYMAP]"
+		__term_title " [$KEYMAP]"
 	else
-		term_title
+		__term_title
 	fi
 }
 zle -N zle-keymap-select

@@ -1,4 +1,4 @@
 chpwd()
 {
-	term_title
+	__term_title
 }
