@@ -95,8 +95,8 @@ __update_prompt_elements()
 {
 	# Error
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
-	ERRORSIZE=${#error}
-	error="%(?;;"$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$_prompt_colors[error]$_C"%?)"
+	ERRORSIZE=${#ERROR}
+	ERROR="%(?;;"$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$_prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -379,7 +379,7 @@ fi
 precmd()
 {
 	# this MUST BE the real first operation else we lose the error code...
-	error=$(print -Pn "%(?;;-%?)")
+	ERROR=$(print -Pn "%(?;;-%?)")
 
 	__update_prompt_elements
 	__redefine_prompt
