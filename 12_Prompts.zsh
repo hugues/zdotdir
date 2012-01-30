@@ -41,7 +41,7 @@ chpwd()
 	if ( __cmd_exists git && test -d .git )
 	then
 		# Shows tracked branches and modified files
-		git checkout HEAD 2>&1 | sed 's/^/   /'
+		git status | awk '/^# Your branch/ { print $0 }' | sed 's/^# /   /'
 	fi
 
 
