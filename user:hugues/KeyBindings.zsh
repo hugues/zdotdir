@@ -201,13 +201,16 @@ do
 	bindkey -M $keymap -s 'r' 'Q rehash\n'
 	bindkey -M $keymap -s 'R' 'Q reset\n'
 
-	__cmd_exists when && \
-	bindkey -M $keymap -s 'w' 'Q when\n'
+	if ( __cmd_exists when )
+	then
+		bindkey -M $keymap -s 'w' 'Q when\n'
+	fi
 
-	__cmd_exists todo && (
-	bindkey -M $keymap -s 't' 'Q todo\n'
-	bindkey -M $keymap -s 'T' 'Q todo all -c\n'
-	)
+	if ( __cmd_exists todo )
+	then
+		bindkey -M $keymap -s 't' 'Q todo\n'
+		bindkey -M $keymap -s 'T' 'Q todo all -c\n'
+	fi
 
 	bindkey -M $keymap -s 'c' 'Q ./configure\n'
 	bindkey -M $keymap -s '©' 'Q !?configure\n'
