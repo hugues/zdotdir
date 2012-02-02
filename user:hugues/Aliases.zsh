@@ -70,6 +70,8 @@ a lat='la -tr'
 a lc='ls -c'
 a lc1='\ls -c1'
 
+a gitk='\gitk --date-order'
+
 __cmd_exists dict && a definition='dict -h dict.org'
 __cmd_exists dict && a traduction='dict -h hiegel.fr -P-'
 
