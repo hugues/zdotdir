@@ -18,25 +18,27 @@ a -g .......=../../../../../..
 a -g ........=../../../../../../..
 a -g .........=../../../../../../../..
 
-__cmd_exists emacsclient && a e='emacsclient'
-__cmd_exists emacs && a ne='emacs -nw'
+if ( __cmd_exists emacs )
+then
+	a e='emacs'
+	__cmd_exists emacsclient && a e='emacsclient'
+	a ne='e -nw'
+	a gnus='e -f gnus'
+fi
 
 if ( __cmd_exists vim )
 then
 	a v='vim'
 
-	if ( vim --version | grep -- "+clientserver" >/dev/null )
-	then
-		if ( __cmd_exists vims )
-		then
-			a vim='vim --servername `print -P "%l"`'
-		fi
-	fi
+	vim --version | grep -- "+clientserver" >/dev/null && \
+	__cmd_exists vims && \
+		a vim='vim --servername `print -P "%l"`'
 fi
 
 __cmd_exists eject && a close='eject -t'
 
 a goto='cd -P' ## Resolve symlinks
+a so='cd -'
 
 a rm='rm -i'
 a mv='mv -i'
@@ -76,13 +78,14 @@ __cmd_exists dict && a definition='dict -h dict.org'
 __cmd_exists dict && a traduction='dict -h hiegel.fr -P-'
 
 __cmd_exists dosbox && a dosbox='dosbox -c "mount c \"`pwd`\"" -c "mount d /cdrom -t cdrom" -c "c:" '
-__cmd_exists emacs && a gnus='emacs -f gnus'
 
+
+# VERY VERY bad idea...
 #a make='make -j'
 
 ## Suffixes Aliases
 # I don't like this, I never used it.
 #
-__cmd_exists editdiff && a -s patch=editdiff
-a -s c=$EDITOR
-a -s h=$EDITOR
+#__cmd_exists editdiff && a -s patch=editdiff
+#a -s c=$EDITOR
+#a -s h=$EDITOR
