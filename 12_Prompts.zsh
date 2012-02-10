@@ -69,7 +69,7 @@ preexec ()
 	__set_prompt_date "-"
 	_prompt_colors[date]=$_date_colors[normal]
 
-	spaceleft=$(($COLUMNS - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
+	spaceleft=$(($COLUMNS - $AGENTSSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
 	HBAR=$T_
 	for h in {1..$spaceleft}
@@ -176,15 +176,6 @@ __update_prompt_elements()
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
 
-	if [ "${PWD/$STSDKROOT/}" != "$PWD" ]
-	then
-		export STLINUX="-${DVD_PLATFORM:-?}-${DVD_BACKEND:-?}-${DVD_OS:-?}"
-		STLINUXSIZE=${#STLINUX}
-	else
-		unset STLINUX
-		STLINUXSIZE=0
-	fi
-
 	if [ -e /proc/pmu/battery_0 ]
 	then
 		[ "$DEBUG" = "yes" ] && echo -n "	Battery..."
@@ -230,7 +221,7 @@ __update_prompt_elements()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
-	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $STLINUXSIZE - $DATESIZE - $BATTERYSIZE))
+	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $DATESIZE - $BATTERYSIZE))
 	unset HBAR
 	HBAR=$T_
 	for h in {1..$spaceleft}
@@ -354,7 +345,7 @@ __two_lines_prompt ()
 {
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
-	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$_prompt_colors[bar]$_C$STLINUX$HBAR$DATE"
+	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$_prompt_colors[bar]$_C$HBAR$DATE"
 "$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
 }
