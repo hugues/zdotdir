@@ -251,7 +251,7 @@ __update_prompt_elements()
 	if [ -d CVS ]
 	then
 		CVSTAG=$(test -e CVS/Tag && cat CVS/Tag || basename $(cat CVS/Root 2>&- || echo "HEAD") )
-		CVSTAG=${CVSTAG:+ $C_$_prompt_colors[up_to_date]$_C$CVSTAG}
+		CVSTAG=${CVSTAG:+ $C_$_gcl_colors[uptodate]$_C$CVSTAG}
 	fi
 
 	# get svn status
@@ -264,7 +264,7 @@ __update_prompt_elements()
 		if [ ! -z "$CHECK_SVN_STATUS" ]
 		then
 			SVNSTATUS="$(svn diff 2>&-)"
-			SVNSTATUS=${${SVNSTATUS:+$_prompt_colors[not_up_to_date]}:-$_prompt_colors[up_to_date]}
+			SVNSTATUS=${${SVNSTATUS:+$_gcl_colors[changed]}:-$_gcl_colors[uptodate]}
 		fi
 	fi
 	SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
@@ -328,7 +328,7 @@ __update_prompt_elements()
 	#  then we reduce the path until it reaches the last path element,
 	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
-	GITBRANCH=${GITBRANCH:+ $C_"$(__get_git_status)"$_C$GITBRANCH}"$(__get_guilt_series)"
+	GITBRANCH=${GITBRANCH:+ $C_"$(__get_git_status)"$_C$GITBRANCH}"$(__get_guilt_series)$C_$color[none]$_C"
 	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
 }

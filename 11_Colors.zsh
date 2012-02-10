@@ -8,7 +8,7 @@
 ## these files with or without this notice.
 ## 
 
-typeset -A _prompt_colors _git_colors _mail_colors _correct_colors _battery_colors _date_colors _agent_colors _guilt_colors
+typeset -A _prompt_colors _gcl_colors _mail_colors _correct_colors _battery_colors _date_colors _agent_colors _guilt_colors
 
 _correct_colors[error]="$color[red];$color[bold]"
 _correct_colors[suggest]="$color[blue];$color[bold]"
@@ -64,18 +64,15 @@ set_prompt_colors ()
 	_agent_colors[has_keys]="$color[bold];$color[yellow]"
 	_agent_colors[has_remote_keys]="$_prompt_colors[bold_generic]"
 
-	_prompt_colors[up_to_date]="$_prompt_colors[generic]"						# up-to-date
-	_prompt_colors[not_up_to_date]="$color[green];$color[bold]" 	# not up to date
-	_prompt_colors[to_be_commited]="$color[yellow];$color[bold]"	# changes in cache
+	_gcl_colors[init]="$color[black];$color[bold]"
+	_gcl_colors[gitdir]="$color[red];$color[bold]"
+	_gcl_colors[uptodate]="$_prompt_colors[generic]"
+	_gcl_colors[cached]="$color[yellow];$color[bold]"
+	_gcl_colors[mixed]="$color[green];$color[bold]"
+	_gcl_colors[changed]="$color[green]"
+	_gcl_colors[merging]="$color[bg-black]"
 
-	_git_colors[managment_folder]="$color[red];$color[bold]"   # .git/... folder browsing
-	_git_colors[cached]="$_prompt_colors[to_be_commited]"                     # git changes in cache
-	_git_colors[cached_and_not_up_to_date]="$_prompt_colors[not_up_to_date];$color[bold]"
-	_git_colors[not_up_to_date]="$_prompt_colors[not_up_to_date];$color[normal]"     # git changes in working tree
-	_git_colors[init_in_progress]="$color[black];$color[bold]"                        # initialization
-	_git_colors[up_to_date]="$_prompt_colors[up_to_date];$color[normal]"                                     # git up-to-date
-
-	_guilt_colors[applied]=$_git_colors[cached]
+	_guilt_colors[applied]=$_gcl_colors[cached]
 	_guilt_colors[unapplied]=$color[black]
 }
 

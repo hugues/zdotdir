@@ -237,20 +237,23 @@ __get_guilt_series ()
 # a call to `__get_git_branch`
 __get_git_status ()
 {
-	local my_git_status cached not_up_to_date managment_folder
+	local my_git_status cached changed managment_folder
 
 	if [ ! -z "$DO_NOT_CHECK_GIT_STATUS" ]
-	then return
+	then
+		return
 	fi
+
+	my_git_status=$_gcl_colors[uptodate];
 
 	if [ -f ".repo/manifests.git/config" ]
 	then
-		echo "$_git_colors[up_to_date]";
+		echo $my_git_status
 		return
 	fi
 
 	if [ "$(git rev-parse --is-inside-git-dir)" = "true" -o "$(git config --get core.bare)" = "true" ] ; then
-		echo "$_git_colors[managment_folder]"
+		echo "$_gcl_colors[gitdir]"
 		return
 	fi
 
@@ -258,30 +261,32 @@ __get_git_status ()
 		cached="yes"
 	fi
 	if [ "$(git ls-files -m 2>&- | head -n1)" != "" ] ; then 
-		not_up_to_date="yes"
+		changed="yes"
 	fi
 
 	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
 
-	if [ "$cached" != "" -a "$not_up_to_date" != "" ] ; then
-		my_git_status="$_git_colors[cached_and_not_up_to_date]"
-	elif [ "$cached" != "" ] ; then
-		my_git_status="$_git_colors[cached]"
-	elif [ "$not_up_to_date" != "" ] ; then
-		my_git_status="$_git_colors[not_up_to_date]"
-	elif [ "$(git cat-file -t HEAD 2>/dev/null)" != "commit" ] ; then
+	if [ "$cached" != "" -a "$changed" != "" ]
+	then
+		my_git_status="$_gcl_colors[mixed]"
+	elif [ "$cached" != "" ]
+	then
+		my_git_status="$_gcl_colors[cached]"
+	elif [ "$changed" != "" ]
+	then
+		my_git_status="$_gcl_colors[changed]"
+	elif [ "$(git cat-file -t HEAD 2>/dev/null)" != "commit" ]
+	then
 		if [ ! -z "$(git ls-files)" ] ; then
-			my_git_status="$_git_colors[cached]"
+			my_git_status="$_gcl_colors[cached]"
 		else
-			my_git_status="$_git_colors[init_in_progress]"
+			my_git_status="$_gcl_colors[init]"
 		fi
-	else
-		if [ -f $GIT_DIR/MERGE_HEAD ]
-		then
-			my_git_status="$_git_colors[cached]"
-		else
-			my_git_status="$_git_colors[up_to_date]"
-		fi
+	fi
+
+	if [ $(git ls-files --unmerged | wc -l) -gt 0 ]
+	then
+		my_git_status="${_gcl_colors[merging]:+$_gcl_colors[merging];}$my_git_status"
 	fi
 
 	echo $my_git_status
