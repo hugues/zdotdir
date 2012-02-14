@@ -236,6 +236,10 @@ do
 
 	bindkey -M $keymap 'q' push-line
 	bindkey -M $keymap 'Q' push-line
+
+    # better than clear-screen since it recalculates prompt...
+    bindkey -M $keymap -s '' 'Q tput clear\n'
+    bindkey -M $keymap -s 'L' 'Q tput clear ; tput cup $(tput lines) 0\n'
 done
 
 # redefines push-line for vicmd
