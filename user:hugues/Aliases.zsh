@@ -21,7 +21,6 @@ a -g .........=../../../../../../../..
 if ( __cmd_exists emacs )
 then
 	a e='emacs'
-	__cmd_exists emacsclient && a e='emacsclient'
 	a ne='e -nw'
 	a gnus='e -f gnus'
 fi
