@@ -141,7 +141,12 @@ __update_prompt_elements()
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_keys"
-				AGENTCHAR=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
+                A____CHAR=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
+                AGENTCHAR=""
+                for i in {1..$(echo $SSH_AGENT_KEYLIST | wc -l )}
+                do
+                    AGENTCHAR=$AGENTCHAR$A____CHAR
+                done
 			else
 				AGENTCOLOR="empty"
 				AGENTCHAR=${AGENT_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✘" || echo "S" )}
