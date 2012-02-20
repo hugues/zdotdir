@@ -61,8 +61,9 @@ set_prompt_colors ()
 
 	_agent_colors[empty]="$_prompt_colors[soft_generic]"
 	_agent_colors[remote_empty]="$color[bold];$color[black]"
-	_agent_colors[has_keys]="$color[bold];$color[yellow]"
+	_agent_colors[has_keys]="$_prompt_colors[bold_generic]"
 	_agent_colors[has_remote_keys]="$_prompt_colors[bold_generic]"
+	_agent_colors[id_dsa]="$color[bold];$color[yellow]"
 
 	_gcl_colors[init]="$color[black];$color[bold]"
 	_gcl_colors[gitdir]="$color[red];$color[bold]"

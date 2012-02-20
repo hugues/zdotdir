@@ -140,30 +140,29 @@ __update_prompt_elements()
 			# That's a local agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
-				AGENTCOLOR="has_keys"
-                A____CHAR=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
-                AGENTCHAR=""
-                for i in {1..$(echo $SSH_AGENT_KEYLIST | wc -l )}
+                AgentChar=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
+                AGENTS=""
+                for i in $(echo $SSH_AGENT_KEYLIST | cut -d' ' -f3 )
                 do
-                    AGENTCHAR=$AGENTCHAR$A____CHAR
+                    AGENTS=$AGENTS$C_${_agent_colors[$i:t]:-$_agent_colors[has_keys]}$_C$AgentChar
                 done
 			else
 				AGENTCOLOR="empty"
-				AGENTCHAR=${AGENT_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✘" || echo "S" )}
+				AgentChar=${AGENT_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✘" || echo "S" )}
+                AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
 			fi
 		else
 			# That's a forwarded agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_remote_keys"
-				AGENTCHAR=${AGENT_SOCK_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✓" || echo "@" )}
+				AgentChar=${AGENT_SOCK_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✓" || echo "@" )}
 			else
 				AGENTCOLOR="remote_empty"
-				AGENTCHAR=${AGENT_SOCK_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✗" || echo "O" )}
+				AgentChar=${AGENT_SOCK_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✗" || echo "O" )}
 			fi
+            AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
 		fi
-
-		AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AGENTCHAR"
 	fi
 
 	[ "$DEBUG" = "yes" ] && echo && echo -n "	......GPG"
