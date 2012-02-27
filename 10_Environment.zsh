@@ -75,12 +75,7 @@ typeset -gU PATH MANPATH INFOPATH PKG_CONFIG_PATH LD_LIBRARY_PATH
 
 ## Gestion de l'historique
 # Voir le fichier d'Options pour plus de contrôle là-dessus
-if [ -w $ZDOTDIR ]
-then
-	HISTFILE=$ZDOTDIR/.history.$USER.$HOST # Pour éviter les conflits de conf
-else
-	HISTFILE=~$USER/.zsh.history.$HOST
-fi
+HISTFILE=~$USER/.zsh.history.$HOST
 
 SAVEHIST=42000
 HISTSIZE=$(( $SAVEHIST * 1.10 ))
