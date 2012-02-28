@@ -51,7 +51,7 @@ when()
 __cmd_exists todo && \
 todo()
 {
-	TODO=${=$(whereis -b todo | cut -d: -f2)}
+	TODO=${=$(which -p todo | cut -d: -f2)}
 	if [ $($TODO $@ | wc -l) -gt 0 ]
 	then
 		__preprint "À faire" $color[yellow] && echo
