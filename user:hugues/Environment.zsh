@@ -47,7 +47,7 @@ done
 
 # Couleurs pour grep --color=auto
 export GREP_COLOR=$color[yellow]\;$color[bold]
-export GREP_COLORS="sl="":cx="$color[cyan]":ms="$color[yellow]";"$color[bold]":mc="$color[red]";"$color[bold]""
+export GREP_COLORS="sl="":cx="$color[cyan]":ms="$color[yellow]";"$color[bold]":mc="$color[red]";"$color[bold]":fn="$color[green]""
 
 __cmd_exists dircolors && eval $(dircolors ~/.dir_colors)
 export TZ="Europe/Paris"
