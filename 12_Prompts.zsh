@@ -295,29 +295,34 @@ __update_prompt_elements()
 	then
 		if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
 		then
-			local unbreakablegittail
-			if [ "$(echo $GITBRANCH | grep "^\[rebase ")" = "" ]
-			then
-				#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
+			local unbreakablegittail rebasing
 
-				if [ $GITBRANCH[-1] = ")" ]
-				then
-					unbreakablegittail=${${(M)GITBRANCH%\~*}}
-					[ "$unbreakablegittail" = "" -a $GITBRANCHSIZE -gt $minimalgitsize ] && unbreakablegittail=")"
-				fi
-				if [ $GITBRANCHSIZE -gt $minimalgitsize ]
-				then
-					GITBRANCHSIZE=$(( $spaceleft - $PATHSIZE ))
-					[ $GITBRANCHSIZE -lt $minimalgitsize ] && GITBRANCHSIZE=$minimalgitsize
-				fi
-				GITBRANCH=`print -Pn "%"$(($GITBRANCHSIZE - ${#unbreakablegittail}))">..>"${GITBRANCH%\~*}${unbreakablegittail:+"%"${#unbreakablegittail}"<<"$GITBRANCH}`
-			else
+			if [ "$(echo $GITBRANCH | grep "^ \[")" != "" ]
+            then
+                    #
+                    # TODO : réduire la taille du hash, s'il y en a un.
+                    #
+                    rebasing=$GITBRANCH
+                    GITBRANCH=${${GITBRANCH/*../}/] */}
+            fi
 
-				#
-				# TODO : réduire la taille du hash, s'il y en a un.
-				#
+            #  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
+            if [ $GITBRANCH[-1] = ")" ]
+            then
+                unbreakablegittail=${${(M)GITBRANCH%\~*}}
+                [ "$unbreakablegittail" = "" -a $GITBRANCHSIZE -gt $minimalgitsize ] && unbreakablegittail=$GITBRANCH[-1]
+            fi
+            if [ $GITBRANCHSIZE -gt $minimalgitsize ]
+            then
+                GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
+                [ $((${#GITBRANCH} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#GITBRANCH} - $minimalgitsize))
+            fi
+            GITBRANCH=`print -Pn "%"$(( (${#GITBRANCH} - $GITBRANCHCHUNK) - ${#unbreakablegittail}))">¬>"${GITBRANCH%\~*}${unbreakablegittail:+"%"${#unbreakablegittail}"<<"$GITBRANCH}`
 
-			fi
+            if [ -n "$rebasing" ]
+            then
+                GITBRANCH=${rebasing/..*]/..$GITBRANCH]}
+            fi
 		fi
 	fi
 	#  then we reduce the path until it reaches the last path element,

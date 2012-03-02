@@ -118,6 +118,8 @@ __get_hg_branch ()
 	fi
 }
 
+__cleanup_git_branch_name() { sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,' }
+
 __get_git_branch ()
 {
 	local my_git_branch checkouted_branch="yes"
@@ -145,7 +147,7 @@ __get_git_branch ()
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
 		[ "$my_git_branch" = "(no branch)" ] &&\
 			checkouted_branch="" && \
-			my_git_branch="$(git name-rev --name-only HEAD 2>&- | sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,')"
+			my_git_branch="$(git name-rev --name-only HEAD 2>&- | __cleanup_git_branch_name)"
 
 		# If neither on a named commit-ish, show commit-id
 		if [ "$my_git_branch" = "undefined" ]
@@ -186,7 +188,7 @@ __get_git_branch ()
 		fi
 
 		# Then the result
-		my_git_branch="[rebase $current/$last: "$(git name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null)".."$my_git_branch"]"
+		my_git_branch="[$current/$last: "$(git name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null | __cleanup_git_branch_name)".."$(echo $my_git_branch)"]"
 		[ -r $REBASE_DIR/head-name ] && my_git_branch=$my_git_branch" "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
 	else
 		# No rebase in progress, put '(' ')' if needed
