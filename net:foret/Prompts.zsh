@@ -12,13 +12,15 @@ _prompt_colors[target]="1;31"
 
 __two_lines_prompt ()
 {
-    COMPILATION=${TARGET:+[}$C_$_prompt_colors[target]$_C${TARGET:+$TARGET}$C_$_prompt_colors[soft_generic]$_C${TARGET:+] }
-    if [ $((${V:-0} + ${NPROC:-0})) -gt 0 ]
+    if [ -n "$TARGET" -o $((${V:-0} + ${NPROC:-0})) -gt 0 ]
     then
-        COMPILATION=$COMPILATION"[ "
-        COMPILATION=$COMPILATION$C_$_prompt_colors[target]$_C${V:+V=$V }$C_$_prompt_colors[soft_generic]$_C
-        COMPILATION=$COMPILATION$C_$_prompt_colors[target]$_C${NPROC:+NPROC=$NPROC }$C_$_prompt_colors[soft_generic]$_C
-        COMPILATION=$COMPILATION"] "
+        COMPILATION="["
+        COMPILATION+=$C_$_make_colors[target]$_C${TARGET:+$TARGET}$C_$_prompt_colors[soft_generic]$_C
+        [ -n "$V" -a "$V" -gt 0 ] && \
+            COMPILATION+=$C_$_make_colors[verbose]$_C$(for i in {1..$V} ; echo -n "V")$C_$_prompt_colors[soft_generic]$_C
+        [ -n "$NPROC" -a "$NPROC" -gt 0 ] && \
+            COMPILATION+=$C_$_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n "✔")$C_$_prompt_colors[soft_generic]$_C
+        COMPILATION+="] "
     fi
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
