@@ -164,6 +164,8 @@ __get_git_branch ()
 		fi
 	fi
 
+    my_git_branch="→"$my_git_branch"←"
+
 	# Rebase in progress ?
 	if [ -d $GIT_DIR/rebase-merge -o -d $GIT_DIR/rebase-apply ]
 	then
@@ -187,17 +189,11 @@ __get_git_branch ()
 			last=$(cat $REBASE_DIR/last)
 		fi
 
-		# Then the result
 		my_git_branch="[$current/$last: "$(git name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null | __cleanup_git_branch_name)".."$(echo $my_git_branch)"]"
 		[ -r $REBASE_DIR/head-name ] && my_git_branch=$my_git_branch" "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
 	else
 		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
-	fi
-
-	if [ "$(git status 2>&- | grep "new file" | head -n1)" != "" ] ; then
-		# ADDED FILES
-		my_git_branch=$my_git_branch
 	fi
 
 	echo " "$my_git_branch

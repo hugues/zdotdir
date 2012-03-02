@@ -295,40 +295,26 @@ __update_prompt_elements()
 	then
 		if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
 		then
-			local unbreakablegittail rebasing
+			CHUNKABLE=${${GITBRANCH/*→/}/←*/}
 
-			if [ "$(echo $GITBRANCH | grep "^ \[")" != "" ]
-            then
-                    #
-                    # TODO : réduire la taille du hash, s'il y en a un.
-                    #
-                    rebasing=$GITBRANCH
-                    GITBRANCH=${${GITBRANCH/*../}/] */}
-            fi
+			#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
+			if [ $GITBRANCHSIZE -gt $minimalgitsize ]
+			then
+				GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
+				[ $((${#CHUNKABLE} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#CHUNKABLE} - $minimalgitsize))
+			fi
+			CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - $GITBRANCHCHUNK ))">¬>"${CHUNKABLE%\~*}`
 
-            #  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
-            if [ $GITBRANCH[-1] = ")" ]
-            then
-                unbreakablegittail=${${(M)GITBRANCH%\~*}}
-                [ "$unbreakablegittail" = "" -a $GITBRANCHSIZE -gt $minimalgitsize ] && unbreakablegittail=$GITBRANCH[-1]
-            fi
-            if [ $GITBRANCHSIZE -gt $minimalgitsize ]
-            then
-                GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
-                [ $((${#GITBRANCH} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#GITBRANCH} - $minimalgitsize))
-            fi
-            GITBRANCH=`print -Pn "%"$(( (${#GITBRANCH} - $GITBRANCHCHUNK) - ${#unbreakablegittail}))">¬>"${GITBRANCH%\~*}${unbreakablegittail:+"%"${#unbreakablegittail}"<<"$GITBRANCH}`
-
-            if [ -n "$rebasing" ]
-            then
-                GITBRANCH=${rebasing/..*]/..$GITBRANCH]}
-            fi
+			GITBRANCH=${GITBRANCH/→*←/→$CHUNKABLE←}
 		fi
 	fi
 	#  then we reduce the path until it reaches the last path element,
 	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
-	GITBRANCH=${GITBRANCH:+$C_"$(__get_git_status)"$_C$GITBRANCH}"$(__get_guilt_series)$C_$color[none]$_C"
+	if [ -n "$GITBRANCH" ]
+	then
+		GITBRANCH=$C_$_prompt_colors[soft_generic]$_C${${GITBRANCH/→/$C_"$(__get_git_status)"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}"$(__get_guilt_series)$C_$color[none]$_C"
+	fi
 	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
 }
