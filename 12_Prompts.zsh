@@ -111,7 +111,7 @@ __update_prompt_elements()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
 	# Flush the term title
-    __term_title
+	__term_title
 	[ "$DEBUG" = "yes" ] && echo
 
 	__set_prompt_date
@@ -140,16 +140,16 @@ __update_prompt_elements()
 			# That's a local agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
-                AgentChar=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
-                AGENTS=""
-                for i in $(echo $SSH_AGENT_KEYLIST | cut -d' ' -f3 )
-                do
-                    AGENTS=$AGENTS$C_${_agent_colors[$i:t]:-$_agent_colors[has_keys]}$_C$AgentChar
-                done
+				AgentChar=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
+				AGENTS=""
+				for i in $(echo $SSH_AGENT_KEYLIST | cut -d' ' -f3 )
+				do
+					AGENTS=$AGENTS$C_${_agent_colors[$i:t]:-$_agent_colors[has_keys]}$_C$AgentChar
+				done
 			else
 				AGENTCOLOR="empty"
 				AgentChar=${AGENT_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✘" || echo "S" )}
-                AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
+				AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
 			fi
 		else
 			# That's a forwarded agent
@@ -161,7 +161,7 @@ __update_prompt_elements()
 				AGENTCOLOR="remote_empty"
 				AgentChar=${AGENT_SOCK_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✗" || echo "O" )}
 			fi
-            AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
+			AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
 		fi
 	fi
 
