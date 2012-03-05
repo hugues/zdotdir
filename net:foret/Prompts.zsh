@@ -12,6 +12,7 @@ _prompt_colors[target]="1;31"
 
 __two_lines_prompt ()
 {
+    unset COMPILATION
     if [ -n "$TARGET" -o $((${V:-0} + ${NPROC:-0})) -gt 0 ]
     then
         COMPILATION="["
