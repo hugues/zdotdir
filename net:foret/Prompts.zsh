@@ -20,7 +20,7 @@ __two_lines_prompt ()
         [ -n "$V" -a "$V" -gt 0 ] && \
             COMPILATION+=$C_$_make_colors[verbose]$_C$(for i in {1..$V} ; echo -n "V")$C_$_prompt_colors[soft_generic]$_C
         [ -n "$NPROC" -a "$NPROC" -gt 0 ] && \
-            COMPILATION+=$C_$_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n "✔")$C_$_prompt_colors[soft_generic]$_C
+            COMPILATION+=$C_$_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n "|")$C_$_prompt_colors[soft_generic]$_C
         COMPILATION+="] "
     fi
 	## Le prompt le plus magnifique du monde, et c'est le mien !
