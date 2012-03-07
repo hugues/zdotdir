@@ -237,7 +237,7 @@ do
 	bindkey -M $keymap 'q' push-line
 	bindkey -M $keymap 'Q' push-line
 
-    bindkey -M $keymap -s 'L' 'Q tput clear\n'
+    bindkey -M $keymap -s 'K' 'Q tput clear\n'
     bindkey -M $keymap -s 'B' 'Q tput clear ; tput cup $(tput lines) 0\n'
 done
 
