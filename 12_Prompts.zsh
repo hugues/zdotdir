@@ -265,19 +265,23 @@ __update_prompt_elements()
 	SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
 	[ "$DEBUG" = "yes" ] && echo
 
-	# get VCS status
+	# get hg status
+	[ "$DEBUG" = "yes" ] && echo -n "	HG status..."
+	HGBRANCH=$(__get_gcl_branch hg)
+	[ ! -z "$HGBRANCH" ] && HGBRANCH=" "$HGBRANCH
+	[ "$DEBUG" = "yes" ] && echo
+
+	# get git status
 	#
-	[ "$DEBUG" = "yes" ] && echo -n "	Update VCS info..."
-    vcs_info 2>&-
-    VCSROOT=${vcs_info_msg_0_/ */}
-    VCSBRANCH=${vcs_info_msg_0_/$VCSROOT /}
-    VCSROOT=${VCSROOT/$HOME/\~}
-    VCSBRANCHSIZE=0 #TBD
+	[ "$DEBUG" = "yes" ] && echo -n "	GIT status..."
+	GITBRANCH=$(__get_gcl_branch git)
+	GITBRANCHSIZE=${#GITBRANCH}
+	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Path..."
 	MY_PATH="%(!.%d.%~)"
-	CURDIR=$(print -Pn $MY_PATH)
+	PATHSIZE=$(print -Pn $MY_PATH)
 	PATHSIZE=${#PATHSIZE}
 	[ "$DEBUG" = "yes" ] && echo
 	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..."
@@ -287,32 +291,31 @@ __update_prompt_elements()
 	#minimalpathsize=${#minimalpathsize}
 	minimalpathsize=10
 	minimalgitsize=10 # git-abbrev-commit-ish...
-	if [ $VCSBRANCHSIZE -gt 0 ]
+	if [ $GITBRANCHSIZE -gt 0 ]
 	then
-		if [ $spaceleft -lt $(( $PATHSIZE )) ]
+		if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
 		then
-			CHUNKABLE=${${VCSBRANCH/*→/}/←*/}
+			CHUNKABLE=${${GITBRANCH/*→/}/←*/}
 
 			#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
-			if [ $VCSBRANCHSIZE -gt $minimalgitsize ]
+			if [ $GITBRANCHSIZE -gt $minimalgitsize ]
 			then
-				VCSBRANCHCHUNK=$(( $VCSBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
-				[ $((${#CHUNKABLE} - $VCSBRANCHCHUNK)) -lt $minimalgitsize ] && VCSBRANCHCHUNK=$((${#CHUNKABLE} - $minimalgitsize))
+				GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
+				[ $((${#CHUNKABLE} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#CHUNKABLE} - $minimalgitsize))
 			fi
-			CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - $VCSBRANCHCHUNK ))">¬>"${CHUNKABLE%\~*}`
+			CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - $GITBRANCHCHUNK ))">¬>"${CHUNKABLE%\~*}`
 
-			VCSBRANCH=${VCSBRANCH/→*←/→$CHUNKABLE←}
+			GITBRANCH=${GITBRANCH/→*←/→$CHUNKABLE←}
 		fi
 	fi
 	#  then we reduce the path until it reaches the last path element,
-	spaceleft=$(($spaceleft - $VCSBRANCHSIZE))
+	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
 	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
-	if [ -n "$VCSBRANCH" ]
+	if [ -n "$GITBRANCH" ]
 	then
-		#VCSBRANCH=$C_$_prompt_colors[soft_generic]$_C${${VCSBRANCH/→/$C_"30"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}"$C_$color[none]$_C"
+		GITBRANCH=$C_$_prompt_colors[soft_generic]$_C${${GITBRANCH/→/$C_"$(__get_git_status)"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}"$(__get_guilt_series)$C_$color[none]$_C"
 	fi
-    [ -n "$VCSROOT" ] && CURDIR=${CURDIR/$VCSROOT*/$VCSROOT}
-	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$CURDIR"%<<$C_$color[none]$_C"
+	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
 }
 
@@ -338,7 +341,7 @@ __two_lines_prompt ()
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
 	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$_prompt_colors[bar]$_C$HBAR$DATE"
-"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
+"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
 }
 

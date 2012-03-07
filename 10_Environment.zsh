@@ -21,10 +21,9 @@ export SHELL=`which zsh`
 
 ## Colors 
 autoload colors && colors
-c_='['
+c_='['$color[none]";"
 _c=m
-_C_="%{$c_"
-C_=$_C_$color[none]";"
+C_="%{$c_"
 _C="$_c%}"
 
 unset has_termcaps
