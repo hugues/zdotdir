@@ -339,7 +339,7 @@ __yeah_prompt ()
 
 __two_lines_prompt ()
 {
-    __compilation
+    __compilation 2>&-
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
     #
