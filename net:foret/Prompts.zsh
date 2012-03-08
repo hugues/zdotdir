@@ -10,7 +10,7 @@
 
 _prompt_colors[target]="1;31"
 
-__two_lines_prompt ()
+__compilation ()
 {
     unset COMPILATION
     if [ -n "$TARGET" -o $((${V:-0} + ${NPROC:-0})) -gt 0 ]
@@ -23,9 +23,4 @@ __two_lines_prompt ()
             COMPILATION+=$C_$_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n "|")$C_$_prompt_colors[soft_generic]$_C
         COMPILATION+="] "
     fi
-	## Le prompt le plus magnifique du monde, et c'est le mien !
-	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
-	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$_prompt_colors[bar]$_C$STLINUX$HBAR$DATE"
-"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$_prompt_colors[soft_generic]$_C$COMPILATION$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
-
 }

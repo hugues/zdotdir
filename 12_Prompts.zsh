@@ -61,22 +61,29 @@ __expand_text()
 	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g;s/'$T_'//g;s/'$_T'//g')"
 }
 
+export _COLUMNS_OLD=0
+__hbar()
+{
+    if [ $COLUMNS != $_COLUMNS_OLD ]
+    then
+        unset HBAR
+        HBAR=$T_
+        for h in {1..$COLUMNS}
+        do
+            HBAR=${HBAR}$C_$_prompt_colors[generic]$_C$_tq_
+        done
+        HBAR=$HBAR$_T
+    fi
+}
+
 preexec ()
 {
 	__term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 
 	_prompt_colors[date]=$_date_colors[exec]
-	__set_prompt_date "-"
+	__set_prompt_date x
 	_prompt_colors[date]=$_date_colors[normal]
-
-	spaceleft=$(($COLUMNS - $AGENTSSIZE - $DATESIZE - $BATTERYSIZE))
-	unset HBAR
-	HBAR=$T_
-	for h in {1..$spaceleft}
-	do
-		HBAR=${HBAR}$_tq_
-	done
-	HBAR=$HBAR$_T
+    __hbar
 	__redefine_prompt
 
 	local lines="$(($(__expand_text "$PROMPT$1" | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
@@ -106,7 +113,7 @@ __update_prompt_elements()
 	# Error
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#ERROR}
-	ERROR="%(?;;"$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$_prompt_colors[error]$_C"%?)"
+	ERROR="%(?;;"$C_$_prompt_colors[error]$_C"%?)"
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -175,7 +182,6 @@ __update_prompt_elements()
 			AGENTS=$AGENTS$C_$_agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ $_is_multibyte_compliant ] && echo "⚡" || echo "G" )}
 		fi
 	fi
-	AGENTS=${AGENTS:+$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$AGENTS}
 	AGENTSSIZE=$(__expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
@@ -225,14 +231,7 @@ __update_prompt_elements()
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
 	# First line of prompt, calculation of the remaining place
-	spaceleft=$(($COLUMNS - $ERRORSIZE - $AGENTSSIZE - $DATESIZE - $BATTERYSIZE))
-	unset HBAR
-	HBAR=$T_
-	for h in {1..$spaceleft}
-	do
-		HBAR=$HBAR"$_tq_"
-	done
-	HBAR=$HBAR$_T
+    __hbar
 	[ "$DEBUG" = "yes" ] && echo
 
 	##
@@ -317,6 +316,8 @@ __update_prompt_elements()
 	fi
 	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
+
+    VCSBRANCH=$CVSTAG$SVNREV$GITBRANCH$HGBRANCH
 }
 
 __redefine_prompt ()
@@ -338,10 +339,12 @@ __yeah_prompt ()
 
 __two_lines_prompt ()
 {
+    __compilation
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
-	PS1=$AGENTS$MAILSTAT$ERROR$BATTERY$C_$_prompt_colors[bar]$_C$HBAR$DATE"
-"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$CVSTAG$SVNREV$GITBRANCH$HGBRANCH" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
+    #
+	PS1=$HBAR$(print -Pn "\r" ; tput cuf 1)${AGENTS}$(tput cuf 1)${ERROR}$(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE"
+"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH" "$C_$_prompt_colors[soft_generic]$_C${COMPILATION}$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
 }
 
