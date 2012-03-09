@@ -64,17 +64,17 @@ __expand_text()
 export _COLUMNS_OLD=0
 __hbar()
 {
-    if [ $COLUMNS != $_COLUMNS_OLD ]
-    then
-        _COLUMNS_OLD=$COLUMNS
-        unset HBAR
-        HBAR=$T_
-        for h in {1..$COLUMNS}
-        do
-            HBAR=${HBAR}$C_$_prompt_colors[generic]$_C$_tq_
-        done
-        HBAR=$HBAR$_T
-    fi
+	if [ $COLUMNS != $_COLUMNS_OLD ]
+	then
+		_COLUMNS_OLD=$COLUMNS
+		unset HBAR
+		HBAR=$T_
+		for h in {1..$COLUMNS}
+		do
+			HBAR=${HBAR}$C_$_prompt_colors[generic]$_C$_tq_
+		done
+		HBAR=$HBAR$_T
+	fi
 }
 
 preexec ()
@@ -84,14 +84,14 @@ preexec ()
 	_prompt_colors[date]=$_date_colors[exec]
 	__set_prompt_date x
 	_prompt_colors[date]=$_date_colors[normal]
-    __hbar
+	__hbar
 	__redefine_prompt
 
 	local lines="$(($( (__expand_text "$PROMPT";__expand_text "$1") | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
-    tput sc
+	tput sc
 	for i in {1..$lines} ; tput cuu1
 	print -Pn "$PROMPT"
-    tput rc
+	tput rc
 	print -Pn "$C_$_prompt_colors[exec]$_C"
  }
 
@@ -124,7 +124,7 @@ __update_prompt_elements()
 	__set_prompt_date
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
-    __hbar
+	__hbar
 	[ "$DEBUG" = "yes" ] && echo
 
 
@@ -197,26 +197,26 @@ __update_prompt_elements()
 	then
 		CVSTAG=$(test -e CVS/Tag && cat CVS/Tag || basename $(cat CVS/Root 2>&- || echo "HEAD") )
 		CVSTAG=${CVSTAG:+ $C_$_gcl_colors[uptodate]$_C$CVSTAG}
-    fi
+	fi
 
-    if [ -d .svn ]
-    then
-        # get svn status
-        #
-        [ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
-        SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
-        SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}
-        if [ "$SVNREV" != "" ]
-        then
-            if [ ! -z "$CHECK_SVN_STATUS" ]
-            then
-                SVNSTATUS="$(svn diff 2>&-)"
-                SVNSTATUS=${${SVNSTATUS:+$_gcl_colors[changed]}:-$_gcl_colors[uptodate]}
-            fi
-        fi
-        SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
-        [ "$DEBUG" = "yes" ] && echo
-    fi
+	if [ -d .svn ]
+	then
+		# get svn status
+		#
+		[ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
+		SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
+		SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}
+		if [ "$SVNREV" != "" ]
+		then
+			if [ ! -z "$CHECK_SVN_STATUS" ]
+			then
+				SVNSTATUS="$(svn diff 2>&-)"
+				SVNSTATUS=${${SVNSTATUS:+$_gcl_colors[changed]}:-$_gcl_colors[uptodate]}
+			fi
+		fi
+		SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
+		[ "$DEBUG" = "yes" ] && echo
+	fi
 
 	# get hg status
 	[ "$DEBUG" = "yes" ] && echo -n "	HG status..."
@@ -271,9 +271,9 @@ __update_prompt_elements()
 	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
 	[ "$DEBUG" = "yes" ] && echo
 
-    VCSBRANCH=$CVSTAG$SVNREV$GITBRANCH$HGBRANCH
+	VCSBRANCH=$CVSTAG$SVNREV$GITBRANCH$HGBRANCH
 
-    __compilation 2>&-
+	__compilation 2>&-
 }
 
 __redefine_prompt ()
@@ -297,7 +297,7 @@ __two_lines_prompt ()
 {
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
-    #
+	#
 	PS1=$HBAR$(print -Pn "\r" ; tput cuf 1)${AGENTS}$(tput cuf 1)${ERROR}$(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE"
 "$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH" "$C_$_prompt_colors[soft_generic]$_C${COMPILATION}$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
