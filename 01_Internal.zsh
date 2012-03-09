@@ -237,7 +237,7 @@ __get_git_status ()
 {
 	local my_git_status cached changed managment_folder
 
-	if [ ! -z "$DO_NOT_CHECK_GIT_STATUS" ]
+	if [ "$(git config --get zsh.check-status)" = "false" ]
 	then
 		return
 	fi
