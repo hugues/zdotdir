@@ -66,6 +66,7 @@ __hbar()
 {
     if [ $COLUMNS != $_COLUMNS_OLD ]
     then
+        _COLUMNS_OLD=$COLUMNS
         unset HBAR
         HBAR=$T_
         for h in {1..$COLUMNS}
@@ -76,7 +77,7 @@ __hbar()
     fi
 }
 
-preexec ()
+_preexec ()
 {
 	__term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 
@@ -113,7 +114,7 @@ __update_prompt_elements()
 	# Error
 	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
 	ERRORSIZE=${#ERROR}
-	ERROR="%(?;;"$C_$_prompt_colors[error]$_C"%?)"
+	ERROR=${ERROR:+$C_$_prompt_colors[error]$_C$ERROR}
 	[ "$DEBUG" = "yes" ] && echo
 
 	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
@@ -123,17 +124,15 @@ __update_prompt_elements()
 
 	__set_prompt_date
 
+	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
+    __hbar
+	[ "$DEBUG" = "yes" ] && echo
+
+
+
 	[ "$DEBUG" = "yes" ] && echo -n "	Agents..."
 	# GPG/SSH agents
 	AGENTS=""
-
-	local _is_multibyte_compliant
-	if ( echo ${(k)options} | grep "multibyte" >/dev/null ) && [ "$options[multibyte]" = "on" ]
-	then
-		_is_multibyte_compliant="yes it is !"
-	else
-		_is_multibyte_compliant=""
-	fi
 
 	[ "$DEBUG" = "yes" ] && echo && echo -n "	......SSH"
 	# Check ssh-agent only if the env socket has been set and is accessible
@@ -147,7 +146,7 @@ __update_prompt_elements()
 			# That's a local agent
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
-				AgentChar=${AGENT_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✔" || echo "$" )}
+				AgentChar=${AGENT_WITH_KEYS:-✔}
 				AGENTS=""
 				for i in $(echo $SSH_AGENT_KEYLIST | cut -d' ' -f3 )
 				do
@@ -155,7 +154,7 @@ __update_prompt_elements()
 				done
 			else
 				AGENTCOLOR="empty"
-				AgentChar=${AGENT_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✘" || echo "S" )}
+				AgentChar=${AGENT_EMPTY:-✘}
 				AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
 			fi
 		else
@@ -163,10 +162,10 @@ __update_prompt_elements()
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AGENTCOLOR="has_remote_keys"
-				AgentChar=${AGENT_SOCK_WITH_KEYS:-$( [ $_is_multibyte_compliant ] && echo "✓" || echo "@" )}
+				AgentChar=${AGENT_SOCK_WITH_KEYS:-✓}
 			else
 				AGENTCOLOR="remote_empty"
-				AgentChar=${AGENT_SOCK_EMPTY:-$( [ $_is_multibyte_compliant ] && echo "✗" || echo "O" )}
+				AgentChar=${AGENT_SOCK_EMPTY:-✗}
 			fi
 			AGENTS=$C_$_agent_colors[$AGENTCOLOR]$_C"$AgentChar"
 		fi
@@ -179,60 +178,13 @@ __update_prompt_elements()
 		if [ "`strings /proc/$GPG_AGENT_PID/cmdline | head -n1`" = "gpg-agent" ]
 		then
 			AGENTCOLOR="has_keys"
-			AGENTS=$AGENTS$C_$_agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-$( [ $_is_multibyte_compliant ] && echo "⚡" || echo "G" )}
+			AGENTS=$AGENTS$C_$_agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-⚡}
 		fi
 	fi
 	AGENTSSIZE=$(__expand_text $AGENTS)
 	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
 
-	if [ -e /proc/pmu/battery_0 ]
-	then
-		[ "$DEBUG" = "yes" ] && echo -n "	Battery..."
-
-		POWERADAPTER=$(grep "^AC Power" /proc/pmu/info | cut -c26)
-
-		typeset -A battery
-		battery[remaining]=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
-		battery[remain_hrs]=$(( $battery[remaining] / 3600 ))
-		battery[remain_min]=$(( ($battery[remaining] - ( $battery[remain_hrs] * 3600 )) / 60 ))
-		[ "$battery[remain_min]" -lt 10 ] && battery[remain_min]="0"$battery[remain_min]
-		battery[remains]=$battery[remain_hrs]"h"$battery[remain_min]
-
-		BATTERYSIZE=$(( ${#battery[remains]} + 1 ))
-
-		battery[load]=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
-
-		if [ $POWERADAPTER -ne 0 ]
-		then
-			battery[color]="charging"
-			if [ $battery[load] -eq 0 ]
-			then
-				## Battery full
-				BATTERYSIZE=2
-				battery[remains]="⚡"
-			fi
-		else
-			if [ $battery[remaining] -lt 659 ]
-			then
-				battery[color]="critical"
-			else
-				battery[color]="uncharging"
-			fi
-		fi
-		BATTERY=$C_$_prompt_colors[bar]$_C$T_"$_tq_"$_T$C_$_battery_colors[$battery[color]]$_C"$battery[remains]"
-		unset BATTERY
-
-		[ "$DEBUG" = "yes" ] && echo
-	else
-		BATTERY=
-		BATTERYSIZE=0
-	fi
-
-	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
-	# First line of prompt, calculation of the remaining place
-    __hbar
-	[ "$DEBUG" = "yes" ] && echo
 
 	##
 	## Second line of prompt : don't let the path garbage the entire line
@@ -246,23 +198,26 @@ __update_prompt_elements()
 	then
 		CVSTAG=$(test -e CVS/Tag && cat CVS/Tag || basename $(cat CVS/Root 2>&- || echo "HEAD") )
 		CVSTAG=${CVSTAG:+ $C_$_gcl_colors[uptodate]$_C$CVSTAG}
-	fi
+    fi
 
-	# get svn status
-	#
-	[ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
-	SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
-	SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}	
-	if [ "$SVNREV" != "" ]
-	then
-		if [ ! -z "$CHECK_SVN_STATUS" ]
-		then
-			SVNSTATUS="$(svn diff 2>&-)"
-			SVNSTATUS=${${SVNSTATUS:+$_gcl_colors[changed]}:-$_gcl_colors[uptodate]}
-		fi
-	fi
-	SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
-	[ "$DEBUG" = "yes" ] && echo
+    if [ -d .svn ]
+    then
+        # get svn status
+        #
+        [ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
+        SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
+        SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}
+        if [ "$SVNREV" != "" ]
+        then
+            if [ ! -z "$CHECK_SVN_STATUS" ]
+            then
+                SVNSTATUS="$(svn diff 2>&-)"
+                SVNSTATUS=${${SVNSTATUS:+$_gcl_colors[changed]}:-$_gcl_colors[uptodate]}
+            fi
+        fi
+        SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
+        [ "$DEBUG" = "yes" ] && echo
+    fi
 
 	# get hg status
 	[ "$DEBUG" = "yes" ] && echo -n "	HG status..."
@@ -318,6 +273,8 @@ __update_prompt_elements()
 	[ "$DEBUG" = "yes" ] && echo
 
     VCSBRANCH=$CVSTAG$SVNREV$GITBRANCH$HGBRANCH
+
+    __compilation 2>&-
 }
 
 __redefine_prompt ()
@@ -339,7 +296,6 @@ __yeah_prompt ()
 
 __two_lines_prompt ()
 {
-    __compilation 2>&-
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
     #
@@ -378,7 +334,7 @@ fi
 precmd()
 {
 	# this MUST BE the real first operation else we lose the error code...
-	ERROR=$(print -Pn "%(?;;-%?)")
+	ERROR=$(print -Pn "%(?;;%?)")
 
 	__update_prompt_elements
 	__redefine_prompt
