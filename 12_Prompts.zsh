@@ -77,7 +77,7 @@ __hbar()
     fi
 }
 
-_preexec ()
+preexec ()
 {
 	__term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
 
@@ -87,12 +87,11 @@ _preexec ()
     __hbar
 	__redefine_prompt
 
-	local lines="$(($(__expand_text "$PROMPT$1" | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
-	for i in {1..$lines} ; print -Pn "\e[1A\e[2K"
-	print -Pn "\r$PROMPT"
-	print -Pn "$C_$color[cyan]$_C"
-	print "${(q)1}" | sed "s/'$//;s/^'//"
-
+	local lines="$(($( (__expand_text "$PROMPT";__expand_text "$1") | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
+    tput sc
+	for i in {1..$lines} ; tput cuu1
+	print -Pn "$PROMPT"
+    tput rc
 	print -Pn "$C_$_prompt_colors[exec]$_C"
  }
 
