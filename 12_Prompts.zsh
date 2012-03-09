@@ -189,6 +189,9 @@ __update_prompt_elements()
 	## Second line of prompt : don't let the path garbage the entire line
 	##
 
+	unset COMPILATION
+	__compilation 2>&-
+
 	# get cvs tag
 	#
 	CVSTAG=""
@@ -238,7 +241,7 @@ __update_prompt_elements()
 	PATHSIZE=${#PATHSIZE}
 	[ "$DEBUG" = "yes" ] && echo
 	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..."
-	spaceleft=`print -Pn "$SHLVL - %n@%m  $ ls -laCdtrux $(__expand_text "$DATE")"`
+	spaceleft=`__expand_text "%n@%m${DISPLAY:+($DISPLAY)}$COMPILATION $ ls -laCdtrux $DATE"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	#minimalpathsize=`print -Pn "../%1~"`
 	#minimalpathsize=${#minimalpathsize}
@@ -273,7 +276,6 @@ __update_prompt_elements()
 
 	VCSBRANCH=$CVSTAG$SVNREV$GITBRANCH$HGBRANCH
 
-	__compilation 2>&-
 }
 
 __redefine_prompt ()
