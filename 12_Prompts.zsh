@@ -57,8 +57,8 @@ chpwd()
 
 __expand_text()
 {
-	# strips the %{...%} and newlines characters
-	print -Pn -- "$(echo $@ | tr -d '\n' | sed 's/%{[^(%})]*%}//g;s/'$T_'//g;s/'$_T'//g')"
+	# strips the %{...%} and everything after \r characters
+	print -Pn -- "$(echo $@ | sed 's/\r.*//g;s/%{[^(%})]*%}//g;s/'$T_'//g;s/'$_T'//g')"
 }
 
 export _COLUMNS_OLD=0
@@ -87,11 +87,14 @@ preexec ()
 	__hbar
 	__redefine_prompt
 
-	local lines="$(($( (__expand_text "$PROMPT";__expand_text "$1") | sed "s/\\(.\{0,$COLUMNS\}\\)/\\1\\n/g" | wc -l)))"
+	local lines
+	lines=$( (__expand_text "$PS1 $1" ) | sed "s/\\(.\{,$COLUMNS\}\\)/\\1\n/g" )
+	lines=$( echo "$lines" | sed -n '/^$/n;p' | wc -l )
 	tput sc
 	for i in {1..$lines} ; tput cuu1
-	print -Pn "$PROMPT"
+	print -Pn "$PS1"
 	tput rc
+	#print -Pn $C_"30"$_C"-$(echo -n "$1" | wc -l)-> ${(q)1} <-"$lines"-\n"
 	print -Pn "$C_$_prompt_colors[exec]$_C"
  }
 
