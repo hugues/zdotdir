@@ -11,9 +11,9 @@ then
 
 fi
 
-ZSH_HIGHLIGHT_STYLES[default]="none"
+ZSH_HIGHLIGHT_STYLES[default]="fg=cyan"
 
-ZSH_HIGHLIGHT_STYLES[assign]="none"
+ZSH_HIGHLIGHT_STYLES[assign]="fg=cyan"
 
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=yellow,bold"
 ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="green"
