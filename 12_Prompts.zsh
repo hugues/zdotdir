@@ -94,11 +94,10 @@ preexec ()
 	lines=$(( $lines + $( echo -n "$1" | tr ';\n' '.;' | sed 's/^\(.*[^;]\)\(;*\)$/\2/' | wc -c ) ))
 
 	tput sc
-	# /TODO/ GET A WAY TO KNOW IF THERE HAVE BEEN AN HIST_BANG OR NOT...
 	for i in {1..$lines} ; tput cuu1
-	print -Pn "$PS1"
+	# Only redraws the date, not the full prompt, since we got glitches with BANG_HIST and AUTOCORRECT...
+	print -Pn $(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE
 	tput rc
-	#print -Pn $C_"30"$_C"-$(echo -n "$1" | wc -l)-> ${(q)1} <-"$lines"-\n"
 	print -Pn "$C_$_prompt_colors[exec]$_C"
  }
 
