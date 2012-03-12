@@ -90,6 +90,9 @@ preexec ()
 	local lines
 	lines=$( (__expand_text "$PS1 $1" ) | sed "s/\\(.\{,$COLUMNS\}\\)/\\1\n/g" )
 	lines=$( echo "$lines" | sed -n '/^$/n;p' | wc -l )
+	# Got number of empty lines at end of command, because they are screwed up above...
+	lines=$(( $lines + $( echo -n "$1" | tr ';\n' '.;' | sed 's/^\(.*[^;]\)\(;*\)$/\2/' | wc -c ) ))
+
 	tput sc
 	# /TODO/ GET A WAY TO KNOW IF THERE HAVE BEEN AN HIST_BANG OR NOT...
 	for i in {1..$lines} ; tput cuu1
