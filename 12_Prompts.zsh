@@ -57,7 +57,7 @@ chpwd()
 
 __expand_text()
 {
-	# strips the %{...%} and everything after \r characters
+	# Strips unprintable characters
 	print -Pn -- "$(echo $@ | sed 's/\r.*//g;s/%{[^(%})]*%}//g;s/'$T_'//g;s/'$_T'//g')"
 }
 
@@ -79,7 +79,7 @@ __hbar()
 
 preexec ()
 {
-	__term_title "$(echo $1 | tr '	\n' ' ;' | sed 's/%/%%/g;s/\\/\\\\/g;s/;$//')"
+	__term_title "$2"
 
 	_prompt_colors[date]=$_date_colors[exec]
 	__set_prompt_date x
@@ -91,6 +91,7 @@ preexec ()
 	lines=$( (__expand_text "$PS1 $1" ) | sed "s/\\(.\{,$COLUMNS\}\\)/\\1\n/g" )
 	lines=$( echo "$lines" | sed -n '/^$/n;p' | wc -l )
 	tput sc
+	# /TODO/ GET A WAY TO KNOW IF THERE HAVE BEEN AN HIST_BANG OR NOT...
 	for i in {1..$lines} ; tput cuu1
 	print -Pn "$PS1"
 	tput rc
