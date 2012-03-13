@@ -345,6 +345,7 @@ precmd()
 
 	__update_prompt_elements
 	__redefine_prompt
+	#print -Pn "\r"
 }
 
 
