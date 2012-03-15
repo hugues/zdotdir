@@ -33,15 +33,15 @@ bindkey '[3~' kill-region			# ESC del
 
 test $TERM = 'rxvt' -o $TERM = 'xterm' -o $TERM = 'aterm' &&
 {
-    bindkey '[1~' beginning-of-line	# home
-    bindkey '[4~' end-of-line		# end-of-line
-    bindkey 'Oc' forward-word		# CTRL right
-    bindkey 'Od' backward-word	# CTRL left
-    bindkey '[3$' vi-set-buffer		# SHIFT del
-    bindkey 'Oa' history-search-backward	# CTRL UP
-    bindkey 'Ob' history-search-forward	# CTRL DOWN
-    bindkey 'OH' beginning-of-line	# home
-    bindkey 'OF' end-of-line		# end-of-line
+	bindkey '[1~' beginning-of-line	# home
+	bindkey '[4~' end-of-line		# end-of-line
+	bindkey 'Oc' forward-word		# CTRL right
+	bindkey 'Od' backward-word	# CTRL left
+	bindkey '[3$' vi-set-buffer		# SHIFT del
+	bindkey 'Oa' history-search-backward	# CTRL UP
+	bindkey 'Ob' history-search-forward	# CTRL DOWN
+	bindkey 'OH' beginning-of-line	# home
+	bindkey 'OF' end-of-line		# end-of-line
 }
 
 #
