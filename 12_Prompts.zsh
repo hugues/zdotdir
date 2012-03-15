@@ -77,6 +77,17 @@ __hbar()
 	fi
 }
 
+__get_prompt_lines()
+{
+	local lines
+	lines=$( (__expand_text "$PS1 $@" ) | sed "s/\\(.\{,$COLUMNS\}\\)/\\1\n/g" )
+	lines=$( echo "$lines" | sed -n '/^$/n;p' | wc -l )
+	# Got number of empty lines at end of command, because they are screwed up above...
+	lines=$(( $lines + $( echo -n "$@" | tr ';\n' '.;' | sed 's/^\(.*[^;]\)\(;*\)$/\2/' | wc -c ) ))
+
+	echo $lines
+}
+
 preexec ()
 {
 	__term_title "$2"
@@ -87,11 +98,7 @@ preexec ()
 	__hbar
 	__redefine_prompt
 
-	local lines
-	lines=$( (__expand_text "$PS1 $1" ) | sed "s/\\(.\{,$COLUMNS\}\\)/\\1\n/g" )
-	lines=$( echo "$lines" | sed -n '/^$/n;p' | wc -l )
-	# Got number of empty lines at end of command, because they are screwed up above...
-	lines=$(( $lines + $( echo -n "$1" | tr ';\n' '.;' | sed 's/^\(.*[^;]\)\(;*\)$/\2/' | wc -c ) ))
+	local lines=$(__get_prompt_lines "$1")
 
 	tput sc
 	for i in {1..$lines} ; tput cuu1
