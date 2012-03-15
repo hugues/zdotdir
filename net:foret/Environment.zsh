@@ -1,4 +1,6 @@
 
+export MUSICPLAYER=totem
+
 # ccache
 export CCACHE_DIR=/work/$USER/.ccache
 

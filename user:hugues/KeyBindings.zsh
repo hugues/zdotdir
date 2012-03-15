@@ -33,15 +33,15 @@ bindkey '[3~' kill-region			# ESC del
 
 test $TERM = 'rxvt' -o $TERM = 'xterm' -o $TERM = 'aterm' &&
 {
-    bindkey '[1~' beginning-of-line	# home
-    bindkey '[4~' end-of-line		# end-of-line
-    bindkey 'Oc' forward-word		# CTRL right
-    bindkey 'Od' backward-word	# CTRL left
-    bindkey '[3$' vi-set-buffer		# SHIFT del
-    bindkey 'Oa' history-search-backward	# CTRL UP
-    bindkey 'Ob' history-search-forward	# CTRL DOWN
-    bindkey 'OH' beginning-of-line	# home
-    bindkey 'OF' end-of-line		# end-of-line
+	bindkey '[1~' beginning-of-line	# home
+	bindkey '[4~' end-of-line		# end-of-line
+	bindkey 'Oc' forward-word		# CTRL right
+	bindkey 'Od' backward-word	# CTRL left
+	bindkey '[3$' vi-set-buffer		# SHIFT del
+	bindkey 'Oa' history-search-backward	# CTRL UP
+	bindkey 'Ob' history-search-forward	# CTRL DOWN
+	bindkey 'OH' beginning-of-line	# home
+	bindkey 'OF' end-of-line		# end-of-line
 }
 
 #
@@ -237,8 +237,8 @@ do
 	bindkey -M $keymap 'q' push-line
 	bindkey -M $keymap 'Q' push-line
 
-    bindkey -M $keymap -s 'K' 'Q tput clear\n'
-    bindkey -M $keymap -s 'B' 'Q tput clear ; tput cup $(tput lines) 0\n'
+	bindkey -M $keymap -s 'K' 'Q for i in {1..$(__get_prompt_lines)} ; tput cuu1\n'
+	bindkey -M $keymap -s 'B' 'Q tput clear ; tput cup $(tput lines) 0\n'
 done
 
 # redefines push-line for vicmd
