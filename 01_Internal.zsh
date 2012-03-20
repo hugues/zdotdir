@@ -77,7 +77,13 @@ __term_title()
 
 __preprint()
 {
-	local my_color i
+	local my_color i newline
+    if [ "$1" = "-n" ]
+    then
+        newline='n'
+        shift
+    fi
+
 	my_color=${2-"$_prompt_colors[generic]"}
 
 	hbar=$T_
@@ -89,9 +95,9 @@ __preprint()
 
 	if [ "$1" != "" ]
 	then
-		print -Pn "${C_}$my_color;1${_C}${hbar}$T_$_tj_$_T${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$T_$_tm_$_tq_$_T\r${C_}0${_C}"
+		print -P$newline "${C_}$my_color;1${_C}${hbar}$T_$_tj_$_T${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$T_$_tm_$_tq_$_T\r${C_}0${_C}"
 	else
-		print -Pn "${C_}$my_color;1${_C}${hbar}$T_$_tq_$_tq_$_tq_$_tq_$_tq_$_T${C_}0${_C}"
+		print -P$newline "${C_}$my_color;1${_C}${hbar}$T_$_tq_$_tq_$_tq_$_tq_$_tq_$_T${C_}0${_C}"
 	fi
 }
 
