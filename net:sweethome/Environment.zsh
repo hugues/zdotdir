@@ -8,7 +8,7 @@
 ## these files with or without this notice.
 ## 
 #export PRINTER=Gertrude
-export PRINTER=Gertrude
+export PRINTER=Bertha
 export NNTPSERVER=news.free.fr
 
 export MUSICPLAYER=musicplayer
