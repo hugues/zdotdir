@@ -223,7 +223,7 @@ do
 	bindkey -M $keymap -s ' ' '\\ '
 
 	bindkey -M $keymap -s 'g' 'Q git st .\n'
-	bindkey -M $keymap -s 'G' 'Q git updall\n'
+	bindkey -M $keymap -s 'G' 'Q git fetchall\n'
 
 	bindkey -M $keymap -s 'S' 'Q sudo !!'
 
