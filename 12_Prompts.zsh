@@ -369,5 +369,5 @@ PS4="+%N:%i> "
 #RPS1="%(?;;"$C_$_prompt_colors[error]$_C"%?"$C_$color[none]$_C")"
 
 # Ultime : prompt de correction :-)
-SPROMPT="zsh: $C_$_correct_colors[error]$_C'%r'$C_$color[none]$_C ? Vous ne vouliez pas plutôt $C_$_correct_colors[suggest]$_C'%r'$C_$color[none]$_C ? [%BN%byae] "
+SPROMPT="zsh: $C_$_correct_colors[error]$_C'%R'$C_$color[none]$_C ? Vous ne vouliez pas plutôt $C_$_correct_colors[suggest]$_C'%r'$C_$color[none]$_C ? [%BN%byae] "
 

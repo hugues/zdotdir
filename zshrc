@@ -61,6 +61,7 @@ if [ -d $ZDOTDIR ]; then
 					"host:$HOST"\
 					"sys:$OSNAME"\
 					"user:$USER"\
+					"user:$USER/net:$DOMAIN"\
 					"user:$SUDO_USER"\
 					"net:$DOMAIN/host:$HOST"\
 					"net:$DOMAIN/sys:$OSNAME"\

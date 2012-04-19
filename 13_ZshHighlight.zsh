@@ -44,8 +44,9 @@ ZSH_HIGHLIGHT_STYLES[commandseparator]="none"
 
 ZSH_HIGHLIGHT_STYLES[cursor]="bold"
 
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="green"
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="yellow"
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]="fg=blue"
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]="fg=blue,bold"
+
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=green,bold"
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=yellow,bold"
 ZSH_HIGHLIGHT_STYLES[dollar-double-quoted-argument]="fg=blue,bold"
