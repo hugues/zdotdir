@@ -18,6 +18,9 @@ _correct_colors[suggest]="$color[blue];$color[bold]"
 #
 set_prompt_colors ()
 {
+	# Forces HBAR re-generation with new colors..
+	_COLUMNS_OLD=0
+
 	local my_generic
 	# Get the generic color from cmdline, else from envvar...
 	my_generic=${1:-$_prompt_colors[generic]}
