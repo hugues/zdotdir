@@ -52,7 +52,7 @@ chpwd()
 	fi
 
 
-	hash -d trash=$TRASH$(readlink -f $PWD)
+	hash -d trash="$TRASH$(readlink -f "$PWD")"
 }
 
 __expand_text()
