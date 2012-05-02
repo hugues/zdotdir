@@ -204,6 +204,7 @@ __get_git_branch ()
 
     # Show number of stashed commits by appending '+' signs for each
     local _stashed=$(git stash list | wc -l )
+    [ "$_stashed" -gt 0 ] && my_git_branch+=$C_$_prompt_colors[bold_generic]$_C
     [ "$_stashed" -gt 0 ] && for i in {1..$_stashed}
     do
         my_git_branch+="+"
