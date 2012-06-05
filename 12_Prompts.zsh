@@ -269,7 +269,7 @@ __update_prompt_elements()
 				GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
 				[ $((${#CHUNKABLE} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#CHUNKABLE} - $minimalgitsize))
 			fi
-			CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - $GITBRANCHCHUNK ))">¬>"${CHUNKABLE%\~*}`
+			CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - ${GITBRANCHCHUNK:-0} ))">¬>"${CHUNKABLE%\~*}`
 
 			GITBRANCH=${GITBRANCH/→*←/→$CHUNKABLE←}
 		fi
