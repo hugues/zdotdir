@@ -69,7 +69,7 @@ a lta='lt -a'
 a llta='llt -a'
 a lat='la -tr'
 a lc='ls -c'
-a lc1='\ls -c1'
+a l1='\ls -1'
 
 a gitk='\gitk --date-order'
 
