@@ -16,7 +16,17 @@ _correct_colors[suggest]="$color[blue];$color[bold]"
 # This func is intended to give a quick way to reset the colors
 # from a running zsh-session
 #
-set_prompt_colors ()
+sc ()
+{
+    C=""
+    for c in $( echo $@ | tr ';' ' ' )
+    do
+        c=${$(echo "$c" | sed 's/^[0-9]$/0\0/;/^[0-9]\{2\}$/!d'):-$color[$c]}
+        C+=${C:+;}${c:-00}
+    done
+    __set_prompt_colors $C
+}
+__set_prompt_colors ()
 {
 	# Forces HBAR re-generation with new colors..
 	_COLUMNS_OLD=0

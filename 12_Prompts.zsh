@@ -19,7 +19,7 @@ then
 	_prompt_colors[generic]=${PS1_YEAH}
 fi
 
-set_prompt_colors
+__set_prompt_colors
 
 ## Prompts
 #
@@ -321,7 +321,7 @@ __two_lines_prompt ()
 ZSH_STATUS=$(__zsh_status)
 if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 then
-	set_prompt_colors "38;5;54"
+	__set_prompt_colors "38;5;54"
 	echo
 	echo -n $c_$_prompt_colors[warning]$_c
 	#toilet -f bigmono9 "D1rTY Zsh.."
