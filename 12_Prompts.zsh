@@ -310,7 +310,7 @@ __two_lines_prompt ()
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
 	#
-	PS1=$HBAR$(print -Pn "\r" ; tput cuf 1)${AGENTS}$C_$_prompt_colors[bar]$_C$(tput cuf 1)${ERROR}$C_$_prompt_colors[bar]$_C$(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE"
+	PS1=$HBAR$(print -Pn "\r" ; tput cuf 1)${AGENTS}$C_$_prompt_colors[bar]$_C${MAKEFLAGS:+$(tput cuf 1)$MAKEFLAGS}$(tput cuf 1)${ERROR}$C_$_prompt_colors[bar]$_C$(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE"
 "$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH" "$C_$_prompt_colors[soft_generic]$_C${COMPILATION}$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
 }
