@@ -159,7 +159,6 @@ __update_prompt_elements()
 			if [ "$SSH_AGENT_KEYLIST" != "" ]
 			then
 				AgentChar=${AGENT_WITH_KEYS:-✔}
-				AGENTS=""
 				for i in $(echo $SSH_AGENT_KEYLIST | cut -d' ' -f3 )
 				do
 					AGENTS=$AGENTS$C_${_agent_colors[$i:t]:-$_agent_colors[has_keys]}$_C$AgentChar
@@ -193,8 +192,6 @@ __update_prompt_elements()
 			AGENTS=$AGENTS$C_$_agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-⚡}
 		fi
 	fi
-	AGENTSSIZE=$(__expand_text $AGENTS)
-	AGENTSSIZE=$#AGENTSSIZE
 	[ "$DEBUG" = "yes" ] && echo
 
 
