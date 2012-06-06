@@ -26,6 +26,9 @@ __set_prompt_colors
 #  man zshmisc(1)
 #
 
+PS1_TASKBAR=()
+PS1_EXTRA_INFO=()
+
 ## Automagic funcs
 #
 # chpwd		: changement de répertoire
@@ -114,39 +117,47 @@ __set_prompt_date()
 	end=${${1:+$_tm_}:-$_tl_}
 
 	# Date
-	[ "$DEBUG" = "yes" ] && echo -n "	Date..."
+	[ "$DEBUG" = "yes" ] && echo -n "	Date..." >&2
 	DATE=$C_$_prompt_colors[braces]$_C$T_"${begin}"$_T" "$C_$_prompt_colors[date]$_C"%D{%a-%d-%b-%Y %H:%M:%S}"$C_$_prompt_colors[braces]$_C" "$C_$_prompt_colors[bar]$_C$T_"${end}$_tq_"$_T
 	DATEEXPAND=$(__expand_text "$DATE")
 	DATESIZE=${#DATEEXPAND}
-	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo >&2
 }
 
 __update_prompt_elements()
 {
-	# Error
-	[ "$DEBUG" = "yes" ] && echo -n "	Error code..."
-	ERRORSIZE=${#ERROR}
-	ERROR=${ERROR:+$C_$_prompt_colors[error]$_C$ERROR}
-	[ "$DEBUG" = "yes" ] && echo
 
-	[ "$DEBUG" = "yes" ] && echo -n "	Term title..."
+	[ "$DEBUG" = "yes" ] && echo -n "	Term title..." >&2
 	# Flush the term title
 	__term_title
-	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo >&2
 
 	__set_prompt_date
 
-	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..."
+	[ "$DEBUG" = "yes" ] && echo -n "	Horizontal bar..." >&2
 	__hbar
-	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo >&2
 
+    __vcsbranch
 
+}
 
-	[ "$DEBUG" = "yes" ] && echo -n "	Agents..."
+__error_code ()
+{
+	# Error
+	[ "$DEBUG" = "yes" ] && echo -n "	Error code..." >&2
+	echo ${ERROR:+$C_$_prompt_colors[error]$_C$ERROR}
+	[ "$DEBUG" = "yes" ] && echo >&2
+}
+PS1_TASKBAR+=(__error_code)
+
+__ssh_gpg_agents ()
+{
+	[ "$DEBUG" = "yes" ] && echo -n "	Agents..." >&2
 	# GPG/SSH agents
 	AGENTS=""
 
-	[ "$DEBUG" = "yes" ] && echo && echo -n "	......SSH"
+	[ "$DEBUG" = "yes" ] && echo && echo -n "	......SSH" >&2
 	# Check ssh-agent only if the env socket has been set and is accessible
 	if [ -S "$SSH_AUTH_SOCK" ]
 	then
@@ -182,7 +193,7 @@ __update_prompt_elements()
 		fi
 	fi
 
-	[ "$DEBUG" = "yes" ] && echo && echo -n "	......GPG"
+	[ "$DEBUG" = "yes" ] && echo >&2 && echo -n "	......GPG" >&2
 	GPG_AGENT_PID="$(echo $GPG_AGENT_INFO | cut -d: -f2)"
 	if [ "$GPG_AGENT_PID" != "" -a -e /proc/$GPG_AGENT_PID/cmdline ]
 	then
@@ -192,20 +203,19 @@ __update_prompt_elements()
 			AGENTS=$AGENTS$C_$_agent_colors[$AGENTCOLOR]$_C${GPG_AGENT_RUNNING:-⚡}
 		fi
 	fi
-	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo >&2
+
+    echo $AGENTS
+}
+PS1_TASKBAR+=(__ssh_gpg_agents)
 
 
-	##
-	## Second line of prompt : don't let the path garbage the entire line
-	##
-
-	unset COMPILATION
-	__compilation 2>&-
-
+__vcsbranch ()
+{
 	# get cvs tag
 	#
 	CVSTAG=""
-	[ "$DEBUG" = "yes" ] && echo -n "	CVS status..."
+	[ "$DEBUG" = "yes" ] && echo -n "	CVS status..." >&2
 	if [ -d CVS ]
 	then
 		CVSTAG=$(test -e CVS/Tag && cat CVS/Tag || basename $(cat CVS/Root 2>&- || echo "HEAD") )
@@ -216,7 +226,7 @@ __update_prompt_elements()
 	then
 		# get svn status
 		#
-		[ "$DEBUG" = "yes" ] && echo -n "	SVN status..."
+		[ "$DEBUG" = "yes" ] && echo -n "	SVN status..." >&2
 		SVNREV=$(LC_ALL=C svn info 2>&- $PWD | awk '/^Revision: / {print $2}')
 		SVNREVSIZE=${#${SVNREV:+ r$SVNREV}}
 		if [ "$SVNREV" != "" ]
@@ -228,29 +238,29 @@ __update_prompt_elements()
 			fi
 		fi
 		SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
-		[ "$DEBUG" = "yes" ] && echo
+		[ "$DEBUG" = "yes" ] && echo >&2
 	fi
 
 	# get hg status
-	[ "$DEBUG" = "yes" ] && echo -n "	HG status..."
+	[ "$DEBUG" = "yes" ] && echo -n "	HG status..." >&2
 	HGBRANCH=$(__get_gcl_branch hg)
 	[ ! -z "$HGBRANCH" ] && HGBRANCH=" "$HGBRANCH
-	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo >&2
 
 	# get git status
 	#
-	[ "$DEBUG" = "yes" ] && echo -n "	GIT status..."
+	[ "$DEBUG" = "yes" ] && echo -n "	GIT status..." >&2
 	GITBRANCH=$(__get_gcl_branch git)
 	GITBRANCHSIZE=${#GITBRANCH}
 	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
-	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo >&2
 
-	[ "$DEBUG" = "yes" ] && echo -n "	Path..."
+	[ "$DEBUG" = "yes" ] && echo -n "	Path..." >&2
 	MY_PATH="%(!.%d.%~)"
 	PATHSIZE=$(print -Pn $MY_PATH)
 	PATHSIZE=${#PATHSIZE}
-	[ "$DEBUG" = "yes" ] && echo
-	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..."
+	[ "$DEBUG" = "yes" ] && echo >&2
+	[ "$DEBUG" = "yes" ] && echo -n "	Resize path / gitbranch..." >&2
 	spaceleft=`__expand_text "%n@%m${DISPLAY:+($DISPLAY)}$COMPILATION $ ls -laCdtrux $DATE"`
 	spaceleft=$(($COLUMNS - ${#spaceleft}))
 	#minimalpathsize=`print -Pn "../%1~"`
@@ -282,7 +292,7 @@ __update_prompt_elements()
 		GITBRANCH=$C_$_prompt_colors[soft_generic]$_C${${GITBRANCH/→/$C_"$(__get_git_status)"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}"$(__get_guilt_series)$C_$color[none]$_C"
 	fi
 	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
-	[ "$DEBUG" = "yes" ] && echo
+	[ "$DEBUG" = "yes" ] && echo >&2
 
 	VCSBRANCH=$CVSTAG$SVNREV$GITBRANCH$HGBRANCH
 
@@ -310,8 +320,21 @@ __two_lines_prompt ()
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
 	#
-	PS1=$HBAR$(print -Pn "\r" ; tput cuf 1)${AGENTS}$C_$_prompt_colors[bar]$_C${MAKEFLAGS:+$(tput cuf 1)$MAKEFLAGS}$(tput cuf 1)${ERROR}$C_$_prompt_colors[bar]$_C$(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE"
-"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH" "$C_$_prompt_colors[soft_generic]$_C${COMPILATION}$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
+	PS1=$HBAR$(print -Pn "\r")
+    for trigger in $PS1_TASKBAR
+    do
+        result=$($trigger)
+        [ -n "$result" ] && PS1+=$(tput cuf 1)${result}$C_$_prompt_colors[bar]$_C
+    done
+    PS1+=$(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE
+    PS1+="
+"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH
+    for trigger in $PS1_EXTRA_INFO
+    do
+        result=$($trigger)
+        [ -n "$result" ] && PS1+=" "${result}
+    done
+    PS1+=" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
 }
 
