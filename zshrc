@@ -45,17 +45,21 @@ KEYCHAIN=~/.keychain/$(hostname)-sh
 [ -r "${KEYCHAIN}-gpg" ] && source ${KEYCHAIN}-gpg
 
 
-DEBUG=${DEBUG:-no}
+__debug ()
+{
+    [ -n "$DEBUG" ] && echo >&2 $@
+}
 
 export USER HOST DOMAIN UID
 
 if [ -d $ZDOTDIR ]; then
+
 	for script in $ZDOTDIR/??_*.zsh
 	do
 
-        [ "$DEBUG" = "yes" ] && echo -n "${${script:t:r}/??_/}... "
+        __debug -n "${${script:t:r}/??_/}... "
 		source $script
-		[ "$DEBUG" = "yes" ] && echo
+		__debug
 
         for i in	"net:$DOMAIN"\
 					"host:$HOST"\
@@ -82,15 +86,15 @@ if [ -d $ZDOTDIR ]; then
             specific_script=${script:h}/$i/${${script:t}/??_/}
             if test -f $specific_script
 			then
-        		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/}... ";
+                __debug -n "$i/${${specific_script:t:r}/??_/}... ";
 				source $specific_script
-				[ "$DEBUG" = "yes" ] && echo
+                __debug
 			fi
             if test -f $specific_script.gpg
 			then
-        		[ "$DEBUG" = "yes" ] && echo -n "$i/${${specific_script:t:r}/??_/} [CRYPTED]... ";
+                __debug -n "$i/${${specific_script:t:r}/??_/} [CRYPTED]... ";
 				eval $(gpg --quiet --decrypt $specific_script.gpg)
-				[ "$DEBUG" = "yes" ] && echo
+				__debug
 			fi
         done
 	done

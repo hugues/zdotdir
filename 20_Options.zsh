@@ -40,16 +40,16 @@ function SetOPTifExists() {
 		# option exists, set it.
 		case "$2" in
 			on)
-				[ "$DEBUG" = "yes" ] && echo "setopt $option" >&2
+				__debug "setopt $option"
 				setopt $option
 				;;
 			off)
-				[ "$DEBUG" = "yes" ] && echo "unsetopt $option" >&2
+				__debug "unsetopt $option"
 				unsetopt $option
 				;;
 		esac
 	else
-		[ "$DEBUG" = "yes" ] && echo "$option not supported by this version of zsh !" >&2
+		__debug "$option not supported by this version of zsh !"
 	fi
 }
 

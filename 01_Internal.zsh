@@ -24,6 +24,7 @@ __cmd_exists ()
 
 __term_title()
 {
+    __debug -n "	Term title..."
 	# Jobs
 	typeset -A command
 	for word in ${=@} ; command[$#command]=$word
@@ -73,6 +74,7 @@ __term_title()
 			;;
 		esac
 	fi
+    __debug
 }
 
 __preprint()
@@ -105,10 +107,14 @@ __get_gcl_branch ()
 {
 	case $1 in
 		git)
+            __debug -n "	GIT status..."
 			__get_git_branch
+            __debug
 			;;
 		hg)
+            __debug -n "	HG status..."
 			__get_hg_branch
+            __debug
 			;;
 		*)
 			;;
