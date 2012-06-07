@@ -59,7 +59,6 @@ __set_prompt_colors ()
 
 	_date_colors[normal]=$_prompt_colors[soft_generic]
 	_date_colors[exec]=$_prompt_colors[bold_generic]
-	_prompt_colors[date]=$_date_colors[normal]							# full date
 
 	_prompt_colors[cmd]="$color[none]"									# command prompt
 	_prompt_colors[exec]="$color[none]"									# command output

@@ -104,17 +104,14 @@ preexec ()
 {
 	__term_title "$2"
 
-	_prompt_colors[date]=$_date_colors[exec]
-	__set_prompt_date x
-	_prompt_colors[date]=$_date_colors[normal]
-	__hbar
-	__redefine_prompt
+	__set_prompt_date exec
 
-	tput sc
-	__up_up
 	# Only redraws the date, not the full prompt, since we got glitches with BANG_HIST and AUTOCORRECT...
-	print -Pn $(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE
-	tput rc
+	tput sc # save cursor position
+	__up_up # go to start of current prompt
+    print -Pn "$(__show_date)" # prints date
+	tput rc # restore cursor position
+
 	print -Pn "$C_$_prompt_colors[exec]$_C"
  }
 
@@ -311,6 +308,11 @@ __yeah_prompt ()
 	PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
 }
 
+__show_date()
+{
+    echo $(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$DATE
+}
+
 __two_lines_prompt ()
 {
 	## Le prompt le plus magnifique du monde, et c'est le mien !
@@ -322,7 +324,9 @@ __two_lines_prompt ()
         result=$($trigger)
         [ -n "$result" ] && PS1+=$(tput cuf 1)${result}$C_$_prompt_colors[bar]$_C
     done
-    PS1+=$(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE
+
+    PS1+=$(__show_date)
+
     PS1+="
 "$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH
     for trigger in $PS1_EXTRA_INFO
@@ -363,12 +367,11 @@ fi
 
 precmd()
 {
-	# this MUST BE the real first operation else we lose the error code...
+	# Catchs ERROR code
 	ERROR=$(print -Pn "%(?;;%?)")
 
 	__update_prompt_elements
 	__redefine_prompt
-	#print -Pn "\r"
 }
 
 
