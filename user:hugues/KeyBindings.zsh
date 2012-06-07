@@ -237,7 +237,7 @@ do
 	bindkey -M $keymap 'q' push-line
 	bindkey -M $keymap 'Q' push-line
 
-	bindkey -M $keymap -s 'K' 'Q for i in {1..$(__get_prompt_lines)} ; tput cuu1\n'
+	bindkey -M $keymap -s 'K' 'Q __up_up\n'
 	bindkey -M $keymap -s 'B' 'Q tput clear ; tput cup $(tput lines) 0\n'
 done
 

@@ -91,6 +91,13 @@ __get_prompt_lines()
 	echo $lines
 }
 
+# Rewrites current prompt.
+__up_up ()
+{
+    for i in {1..$(__get_prompt_lines)}
+        tput cuu1
+}
+
 preexec ()
 {
 	__term_title "$2"
@@ -101,10 +108,8 @@ preexec ()
 	__hbar
 	__redefine_prompt
 
-	local lines=$(__get_prompt_lines "$1")
-
 	tput sc
-	for i in {1..$lines} ; tput cuu1
+	__up_up
 	# Only redraws the date, not the full prompt, since we got glitches with BANG_HIST and AUTOCORRECT...
 	print -Pn $(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$C_$_prompt_colors[bar]$_C$DATE
 	tput rc
