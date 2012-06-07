@@ -8,9 +8,14 @@
 ## these files with or without this notice.
 ## 
 
+__nproc ()
+{
+    echo $(( ${NPROC:-0} $@ > 0 ? ${NPROC:-0} $@ : 0 ))
+}
+
 for keymap in viins vicmd emacs
 do
-    bindkey -M $keymap -s '+' 'Q for i in {1..$(__get_prompt_lines)} ; tput cuu1; export NPROC=$(($NPROC + 1))\n'
-    bindkey -M $keymap -s '-' 'Q for i in {1..$(__get_prompt_lines)} ; tput cuu1; [ "$NPROC" -gt 0 ] && export NPROC=$(($NPROC - 1)) || unset NPROC\n'
+    bindkey -M $keymap -s '+' 'Q __up_up ; export NPROC=$(__nproc + 1)\n'
+    bindkey -M $keymap -s '-' 'Q __up_up ; export NPROC=$(__nproc - 1) ; [ "$NPROC" -gt 0 ] || unset NPROC\n'
 done
 
