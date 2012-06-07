@@ -50,7 +50,9 @@ __nproc_compilation ()
 }
 __makeflags ()
 {
-    echo -n $MAKEFLAGS
+    echo -n $C_
+    export | grep -q '^MAKEFLAGS=' && echo -n "1;"
+    echo -n $_prompt_colors[soft_generic]";3"$_C${MAKEFLAGS// -/}
 }
 
 PS1_TASKBAR+=(__makeflags __verbose_compilation __nproc_compilation)
