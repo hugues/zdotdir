@@ -15,31 +15,42 @@ __static_dynamic ()
         [ $(( ${STATIC:-$(( 1 ^ ${DYNAMIC:-0} ))} + ${DYNAMIC:-$(( 1 ^ ${STATIC:-0} ))} )) -lt 2 ] && \
         case "${STATIC:-$(( 1 ^ ${DYNAMIC:-0} ))}${DYNAMIC:-$((1 ^ ${STATIC:-0}))}" in
             "10")
-                echo $C_$_make_colors[static]$_C"static" ;;
+                echo -n $C_
+                export | grep -q '^DYNAMIC=' && echo -n "1;"
+                echo -n $_make_colors[static]$_C"static" ;;
             "01")
-                echo $C_$_make_colors[dynamic]$_C"dynamic" ;;
+                echo -n $C_
+                export | grep -q '^STATIC=' && echo -n "1;"
+                echo -n $_make_colors[dynamic]$_C"dynamic" ;;
         esac
 }
 
 __compilation_target ()
 {
-        [ -n "$TARGET" ] && echo $C_$_make_colors[target]$_C$TARGET
+        [ -n "$TARGET" ] || exit
+        echo -n $C_
+        export | grep -q '^TARGET=' && echo -n "1;"
+        echo -n $_make_colors[target]$_C$TARGET
 }
 
 __verbose_compilation ()
 {
-        [ -n "$V" -a "$V" -gt 0 ] && \
-            echo $C_$_make_colors[verbose]$_C$(for i in {1..$V} ; echo -n "V")
+        [ -n "$V" -a "$V" -gt 0 ] || exit
+        echo -n $C_
+        export | grep -q '^V=' && echo -n "1;"
+        echo -n $_make_colors[verbose]$_C$(for i in {1..$V} ; echo -n -n "V")
 }
 
 __nproc_compilation ()
 {
-        [ -n "$NPROC" -a "$NPROC" -gt 0 ] && \
-            echo $C_$_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n "|")
+        [ -n "$NPROC" -a "$NPROC" -gt 0 ] || exit
+        echo -n $C_
+        export | grep -q '^NPROC=' && echo -n "1;"
+        echo -n $_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n -n "|")
 }
 __makeflags ()
 {
-    echo $MAKEFLAGS
+    echo -n $MAKEFLAGS
 }
 
 PS1_TASKBAR+=(__makeflags __verbose_compilation __nproc_compilation)
