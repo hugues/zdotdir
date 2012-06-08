@@ -10,12 +10,18 @@
 
 __nproc ()
 {
-    echo $(( ${NPROC:-0} $@ > 0 ? ${NPROC:-0} $@ : 0 ))
+    NPROC=${${2:+"$(( $(echo $MAKEFLAGS | sed 's/.*j\([0-9]*\).*/\1/') $@))"}:-$1}
+
+    export MAKEFLAGS="$(echo $MAKEFLAGS | sed 's/j[0-9]*//')"
+    [ "$NPROC" -ge 0 ] && MAKEFLAGS+="j"
+    [ "$NPROC" -gt 0 ] && MAKEFLAGS+=$NPROC
+
+    true
 }
 
 for keymap in viins vicmd emacs
 do
-    bindkey -M $keymap -s '+' 'Q __up_up ; export NPROC=$(__nproc + 1)\n'
-    bindkey -M $keymap -s '-' 'Q __up_up ; export NPROC=$(__nproc - 1) ; [ "$NPROC" -gt 0 ] || unset NPROC\n'
+    bindkey -M $keymap -s '+' 'Q __up_up ; __nproc + 1\n'
+    bindkey -M $keymap -s '-' 'Q __up_up ; __nproc - 1\n'
 done
 

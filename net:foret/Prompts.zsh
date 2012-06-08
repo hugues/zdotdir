@@ -43,6 +43,8 @@ __verbose_compilation ()
 
 __nproc_compilation ()
 {
+    NPROC=${NPROC:-$(echo $MAKEFLAGS | sed '/j[0-9]\+/!d;s/.*j\([0-9]\+\).*/\1/')}
+
     [ -n "$NPROC" -a "$NPROC" -gt 0 ] || ( unset NPROC ; exit 0 )
     echo -n $C_
     export | grep -q '^NPROC=' && echo -n "1;"
