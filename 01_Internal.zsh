@@ -216,7 +216,7 @@ __get_git_branch ()
         my_git_branch+="·"
     done
 
-	echo " "$my_git_branch
+	echo $my_git_branch
 }
 
 __get_guilt_series ()

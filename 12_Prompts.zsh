@@ -133,7 +133,9 @@ __update_prompt_elements()
 	__term_title
 	__set_prompt_date
 	__hbar
-    __vcsbranch
+
+    CURDIR=$C_$_prompt_colors[path]$_C"%(!.%d.%~)"$C_$color[none]$_C
+
 }
 
 __error_code ()
@@ -208,6 +210,12 @@ PS1_TASKBAR+=(__ssh_gpg_agents)
 
 __vcsbranch ()
 {
+    local CVSTAG
+    local SVNREV SVNREVSIZE SVNSTATUS
+    local HGBRANCH
+    local GITBRANCH GITBRANCHSIZE GITBRANCHCHUNK CHUNKABLE
+    local vcsbranch
+
 	# get cvs tag
 	#
 	CVSTAG=""
@@ -215,9 +223,10 @@ __vcsbranch ()
 	then
         __debug -n "	CVS status..."
 		CVSTAG=$(test -e CVS/Tag && cat CVS/Tag || basename $(cat CVS/Root 2>&- || echo "HEAD") )
-		CVSTAG=${CVSTAG:+ $C_$_gcl_colors[uptodate]$_C$CVSTAG}
+		CVSTAG=${CVSTAG:+$C_$_gcl_colors[uptodate]$_C$CVSTAG}
 		__debug
 	fi
+    vcsbranch+=$CVSTAG
 
 	if [ -d .svn ]
 	then
@@ -234,13 +243,14 @@ __vcsbranch ()
 				SVNSTATUS=${${SVNSTATUS:+$_gcl_colors[changed]}:-$_gcl_colors[uptodate]}
 			fi
 		fi
-		SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C $C_$SVNSTATUS$_C"r"$SVNREV}
+		SVNREV=${SVNREV:+$C_$_prompt_colors[doubledot]$_C$C_$SVNSTATUS$_C"r"$SVNREV}
 		__debug
 	fi
+    [ -n "$SVNREV" ] && vcsbranch+=${vcsbranch:+ }$SVNREV
 
 	# get hg status
 	HGBRANCH=$(__get_gcl_branch hg)
-	[ ! -z "$HGBRANCH" ] && HGBRANCH=" "$HGBRANCH
+    [ -n "$HGBRANCH" ] && vcsbranch+=${vcsbranch:+ }$HGBRANCH
 
 	# get git status
 	#
@@ -248,48 +258,51 @@ __vcsbranch ()
 	GITBRANCHSIZE=${#GITBRANCH}
 	[ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
 
-	__debug -n "	Path..."
-	MY_PATH="%(!.%d.%~)"
-	PATHSIZE=$(print -Pn $MY_PATH)
-	PATHSIZE=${#PATHSIZE}
-	__debug
-	__debug -n "	Resize path / gitbranch..."
-	spaceleft=`__expand_text "%n@%m${DISPLAY:+($DISPLAY)}$COMPILATION $ ls -laCdtrux $DATE"`
-	spaceleft=$(($COLUMNS - ${#spaceleft}))
-	#minimalpathsize=`print -Pn "../%1~"`
-	#minimalpathsize=${#minimalpathsize}
-	minimalpathsize=10
-	minimalgitsize=10 # git-abbrev-commit-ish...
-	if [ $GITBRANCHSIZE -gt 0 ]
-	then
-		if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
-		then
-			CHUNKABLE=${${GITBRANCH/*→/}/←*/}
+    #
+	#__debug -n "	Path..."
+	#PATHSIZE=$(print -Pn $CURDIR)
+	#PATHSIZE=${#PATHSIZE}
+	#__debug
+	#__debug -n "	Resize path / gitbranch..."
+	#spaceleft=`__expand_text "%n@%m${DISPLAY:+($DISPLAY)} $ ls -laCdtrux $DATE"`
+	#spaceleft=$(($COLUMNS - ${#spaceleft}))
+	##minimalpathsize=`print -Pn "../%1~"`
+	##minimalpathsize=${#minimalpathsize}
+	#minimalpathsize=10
+	#minimalgitsize=10 # git-abbrev-commit-ish...
+	#if [ $GITBRANCHSIZE -gt 0 ]
+	#then
+	#	if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
+	#	then
+	#		CHUNKABLE=${${GITBRANCH/*→/}/←*/}
+    #
+	#		#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
+	#		if [ $GITBRANCHSIZE -gt $minimalgitsize ]
+	#		then
+	#			GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
+	#			[ $((${#CHUNKABLE} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#CHUNKABLE} - $minimalgitsize))
+	#		fi
+	#		CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - ${GITBRANCHCHUNK:-0} ))">¬>"${CHUNKABLE%\~*}`
+    #
+	#		GITBRANCH=${GITBRANCH/→*←/→$CHUNKABLE←}
+	#	fi
+	#fi
+    #  then we reduce the path until it reaches the last path element,
+	#spaceleft=$(($spaceleft - $GITBRANCHSIZE))
+	#[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
+	#__debug
 
-			#  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
-			if [ $GITBRANCHSIZE -gt $minimalgitsize ]
-			then
-				GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
-				[ $((${#CHUNKABLE} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#CHUNKABLE} - $minimalgitsize))
-			fi
-			CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - ${GITBRANCHCHUNK:-0} ))">¬>"${CHUNKABLE%\~*}`
-
-			GITBRANCH=${GITBRANCH/→*←/→$CHUNKABLE←}
-		fi
-	fi
-	#  then we reduce the path until it reaches the last path element,
-	spaceleft=$(($spaceleft - $GITBRANCHSIZE))
-	[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
 	if [ -n "$GITBRANCH" ]
 	then
 		GITBRANCH=$C_$_prompt_colors[soft_generic]$_C${${GITBRANCH/→/$C_"$(__get_git_status)"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}"$(__get_guilt_series)$C_$color[none]$_C"
 	fi
-	CURDIR="$C_$_prompt_colors[path]$_C%`echo $spaceleft`<..<"$MY_PATH"%<<$C_$color[none]$_C"
-	__debug
 
-	VCSBRANCH=$CVSTAG$SVNREV$GITBRANCH$HGBRANCH
 
+    [ -n "$GITBRANCH" ] && vcsbranch+=${vcsbranch:+ }$GITBRANCH
+
+	echo $vcsbranch
 }
+PS1_EXTRA_INFO+=(__vcsbranch)
 
 __redefine_prompt ()
 {
@@ -305,7 +318,7 @@ __redefine_prompt ()
 
 __yeah_prompt ()
 {
-	PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
+	PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR${VCSBRANCH:+ $VCSBRANCH}" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
 }
 
 __show_date()
@@ -328,7 +341,7 @@ __two_lines_prompt ()
     PS1+=$(__show_date)
 
     PS1+="
-"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR$VCSBRANCH
+"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
     for trigger in $PS1_EXTRA_INFO
     do
         result=$($trigger)
