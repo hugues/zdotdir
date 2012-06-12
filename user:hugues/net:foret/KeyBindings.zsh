@@ -10,7 +10,7 @@
 
 __nproc ()
 {
-    NPROC=${${2:+"$(( $(echo $MAKEFLAGS | sed 's/.*j\([0-9]*\).*/\1/') $@))"}:-$1}
+    local NPROC=${${2:+"$(( $(echo $MAKEFLAGS | sed 's/.*j\([0-9]*\).*/\1/') $@))"}:-$1}
 
     export MAKEFLAGS="$(echo $MAKEFLAGS | sed 's/j[0-9]*//')"
     [ "$NPROC" -ge 0 ] && MAKEFLAGS+="j"
