@@ -43,15 +43,16 @@ __verbose_compilation ()
 
 __nproc_compilation ()
 {
-    NPROC=${NPROC:-$(echo $MAKEFLAGS | sed '/j[0-9]\+/!d;s/.*j\([0-9]\+\).*/\1/')}
+    NPROC=${NPROC:-0}
+    [ $(($NPROC)) -gt 0 ] || { unset NPROC ; return }
 
-    [ -n "$NPROC" -a "$NPROC" -gt 0 ] || ( unset NPROC ; exit 0 )
     echo -n $C_
     export | grep -q '^NPROC=' && echo -n "1;"
     echo -n $_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n -n "|")
 }
 __makeflags ()
 {
+    [ -z "$MAKEFLAGS" ] && exit
     echo -n $C_
     export | grep -q '^MAKEFLAGS=' && echo -n "1;"
     echo -n $_prompt_colors[soft_generic]";3"$_C${MAKEFLAGS// -/}

@@ -1,7 +1,6 @@
 #compdef sdk-factory.sh
 
 local arguments
-
 arguments=(
         '(-s)'{-a,--enable-all-protocols}'[Enable all protocols]'
         {-c+,--config=}'[Selects config FILE to use]:file:_files'
@@ -20,5 +19,5 @@ arguments=(
                                               echo $TARGET$i)))'
         )
 
-_arguments -s $arguments
+_arguments $arguments
 
