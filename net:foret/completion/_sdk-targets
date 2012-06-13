@@ -1,0 +1,13 @@
+#compdef sdk-patch.sh sdk-test.sh sdk-qa.sh
+
+local arguments
+arguments=(
+        '1:targets:(($([ -n "$TARGET" ] && for i in "\:Standard_SDK"\
+                                                   "-PLUGIN\:Plugin_SDK"\
+                                                   "-APPSDK\:Advanced_Plugin_SDK"\
+                                                   "-PERF\:Performance_tests" ;\
+                                              echo $TARGET$i)))'
+        )
+
+_arguments $arguments
+
