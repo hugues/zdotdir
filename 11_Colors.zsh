@@ -26,6 +26,7 @@ sc ()
     done
     __set_prompt_colors $C
 }
+
 __set_prompt_colors ()
 {
 	# Forces HBAR re-generation with new colors..
@@ -88,5 +89,4 @@ __set_prompt_colors ()
 	_guilt_colors[applied]=$_gcl_colors[cached]
 	_guilt_colors[unapplied]=$color[black]
 }
-
 

@@ -58,48 +58,6 @@ chpwd()
 	hash -d trash="$TRASH$(readlink -f "$PWD")"
 }
 
-__expand_text()
-{
-	# Strips unprintable characters
-	print -Pn -- "$(echo $@ | sed 's/\r.*//g;s/%{[^(%})]*%}//g;s/'$T_'//g;s/'$_T'//g')"
-}
-
-export _COLUMNS_OLD=0
-__hbar()
-{
-	if [ $COLUMNS != $_COLUMNS_OLD ]
-	then
-        __debug -n "	Horizontal bar..."
-		_COLUMNS_OLD=$COLUMNS
-		unset HBAR
-		HBAR=$C_$_prompt_colors[bar]$_C$T_
-		for h in {1..$COLUMNS}
-		do
-			HBAR=${HBAR}$_tq_
-		done
-		HBAR=$HBAR$_T
-        __debug
-	fi
-}
-
-__get_prompt_lines()
-{
-	local lines
-	lines=$( (__expand_text "$PS1 $@" ) | sed "s/\\(.\{,$COLUMNS\}\\)/\\1\n/g" )
-	lines=$( echo "$lines" | sed -n '/^$/n;p' | wc -l )
-	# Got number of empty lines at end of command, because they are screwed up above...
-	lines=$(( $lines + $( echo -n "$@" | tr ';\n' '.;' | sed 's/^\(.*[^;]\)\(;*\)$/\2/' | wc -c ) ))
-
-	echo $lines
-}
-
-# Rewrites current prompt.
-__up_up ()
-{
-    for i in {1..$(__get_prompt_lines)}
-        tput cuu1
-}
-
 preexec ()
 {
 	__term_title "$2"
@@ -108,7 +66,7 @@ preexec ()
 
 	# Only redraws the date, not the full prompt, since we got glitches with BANG_HIST and AUTOCORRECT...
 	tput sc # save cursor position
-	__up_up # go to start of current prompt
+	up_up # go to start of current prompt
     print -Pn "$(__show_date)" # prints date
 	tput rc # restore cursor position
 
