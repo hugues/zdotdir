@@ -362,6 +362,7 @@ then
 	HBAR=$(for i in {1..13} ; echo -n - "$_tq_")
 	VBAR=$T_$_tx_$_T
 
+	echo
 	echo -n "	"
 	echo -n $T_$_tl_
 	echo -n $HBAR
