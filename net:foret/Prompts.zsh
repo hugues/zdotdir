@@ -25,6 +25,22 @@ __static_dynamic ()
     esac
 }
 
+__compilation_arch ()
+{
+    [ -n "$ARCH" ] || exit
+    echo -n $C_
+    export | grep -q '^ARCH=' && echo -n "1;"
+    echo -n $_make_colors[target]$_C$ARCH
+}
+
+__compilation_os ()
+{
+    [ -n "$OS" ] || exit
+    echo -n $C_
+    export | grep -q '^OS=' && echo -n "1;"
+    echo -n $_make_colors[target]$_C$OS
+}
+
 __compilation_target ()
 {
     [ -n "$TARGET" ] || exit
@@ -59,5 +75,5 @@ __makeflags ()
 }
 
 PS1_TASKBAR+=(__makeflags __verbose_compilation __nproc_compilation)
-PS1_EXTRA_INFO+=(__static_dynamic __compilation_target)
+PS1_EXTRA_INFO+=(__static_dynamic __compilation_arch __compilation_os __compilation_target)
 
