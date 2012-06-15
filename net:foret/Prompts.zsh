@@ -27,7 +27,7 @@ __static_dynamic ()
 
 __compilation_arch ()
 {
-    [ -n "$ARCH" ] || exit
+    [ -n "$ARCH" ] || return
     echo -n $C_
     export | grep -q '^ARCH=' && echo -n "1;"
     echo -n $_make_colors[target]$_C$ARCH
@@ -35,7 +35,7 @@ __compilation_arch ()
 
 __compilation_os ()
 {
-    [ -n "$OS" ] || exit
+    [ -n "$OS" ] || return
     echo -n $C_
     export | grep -q '^OS=' && echo -n "1;"
     echo -n $_make_colors[target]$_C$OS
@@ -43,7 +43,7 @@ __compilation_os ()
 
 __compilation_target ()
 {
-    [ -n "$TARGET" ] || exit
+    [ -n "$TARGET" ] || return
     echo -n $C_
     export | grep -q '^TARGET=' && echo -n "1;"
     echo -n $_make_colors[target]$_C$TARGET
@@ -51,7 +51,7 @@ __compilation_target ()
 
 __verbose_compilation ()
 {
-    [ -n "$V" -a "$V" -gt 0 ] || exit
+    [ -n "$V" -a "$V" -gt 0 ] || return
     echo -n $C_
     export | grep -q '^V=' && echo -n "1;"
     echo -n $_make_colors[verbose]$_C$(for i in {1..$V} ; echo -n -n "V")
@@ -68,7 +68,7 @@ __nproc_compilation ()
 }
 __makeflags ()
 {
-    [ -z "$MAKEFLAGS" ] && exit
+    [ -z "$MAKEFLAGS" ] && return
     echo -n $C_
     export | grep -q '^MAKEFLAGS=' && echo -n "1;"
     echo -n $_prompt_colors[soft_generic]";3"$_C${MAKEFLAGS// -/}
