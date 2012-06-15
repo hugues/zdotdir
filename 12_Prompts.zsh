@@ -289,23 +289,23 @@ __two_lines_prompt ()
 	## Le prompt le plus magnifique du monde, et c'est le mien !
 	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
 	#
-	PS1=$HBAR$(print -Pn "\r")
+	PS1_=$HBAR$(print -Pn '\r')
     for trigger in $PS1_TASKBAR
     do
         result=$($trigger)
-        [ -n "$result" ] && PS1+=$(tput cuf 1)${result}$C_$_prompt_colors[bar]$_C
+        [ -n "$result" ] && PS1_+=$(tput cuf 1)${result}$C_$_prompt_colors[bar]$_C
     done
 
-    PS1+=$(__show_date)
+    PS1_+=$(__show_date)
 
-    PS1+="
+    PS1_+="
 "$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
     for trigger in $PS1_EXTRA_INFO
     do
         result=$($trigger)
-        [ -n "$result" ] && PS1+=" "${result}
+        [ -n "$result" ] && PS1_+=" "${result}
     done
-    PS1+=" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
+    PS1=$PS1_" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
 }
 
