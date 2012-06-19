@@ -282,6 +282,13 @@ __show_date()
     echo $(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$DATE
 }
 
+
+__display_vi_mode()
+{
+    echo -n "$C_$color[bold];$color[yellow]$_C%8v"
+}
+PS1_TASKBAR+=(__display_vi_mode)
+
 __two_lines_prompt ()
 {
     ## Le prompt le plus magnifique du monde, et c'est le mien !

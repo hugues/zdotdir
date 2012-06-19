@@ -13,13 +13,13 @@
 # Lancez un chtit bindkey dans votre zsh pour voir... 
 #
 
-set_keymap()
-{
-	main=$1
-	bindkey -A main $main
-}
+#set_keymap()
+#{
+#	main=$1
+#	bindkey -A main $main
+#}
 # Vi-mode
-set_keymap viins
+#set_keymap viins
 
 bindkey '^[[3~' delete-char			# delete
 bindkey '^[[2~' overwrite-mode			# insert
@@ -279,3 +279,7 @@ zle-keymap-select()
 }
 zle -N zle-keymap-select
 #zle -N zle-line-init zle-keymap-select ## CRASHES UPON MULTILINE COMMAND...
+
+
+source $ZDOTDIR/user:hugues/Vim.zsh
+
