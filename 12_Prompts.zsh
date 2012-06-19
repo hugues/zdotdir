@@ -291,7 +291,7 @@ __two_lines_prompt ()
     for trigger in $PS1_TASKBAR
     do
         result=$($trigger)
-        [ -n "$result" ] && PS1_+=$(tput cuf 1)${result}$C_$_prompt_colors[bar]$_C
+        [ -n "$result" ] && PS1_+=$_cuf1_${result}$C_$_prompt_colors[bar]$_C
     done
 
     PS1_+=$(__show_date)

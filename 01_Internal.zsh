@@ -16,6 +16,10 @@
 # go see the file Prompts.zsh
 #
 
+_cuu1_=$(tput cuu1)
+_cud1_=$(tput cud1)
+_cub1_=$(tput cub 1)
+_cuf1_=$(tput cuf 1)
 
 __cmd_exists ()
 {
@@ -383,14 +387,15 @@ __get_prompt_lines()
 # Rewrites current prompt.
 __redisplay_ps1 ()
 {
-    tput sc
-    up_up - 1
     __redefine_prompt
 
+    tput sc
+    up_up - 1
     print -Pn "$PS1"
     tput rc
 }
-zle -N __redisplay_ps1
+zle -D reset-prompt
+zle -N reset-prompt __redisplay_ps1
 
 __clear ()
 {
@@ -400,9 +405,10 @@ __clear ()
 
 up_up ()
 {
+    local _up=""
     for i in {1..$(($(__get_prompt_lines) $@ ))}
-        tput cuu1
-    print -Pn '\r'
+        _up+=$_cuu1_
+    print -Pn $_up'\r'
 }
 
 _rehash ()
