@@ -273,7 +273,8 @@ __redefine_prompt ()
 
 __yeah_prompt ()
 {
-	PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR${VCSBRANCH:+ $VCSBRANCH}" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
+    PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR${VCSBRANCH:+ $VCSBRANCH}" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
+    PS2="$C_$_prompt_colors[soft_generic]$_C$(for i in {2..$#lastline} ; print -n "·" ; tput sc ; print -n "\r")$C_$color[yellow];$color[bold]$_C%_$(tput rc)$C_$color[none]$_C "
 }
 
 __show_date()
@@ -283,10 +284,10 @@ __show_date()
 
 __two_lines_prompt ()
 {
-	## Le prompt le plus magnifique du monde, et c'est le mien !
-	# Affiche l'user, l'host, le tty et le pwd. Rien que ça...
-	#
-	PS1_=$HBAR$(print -Pn '\r')
+    ## Le prompt le plus magnifique du monde, et c'est le mien !
+    # Affiche l'user, l'host, le tty et le pwd. Rien que ça...
+    #
+    PS1_=$HBAR$(print -Pn '\r')
     for trigger in $PS1_TASKBAR
     do
         result=$($trigger)
@@ -303,6 +304,10 @@ __two_lines_prompt ()
         [ -n "$result" ] && PS1_+=" "${result}
     done
     PS1=$PS1_" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
+
+    local lastline="$(__expand_text $PS1 | tail -n1)"
+    # Prompt level 2
+    PS2="$C_$_prompt_colors[soft_generic]$_C$(for i in {2..$#lastline} ; print -n "·" ; tput sc ; print -n "\r")$C_$color[yellow];$color[bold]$_C%_$(tput rc)$C_$color[none]$_C "
 
 }
 
