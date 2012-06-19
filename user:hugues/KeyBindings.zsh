@@ -21,33 +21,33 @@ set_keymap()
 # Vi-mode
 set_keymap viins
 
-bindkey '[3~' delete-char			# delete
-bindkey '[2~' overwrite-mode			# insert
-bindkey '[A' up-line-or-history		# up
-bindkey '[B' down-line-or-history		# down
-bindkey '[A' history-search-backward	# META-up
-bindkey '[B' history-search-forward		# META-down
-bindkey '[C' forward-word			# ESC right
-bindkey '[D' backward-word			# ESC left
-bindkey '[3~' kill-region			# ESC del
+bindkey '^[[3~' delete-char			# delete
+bindkey '^[[2~' overwrite-mode			# insert
+bindkey '^[[A' up-line-or-history		# up
+bindkey '^[[B' down-line-or-history		# down
+bindkey '^[^[[A' history-search-backward	# META-up
+bindkey '^[^[[B' history-search-forward		# META-down
+bindkey '^[^[[C' forward-word			# ESC right
+bindkey '^[^[[D' backward-word			# ESC left
+bindkey '^[^[[3~' kill-region			# ESC del
 
 test $TERM = 'rxvt' -o $TERM = 'xterm' -o $TERM = 'aterm' &&
 {
-	bindkey '[1~' beginning-of-line	# home
-	bindkey '[4~' end-of-line		# end-of-line
-	bindkey 'Oc' forward-word		# CTRL right
-	bindkey 'Od' backward-word	# CTRL left
-	bindkey '[3$' vi-set-buffer		# SHIFT del
-	bindkey 'Oa' history-search-backward	# CTRL UP
-	bindkey 'Ob' history-search-forward	# CTRL DOWN
-	bindkey 'OH' beginning-of-line	# home
-	bindkey 'OF' end-of-line		# end-of-line
+	bindkey '^[[1~' beginning-of-line	# home
+	bindkey '^[[4~' end-of-line		# end-of-line
+	bindkey '^[Oc' forward-word		# CTRL right
+	bindkey '^[Od' backward-word	# CTRL left
+	bindkey '^[[3$' vi-set-buffer		# SHIFT del
+	bindkey '^[Oa' history-search-backward	# CTRL UP
+	bindkey '^[Ob' history-search-forward	# CTRL DOWN
+	bindkey '^[OH' beginning-of-line	# home
+	bindkey '^[OF' end-of-line		# end-of-line
 }
 
 #
 # Sanity
 #
-bindkey '#' set-mark-command
+#bindkey '^X#' set-mark-command
 bindkey '^A' beginning-of-line
 bindkey '^B' backward-char
 bindkey '^D' delete-char-or-list
@@ -79,7 +79,7 @@ bindkey '^X^O' overwrite-mode
 bindkey '^X^R' _read_comp
 bindkey '^X^U' undo
 bindkey '^X^V' vi-cmd-mode
-bindkey '^X^X' exchange-point-and-mark
+#bindkey '^X^X' exchange-point-and-mark
 bindkey '^X*' expand-word
 bindkey '^X=' what-cursor-position
 bindkey '^X?' _complete_debug
@@ -99,159 +99,159 @@ bindkey '^Xt' _complete_tag
 bindkey '^Xu' undo
 bindkey '^X~' _bash_list-choices
 bindkey '^Y' yank
-bindkey '^D' list-choices
-bindkey '^G' send-break
-bindkey '^H' backward-kill-word
-bindkey '^I' self-insert-unmeta
-bindkey '^J' self-insert-unmeta
-bindkey '^L' clear-screen
-bindkey '^M' self-insert-unmeta
-bindkey '[3~' kill-region
-bindkey '[A' history-search-backward
-bindkey '[B' history-search-forward
-bindkey '[C' forward-word
-bindkey '[D' backward-word
-bindkey '^_' copy-prev-word
-bindkey ' ' magic-space
-bindkey '!' expand-history
-bindkey '\'' quote-region
-bindkey '\$' spell-word
-bindkey ''' quote-line #''
-bindkey ',' _history-complete-newer
-bindkey '-' neg-argument
-bindkey '.' insert-last-word
-bindkey '/' _history-complete-older
-bindkey '0' digit-argument
-bindkey '1' digit-argument
-bindkey '2' digit-argument
-bindkey '3' digit-argument
-bindkey '4' digit-argument
-bindkey '5' digit-argument
-bindkey '6' digit-argument
-bindkey '7' digit-argument
-bindkey '8' digit-argument
-bindkey '9' digit-argument
-bindkey '<' beginning-of-buffer-or-history
-bindkey '>' end-of-buffer-or-history
-bindkey '?' which-command
-bindkey 'A' accept-and-hold
-bindkey 'B' backward-word
-bindkey 'C' capitalize-word
-bindkey 'D' kill-word
-bindkey 'F' forward-word
-bindkey 'G' get-line
-bindkey 'H' run-help
-bindkey 'L' down-case-word
-bindkey 'N' history-search-forward
-bindkey 'OA' up-line-or-history
-bindkey 'OB' down-line-or-history
-bindkey 'OC' forward-char
-bindkey 'OD' backward-char
-bindkey 'P' history-search-backward
-bindkey 'Q' push-line
-bindkey 'S' spell-word
-bindkey 'T' transpose-words
-bindkey 'U' up-case-word
-bindkey 'W' copy-region-as-kill
-bindkey '[1~' beginning-of-line
-bindkey '[2~' overwrite-mode
-bindkey '[3~' delete-char
-bindkey '[4~' end-of-line
-bindkey '[5~' history-beginning-search-backward-end
-bindkey '[6~' history-beginning-search-forward-end
-bindkey '[A' up-line-or-history
-bindkey '[B' down-line-or-history
-bindkey '[C' forward-char
-bindkey '[D' backward-char
-bindkey '_' insert-last-word
-bindkey 'a' accept-and-hold
-bindkey 'b' backward-word
-bindkey 'c' capitalize-word
-bindkey 'd' kill-word
-bindkey 'f' forward-word
-bindkey 'g' get-line
-bindkey 'h' run-help
-bindkey 'l' down-case-word
-bindkey 'n' history-search-forward
-bindkey 'p' history-search-backward
-bindkey 'q' push-line
-bindkey 's' spell-word
-bindkey 't' transpose-words
-bindkey 'u' up-case-word
-bindkey 'w' copy-region-as-kill
-bindkey 'x' execute-named-cmd
-bindkey 'y' yank-pop
-bindkey 'z' execute-last-named-cmd
-bindkey '|' vi-goto-column
-bindkey '~' _bash_complete-word
-bindkey '^?' backward-kill-word
-bindkey '^\[A' up-history
-bindkey '^\[B' down-history
-bindkey '^\[C' forward-char
-bindkey '^\[D' backward-char
+bindkey '^[^D' list-choices
+bindkey '^[^G' send-break
+bindkey '^[^H' backward-kill-word
+bindkey '^[^I' self-insert-unmeta
+bindkey '^[^J' self-insert-unmeta
+bindkey '^[^L' clear-screen
+bindkey '^[^M' self-insert-unmeta
+bindkey '^[^[[3~' kill-region
+bindkey '^[^[[A' history-search-backward
+bindkey '^[^[[B' history-search-forward
+bindkey '^[^[[C' forward-word
+bindkey '^[^[[D' backward-word
+bindkey '^[^_' copy-prev-word
+bindkey '^[ ' magic-space
+bindkey '^[!' expand-history
+bindkey "^['" set-mark-command
+bindkey '^[$' spell-word
+bindkey '^["' exchange-point-and-mark
+bindkey '^[,' _history-complete-newer
+bindkey '^[-' neg-argument
+bindkey '^[.' insert-last-word
+bindkey '^[/' _history-complete-older
+bindkey '^[0' digit-argument
+bindkey '^[1' digit-argument
+bindkey '^[2' digit-argument
+bindkey '^[3' digit-argument
+bindkey '^[4' digit-argument
+bindkey '^[5' digit-argument
+bindkey '^[6' digit-argument
+bindkey '^[7' digit-argument
+bindkey '^[8' digit-argument
+bindkey '^[9' digit-argument
+bindkey '^[<' beginning-of-buffer-or-history
+bindkey '^[>' end-of-buffer-or-history
+bindkey '^[?' which-command
+bindkey '^[A' accept-and-hold
+bindkey '^[B' backward-word
+bindkey '^[C' capitalize-word
+bindkey '^[D' kill-word
+bindkey '^[F' forward-word
+bindkey '^[G' get-line
+bindkey '^[H' run-help
+bindkey '^[L' down-case-word
+bindkey '^[N' history-search-forward
+bindkey '^[OA' up-line-or-history
+bindkey '^[OB' down-line-or-history
+bindkey '^[OC' forward-char
+bindkey '^[OD' backward-char
+bindkey '^[P' history-search-backward
+bindkey '^[Q' push-line
+bindkey '^[S' spell-word
+bindkey '^[T' transpose-words
+bindkey '^[U' up-case-word
+bindkey '^[W' copy-region-as-kill
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[2~' overwrite-mode
+bindkey '^[[3~' delete-char
+bindkey '^[[4~' end-of-line
+bindkey '^[[5~' history-beginning-search-backward-end
+bindkey '^[[6~' history-beginning-search-forward-end
+bindkey '^[[A' up-line-or-history
+bindkey '^[[B' down-line-or-history
+bindkey '^[[C' forward-char
+bindkey '^[[D' backward-char
+bindkey '^[_' insert-last-word
+bindkey '^[a' accept-and-hold
+bindkey '^[b' backward-word
+bindkey '^[c' capitalize-word
+bindkey '^[d' kill-word
+bindkey '^[f' forward-word
+bindkey '^[g' get-line
+bindkey '^[h' run-help
+bindkey '^[l' down-case-word
+bindkey '^[n' history-search-forward
+bindkey '^[p' history-search-backward
+bindkey '^[q' push-line
+bindkey '^[s' spell-word
+bindkey '^[t' transpose-words
+bindkey '^[u' up-case-word
+bindkey '^[w' copy-region-as-kill
+bindkey '^[x' execute-named-cmd
+bindkey '^[y' yank-pop
+bindkey '^[z' execute-last-named-cmd
+bindkey '^[|' vi-goto-column
+bindkey '^[~' _bash_complete-word
+bindkey '^[^?' backward-kill-word
+bindkey '^\^[[A' up-history
+bindkey '^\^[[B' down-history
+bindkey '^\^[[C' forward-char
+bindkey '^\^[[D' backward-char
 bindkey '^_' undo
 bindkey ' '-'~' self-insert
-bindkey '' backward-delete-char
-bindkey '\M-^@'-'\M-' self-insert
+bindkey '^?' backward-delete-char
+bindkey '\M-^@'-'\M-^?' self-insert
 
 #
 #
 
 for keymap in viins vicmd emacs
 do
-	bindkey -M $keymap    'r' _rehash
+	bindkey -M $keymap    '^[r' _rehash
 
 	if ( __cmd_exists when )
 	then
-		bindkey -M $keymap -s 'w' 'Q when\n'
+		bindkey -M $keymap -s '^[w' '^[Q when\n'
 	fi
 
 	if ( __cmd_exists todo )
 	then
-		bindkey -M $keymap -s 't' 'Q todo\n'
-		bindkey -M $keymap -s 'T' 'Q todo all -c\n'
+		bindkey -M $keymap -s '^[t' '^[Q todo\n'
+		bindkey -M $keymap -s '^[T' '^[Q todo all -c\n'
 	fi
 
-	bindkey -M $keymap -s 'c' 'Q ./configure\n'
-	bindkey -M $keymap -s '©' 'Q !?configure\n'
+	bindkey -M $keymap -s '^[c' '^[Q ./configure\n'
+	bindkey -M $keymap -s '^[©' '^[Q !?configure\n'
 
-	bindkey -M $keymap -s 'm' 'Q make\n'
-	bindkey -M $keymap -s 'M' 'Q make\n'
+	bindkey -M $keymap -s '^[m' '^[Q make\n'
+	bindkey -M $keymap -s '^[M' '^[Q make\n'
 
-	bindkey -M $keymap -s 'l' 'Q l\n'
+	bindkey -M $keymap -s '^[l' '^[Q l\n'
 
-	bindkey -M $keymap -s ' ' '\\ '
+	bindkey -M $keymap -s '^[ ' '\\ '
 
-	bindkey -M $keymap -s 'g' 'Q git st .\n'
-	bindkey -M $keymap -s 'G' 'Q git fetchall\n'
+	bindkey -M $keymap -s '^[g' '^[Q git st .\n'
+	bindkey -M $keymap -s '^[G' '^[Q git fetchall\n'
 
-	bindkey -M $keymap -s 'S' 'Q sudo !!'
+	bindkey -M $keymap -s '^[S' '^[Q sudo !!'
 
-	bindkey -M $keymap -s 'X' 'Q up_up ; exec zsh -l\n'
+	bindkey -M $keymap -s '^[X' '^[Q up_up ; exec zsh -l\n'
 
-	bindkey -M $keymap -s 'OA' 'up-line-or-history'
-	bindkey -M $keymap -s 'OB' 'down-line-or-history'
-	bindkey -M $keymap -s 'OC' 'forward-word'
-	bindkey -M $keymap -s 'OD' 'backward-word'
+	bindkey -M $keymap -s '^[^[OA' 'up-line-or-history'
+	bindkey -M $keymap -s '^[^[OB' 'down-line-or-history'
+	bindkey -M $keymap -s '^[^[OC' 'forward-word'
+	bindkey -M $keymap -s '^[^[OD' 'backward-word'
 
-	bindkey -M $keymap 'q' push-input
-	bindkey -M $keymap 'Q' push-input
+	bindkey -M $keymap '^[q' push-input
+	bindkey -M $keymap '^[Q' push-input
 
-	bindkey -M $keymap -s 'R' 'Q __clear\n'
-	bindkey -M $keymap -s 'B' 'Q __clear $(tput lines)\n'
+	bindkey -M $keymap -s '^[R' '^[Q __clear\n'
+	bindkey -M $keymap -s '^[B' '^[Q __clear $(tput lines)\n'
 done
 
 # redefines push-line for vicmd
-bindkey -M vicmd -s 'q' 'iq'
-bindkey -M vicmd -s 'Q' 'iQ'
+bindkey -M vicmd -s '^[q' 'i^[q'
+bindkey -M vicmd -s '^[Q' 'i^[Q'
 
 # Sets vicmd-mode vim-compliant
 bindkey -M vicmd 'u' 'undo'
-bindkey -M vicmd '' 'redo'
-bindkey -M vicmd 'j' 'history-search-forward'
-bindkey -M viins 'j' 'history-search-forward'
-bindkey -M vicmd 'k' 'history-search-backward'
-bindkey -M viins 'k' 'history-search-backward'
+bindkey -M vicmd '^R' 'redo'
+bindkey -M vicmd '^[j' 'history-search-forward'
+bindkey -M viins '^[j' 'history-search-forward'
+bindkey -M vicmd '^[k' 'history-search-backward'
+bindkey -M viins '^[k' 'history-search-backward'
 
 
 menuselect_vi-mode()
