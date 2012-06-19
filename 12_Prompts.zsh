@@ -53,9 +53,6 @@ chpwd()
 		}
 		' | sed 's/^# /   /'
 	fi
-
-
-	hash -d trash="$TRASH$(readlink -f "$PWD")"
 }
 
 preexec ()
