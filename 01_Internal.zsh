@@ -209,12 +209,15 @@ __get_git_branch ()
 	fi
 
     # Show number of stashed commits by appending '+' signs for each
-    local _stashed=$(git stash list | wc -l )
-    [ "$_stashed" -gt 0 ] && my_git_branch+=$C_$_prompt_colors[bold_generic]$_C
-    [ "$_stashed" -gt 0 ] && for i in {1..$_stashed}
-    do
-        my_git_branch+="·"
-    done
+    if [ "$(git rev-parse --is-inside-git-dir)" != "true" -a "$(git config --get core.bare)" != "true" ]
+    then
+        local _stashed=$(git stash list | wc -l )
+        [ "$_stashed" -gt 0 ] && my_git_branch+=$C_$_prompt_colors[bold_generic]$_C
+        [ "$_stashed" -gt 0 ] && for i in {1..$_stashed}
+        do
+            my_git_branch+="·"
+        done
+    fi
 
 	echo $my_git_branch
 }
