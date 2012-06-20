@@ -387,7 +387,7 @@ __get_prompt_lines()
 # Rewrites current prompt.
 __redisplay_ps1 ()
 {
-    __redefine_prompt
+    #__redefine_prompt
 
     tput sc
     up_up - 1
