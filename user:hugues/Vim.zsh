@@ -85,12 +85,12 @@ function ft-psvx() {
         fi
     else
         case ${KEYMAP} in
-            vicmd) psvar[$psvmodeidx]='vicmd';;
+            vicmd) psvar[$psvmodeidx]='ESC';;
             *)
                 if [[ ${ft_zle_state[overwrite]} == yes ]]; then
-                    psvar[$psvmodeidx]='REPL'
+                    psvar[$psvmodeidx]='REP'
                 else
-                    psvar[$psvmodeidx]=''
+                    psvar[$psvmodeidx]='INS'
                 fi
                 ;;
         esac
@@ -102,7 +102,7 @@ function ft-psvx() {
 # newly drawn prompt has the correct mode display.
 function ft-psvx-default() {
     if [[ ${zle_default_mode} == 'cmd' ]]; then
-        psvar[$psvmodeidx]='vicmd'
+        psvar[$psvmodeidx]='ESC'
     else
         psvar[$psvmodeidx]=''
     fi
