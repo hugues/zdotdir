@@ -20,10 +20,10 @@ _sdk-targets() {
         for target in $( _platforms ) ;
         do
             [ "$target" = "$TARGET" ] && continue;
-            for i in ":${target} Standard SDK"\
-              "-PLUGIN:${target} Plugin SDK"\
-              "-APPSDK:${target} Advanced Plugin SDK"\
-                "-PERF:${target} Performance tests" ;
+            for i in ""\
+              "-PLUGIN"\
+              "-APPSDK"\
+                "-PERF" ;
 
                 echo $target$i
         done
