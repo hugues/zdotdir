@@ -56,7 +56,7 @@ bindkey '^F' forward-char
 bindkey '^G' send-break
 bindkey '^H' backward-delete-char
 bindkey '^I' expand-or-complete
-bindkey '^J' accept-line
+bindkey '^J' accept-line # '\n' is considered as ^J
 bindkey '^K' kill-line
 bindkey '^L' clear-screen
 bindkey '^M' accept-line
@@ -237,7 +237,7 @@ do
 	bindkey -M $keymap '^[q' push-input
 	bindkey -M $keymap '^[Q' push-input
 
-	bindkey -M $keymap -s '^[R' '^[Q __clear\n'
+	bindkey -M $keymap -s '^[R' '^[Q up_up ; __redefine_prompt\n^[xreset-prompt\n'
 	bindkey -M $keymap -s '^[B' '^[Q __clear $(tput lines)\n'
 done
 

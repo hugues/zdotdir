@@ -270,6 +270,7 @@ __redefine_prompt ()
             ;;
     esac
 }
+zle -N __redefine_prompt
 
 __yeah_prompt ()
 {

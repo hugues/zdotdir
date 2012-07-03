@@ -44,7 +44,7 @@ psvmodeidx='8'
 # If this is set to `yes', use `C-d' instead of `ESC' to switch from insert
 # mode to command mode. `ESC' may require a timeout to actually take effect.
 # Using `C-d' will work immediately. Therefore that is the default.
-zle_use_ctrl_d='no'
+zle_use_ctrl_d='yes'
 
 # If set to `yes', make viins mode behave more like `emacs' mode. Bindings
 # such as `^r' and `^s' will work. Backspace and `^w' will work more like
@@ -90,7 +90,7 @@ function ft-psvx() {
                 if [[ ${ft_zle_state[overwrite]} == yes ]]; then
                     psvar[$psvmodeidx]='REP'
                 else
-                    psvar[$psvmodeidx]='INS'
+                    psvar[$psvmodeidx]=''
                 fi
                 ;;
         esac

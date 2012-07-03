@@ -75,5 +75,5 @@ __makeflags ()
 }
 
 PS1_TASKBAR+=(__makeflags __verbose_compilation __nproc_compilation)
-PS1_EXTRA_INFO+=(__static_dynamic __compilation_arch __compilation_os __compilation_target)
+PS1_EXTRA_INFO+=(__static_dynamic __compilation_os __compilation_arch __compilation_target)
 
