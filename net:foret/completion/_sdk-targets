@@ -1,13 +1,57 @@
-#compdef sdk-patch.sh sdk-test.sh sdk-qa.sh
+#compdef sdk-factory.sh sdk-patch.sh sdk-test.sh sdk-qa.sh set-target-build-env.sh
 
-local arguments
-arguments=(
-        '1:targets:(($([ -n "$TARGET" ] && for i in "\:Standard_SDK"\
-                                                   "-PLUGIN\:Plugin_SDK"\
-                                                   "-APPSDK\:Advanced_Plugin_SDK"\
-                                                   "-PERF\:Performance_tests" ;\
-                                              echo $TARGET$i)))'
-        )
+_sdk-targets() {
 
-_arguments $arguments
+    _platforms () {
+        awk '/^  [-_a-zA-Z0-9]+$/ { print $1 }' tools/sdk-targets.txt
+    }
 
+    _current_target () {
+        [ -z "$TARGET" ] || \
+            for i in ": Standard SDK"\
+              "-PLUGIN: Plugin SDK"\
+              "-APPSDK: Advanced Plugin SDK"\
+                "-PERF: Performance tests" ;
+
+                    echo $TARGET$i
+    }
+
+    _other_targets () {
+        for target in $( _platforms ) ;
+        do
+            [ "$target" = "$TARGET" ] && continue;
+            for i in ":${target} Standard SDK"\
+              "-PLUGIN:${target} Plugin SDK"\
+              "-APPSDK:${target} Advanced Plugin SDK"\
+                "-PERF:${target} Performance tests" ;
+
+                echo $target$i
+        done
+    }
+
+    case "$service" in
+    sdk-factory.sh)
+        _arguments \
+            '(-s)'{-a,--enable-all-protocols}'[Enable all protocols]'\
+            {-c+,--config=}'[Selects config FILE to use]:file:_files'\
+            {-d,--debug-make}'[Add debugging verbosity to make]'\
+            '(-p)'{-f,--framework-only}'[Generates only the framework libraries]'\
+            '(-f)'{-p,--protocols-only}'[Generates only the protocols bundle libraries]'\
+            {-g,--enable-debug-info}'[Enable debug info in binaries]'\
+            {-h,--enable-host}'[Enable host binaries building]'\
+            {-n,--nomake}'[No make done]'\
+            {-s,--enable-specific-protocols}'[Enable specific protocols]'\
+            {-v,--verbose}'[Enable verbose compilation]'\
+            ':current target:(( $(_current_target) ))'
+        _alternative ':other targets:(( $( _other_targets ) ))'
+        ;;
+    set-target-build-env.sh)
+        _arguments ':platforms:(( $(_platforms) ))'
+        ;;
+    sdk-*)
+        _arguments ':current target:(( $( _current_target) ))'
+        _alternative ':other targets:(( $( _other_targets ) ))'
+        ;;
+    esac
+
+}
