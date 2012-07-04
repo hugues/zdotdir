@@ -3,7 +3,8 @@
 _sdk-targets() {
 
     _platforms () {
-        awk '/^  [-_a-zA-Z0-9]+$/ { print $1 }' tools/sdk-targets.txt
+        local _targets_file=tools/sdk-targets.txt
+        [ -f $_targets_file ] && awk '/^  [-_a-zA-Z0-9]+$/ { print $1 }' $_targets_file
     }
 
     _current_target () {
@@ -39,6 +40,7 @@ _sdk-targets() {
             '(-f)'{-p,--protocols-only}'[Generates only the protocols bundle libraries]'\
             {-g,--enable-debug-info}'[Enable debug info in binaries]'\
             {-h,--enable-host}'[Enable host binaries building]'\
+            {-i,--disable-security}'[Disable licence checking]'\
             {-n,--nomake}'[No make done]'\
             {-s,--enable-specific-protocols}'[Enable specific protocols]'\
             {-v,--verbose}'[Enable verbose compilation]'\
