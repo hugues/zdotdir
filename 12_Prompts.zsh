@@ -283,6 +283,13 @@ __show_date()
     echo $(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$DATE
 }
 
+__display ()
+{
+    __debug -n "    Display..."
+    echo ${DISPLAY:+$C_$_prompt_colors[display]$_C"("$DISPLAY")"}
+    __debug
+}
+PS1_TASKBAR+=(__display)
 
 __display_vi_mode()
 {
@@ -305,7 +312,7 @@ __two_lines_prompt ()
     PS1_+=$(__show_date)
 
     PS1_+="
-"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M"$C_$_prompt_colors[display]$_C"${DISPLAY:+($DISPLAY)} "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
+"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
     for trigger in $PS1_EXTRA_INFO
     do
         result=$($trigger)

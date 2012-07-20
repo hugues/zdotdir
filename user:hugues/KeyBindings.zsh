@@ -237,7 +237,7 @@ do
 	bindkey -M $keymap '^[q' push-input
 	bindkey -M $keymap '^[Q' push-input
 
-	bindkey -M $keymap -s '^[R' '^[Q up_up ; __redefine_prompt\n^[xreset-prompt\n'
+	bindkey -M $keymap -s '^[R' '^[Q up_up ; sc blue ; __redefine_prompt\n^[xreset-prompt\n'
 	bindkey -M $keymap -s '^[B' '^[Q __clear $(tput lines)\n'
 done
 

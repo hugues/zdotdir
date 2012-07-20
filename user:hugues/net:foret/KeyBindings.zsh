@@ -21,7 +21,7 @@ __nproc ()
 
 for keymap in viins vicmd emacs
 do
-    bindkey -M $keymap -s '+' 'Q __up_up ; __nproc + 1\n'
-    bindkey -M $keymap -s '-' 'Q __up_up ; __nproc - 1\n'
+    bindkey -M $keymap -s '+' 'Q up_up ; __nproc + 1\n'
+    bindkey -M $keymap -s '-' 'Q up_up ; __nproc - 1\n'
 done
 

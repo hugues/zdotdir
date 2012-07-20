@@ -44,7 +44,6 @@ KEYCHAIN=~/.keychain/$(hostname)-sh
 [ -r "${KEYCHAIN}"     ] && source ${KEYCHAIN}
 [ -r "${KEYCHAIN}-gpg" ] && source ${KEYCHAIN}-gpg
 
-
 __debug ()
 {
     [ -n "$DEBUG" ] && echo >&2 $@

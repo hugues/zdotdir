@@ -62,9 +62,10 @@ __nproc_compilation ()
     NPROC=${NPROC:-0}
     [ $(($NPROC)) -gt 0 ] || { unset NPROC ; return }
 
-    echo -n $C_
+    echo -n $C_$_prompt_colors[bar]$_C$T_"u"$_T$C_
     export | grep -q '^NPROC=' && echo -n "1;"
     echo -n $_make_colors[nproc]$_C$(for i in {1..$NPROC} ; echo -n -n "|")
+    echo -n $C_$_prompt_colors[bar]$_C$T_"t"$_T
 }
 __makeflags ()
 {
