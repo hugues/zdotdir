@@ -216,12 +216,16 @@ __get_git_branch ()
     if [ "$(git rev-parse --is-inside-git-dir)" != "true" -a "$(git config --get core.bare)" != "true" ]
     then
         local _stashed=$(git stash list | wc -l )
-        [ "$_stashed" -gt 0 ] && my_git_branch+=$C_$_prompt_colors[soft_generic]$_C
-        [ "$_stashed" -gt 0 ] && for i in {2..$_stashed}
-        do
-            my_git_branch+="·"
-        done
-        my_git_branch+="$C_$color[blink];$_prompt_colors[soft_generic]$_C·"
+        if [ "$_stashed" -gt 0 ]
+        then
+            my_git_branch+=$C_$_prompt_colors[soft_generic]$_C
+            while [ $i -gt 1 ]
+            do
+                my_git_branch+="·"
+                i=$(( $i - 1 ))
+            done
+            my_git_branch+="$C_$color[blink];$_prompt_colors[soft_generic]$_C·"
+        fi
     fi
 
 	echo $my_git_branch
