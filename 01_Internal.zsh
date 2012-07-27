@@ -219,10 +219,10 @@ __get_git_branch ()
         if [ "$_stashed" -gt 0 ]
         then
             my_git_branch+=$C_$_prompt_colors[soft_generic]$_C
-            while [ $i -gt 1 ]
+            while [ $_stashed -gt 1 ]
             do
                 my_git_branch+="·"
-                i=$(( $i - 1 ))
+                _stashed=$(( $_stashed - 1 ))
             done
             my_git_branch+="$C_$color[blink];$_prompt_colors[soft_generic]$_C·"
         fi
