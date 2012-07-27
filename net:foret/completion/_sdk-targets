@@ -3,30 +3,46 @@
 _sdk-targets() {
 
     _platforms () {
-        local _targets_file=tools/sdk-targets.txt
-        [ -f $_targets_file ] && awk '/^  [-_a-zA-Z0-9]+$/ { print $1 }' $_targets_file
+        local _targets_file
+
+        # New-style
+        _targets_file=tools/builder/target.sh
+        if [ -e $_targets_file ]
+        then
+            source $_targets_file
+            echo ${=AVAILABLE_TARGETS}
+        fi
+
+        # Old-style
+        _targets_file=tools/sdk-targets.txt
+        if [ -f $_targets_file ]
+        then
+            awk '/^  [-_a-zA-Z0-9]+$/ { print $1 }' $_targets_file
+            return
+        fi
     }
 
     _current_target () {
-        [ -z "$TARGET" ] || \
-            for i in ": Standard SDK"\
-              "-PLUGIN: Plugin SDK"\
-              "-APPSDK: Advanced Plugin SDK"\
-                "-PERF: Performance tests" ;
+        local _targets_file=tools/builder/target.sh
+        [ ! -z "$TARGET" ] || return
 
-                    echo $TARGET$i
+        echo $TARGET":Standard SDK"
+
+        if [ -e $_targets_file ]
+        then
+            source $_targets_file
+            for i in ${=AVAILABLE_FLAVOUR}
+                echo ${TARGET}-$i:$i
+            for i in ${=AVAILABLE_OPTIONS}
+                echo ${TARGET}-$i:$i
+        fi
     }
 
     _other_targets () {
         for target in $( _platforms ) ;
         do
             [ "$target" = "$TARGET" ] && continue;
-            for i in ""\
-              "-PLUGIN"\
-              "-APPSDK"\
-                "-PERF" ;
-
-                echo $target$i
+            echo $target
         done
     }
 
