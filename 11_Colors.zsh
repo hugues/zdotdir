@@ -85,6 +85,7 @@ __set_prompt_colors ()
 	_gcl_colors[mixed]="$color[green];$color[bold]"
 	_gcl_colors[changed]="$color[green]"
 	_gcl_colors[merging]="$color[bg-black]"
+	_gcl_colors[ffwd]="$color[standout]"
 
 	_guilt_colors[applied]=$_gcl_colors[cached]
 	_guilt_colors[unapplied]=$color[black]

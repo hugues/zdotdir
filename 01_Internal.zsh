@@ -217,10 +217,11 @@ __get_git_branch ()
     then
         local _stashed=$(git stash list | wc -l )
         [ "$_stashed" -gt 0 ] && my_git_branch+=$C_$_prompt_colors[soft_generic]$_C
-        [ "$_stashed" -gt 0 ] && for i in {1..$_stashed}
+        [ "$_stashed" -gt 0 ] && for i in {2..$_stashed}
         do
             my_git_branch+="·"
         done
+        my_git_branch+="$C_$color[blink];$_prompt_colors[soft_generic]$_C·"
     fi
 
 	echo $my_git_branch
@@ -308,6 +309,11 @@ __get_git_status ()
 			my_git_status="$_gcl_colors[init]"
 		fi
 	fi
+
+    if [ $(git status | sed -n '2{/can be fast-forwarded/p};3q' | wc -l) -gt 0 ]
+    then
+        my_git_status+=";$_gcl_colors[ffwd]"
+    fi
 
 	if [ $(git ls-files --unmerged | wc -l) -gt 0 ]
 	then
