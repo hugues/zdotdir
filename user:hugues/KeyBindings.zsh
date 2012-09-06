@@ -1,285 +1,315 @@
-##
-## Part of configuration files for Zsh 4
-## by Hugues Hiegel <hugues@hiegel.fr>
-## 
-## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
-##
-## You are encouraged to use, modify, and redistribute
-## these files with or without this notice.
-## 
+zstyle ':zle:replace-pattern' edit-previous false
+autoload -Uz replace-string
+autoload -Uz replace-string-again
+zle -N replace-pattern replace-string
+zle -N replace-string-again
 
-## Key bindings
-#
-# Lancez un chtit bindkey dans votre zsh pour voir... 
-#
+### vi-mode.zsh - example vi mode setup for zsh.
+###
+### Zsh's line editor has two built-in editing models. One is modeled
+### after the `emacs' editor's input system, the other is modeled after
+### the `vi' editor's modal input mode.
+###
+### To use the latter, it is helpful to track the current input mode
+### and update the prompt dynamically to reflect the current mode at
+### all times.
+###
+### This setup tracks the current mode in `$psvar[x]', which is
+### available in prompts in the `%xv' expansion. It'll be one of the
+### following strings:
+###
+###    "i"  - insert mode
+###    "c"  - command mode
+###    "im" - insert mode, with a minibuffer being active
+###    "cm" - ditto, but for command mode
+###    "r"  - replace mode: insert mode with the overwrite bit set.
+###
+### The `x' is configurable via the `psvmodeidx' variable below.
+###
+### The code in this file requires zsh version 4.3.1 or newer.
+###
+### Copyright (c) 2010, Frank Terbeck <ft@bewatermyfriend.org>
+### The same licensing terms as with zsh apply.
 
-#set_keymap()
-#{
-#	main=$1
-#	bindkey -A main $main
-#}
-# Vi-mode
-#set_keymap viins
+############################################################################
+### CONFIGURATION ##########################################################
 
-bindkey '^[[3~' delete-char			# delete
-bindkey '^[[2~' overwrite-mode			# insert
-bindkey '^[[A' up-line-or-history		# up
-bindkey '^[[B' down-line-or-history		# down
-bindkey '^[^[[A' history-search-backward	# META-up
-bindkey '^[^[[B' history-search-forward		# META-down
-bindkey '^[^[[C' forward-word			# ESC right
-bindkey '^[^[[D' backward-word			# ESC left
-bindkey '^[^[[3~' kill-region			# ESC del
+# Use either `ins' or `cmd' as the default input mode.
+zle_default_mode='ins'
 
-test $TERM = 'rxvt' -o $TERM = 'xterm' -o $TERM = 'aterm' &&
-{
-	bindkey '^[[1~' beginning-of-line	# home
-	bindkey '^[[4~' end-of-line		# end-of-line
-	bindkey '^[Oc' forward-word		# CTRL right
-	bindkey '^[Od' backward-word	# CTRL left
-	bindkey '^[[3$' vi-set-buffer		# SHIFT del
-	bindkey '^[Oa' history-search-backward	# CTRL UP
-	bindkey '^[Ob' history-search-forward	# CTRL DOWN
-	bindkey '^[OH' beginning-of-line	# home
-	bindkey '^[OF' end-of-line		# end-of-line
+# This defines in which index of `$psvar[]' the information is tracked.
+# The default is `1'. Set this to whatever fits you best.
+psvmodeidx='8'
+
+# If this is set to `yes', use `C-d' instead of `ESC' to switch from insert
+# mode to command mode. `ESC' may require a timeout to actually take effect.
+# Using `C-d' will work immediately. Therefore that is the default.
+zle_use_ctrl_d='yes'
+
+# If set to `yes', make viins mode behave more like `emacs' mode. Bindings
+# such as `^r' and `^s' will work. Backspace and `^w' will work more like
+# emacs would, too.
+zle_ins_more_like_emacs='no'
+
+# This is an example prompt to show how this can be used. Yours may
+# obviously be a lot more colourful and whatnot. As ugly as you like.
+#PS1='%(?..[%?]-)%1v-(%!) %3~ %% '
+
+############################################################################
+### MODE SETUP - Do not change anything below! #############################
+
+# Create _functions[] arrays for `zle-line-init', `zle-line-finish'
+# and `zle-keymap-select', too. Analogous to precmd_functions[]
+# etc. The actual functions only cycle through these arrays and
+# execute all existing functions in order.
+typeset -ga zle_init_functions
+typeset -ga zle_finish_functions
+typeset -ga zle_keymap_functions
+
+# This is an associative array, that tracks the current zle
+# state. This may contain the following key-value pairs:
+#      minibuffer  - values: yes/no; yes if a minibuffer is active.
+#      overwrite   - values: yes/no; yes if zle is in overwrite mode.
+typeset -gA ft_zle_state
+
+
+# We're not in overwrite mode, when zsh starts.
+ft_zle_state[overwrite]=no
+
+# When this is hooked into `zle-keymap-select', keymap changes are
+# correctly tracked in `psvar[x]', which may be used in PS1 as `%xv'.
+function ft-psvx() {
+    if [[ ${ft_zle_state[minibuffer]} == yes ]]; then
+        if [[ ${psvar[$psvmodeidx]} != *m ]]; then
+            psvar[$psvmodeidx]="${psvar[$psvmodeidx]}m"
+        fi
+    else
+        case ${KEYMAP} in
+            vicmd) psvar[$psvmodeidx]='ESC';;
+            *)
+                if [[ ${ft_zle_state[overwrite]} == yes ]]; then
+                    psvar[$psvmodeidx]='REP'
+                else
+                    psvar[$psvmodeidx]=''
+                fi
+                ;;
+        esac
+    fi
+    zle 'reset-prompt'
 }
 
-#
-# Sanity
-#
-#bindkey '^X#' set-mark-command
-bindkey '^A' beginning-of-line
-bindkey '^B' backward-char
-bindkey '^D' delete-char-or-list
-bindkey '^E' end-of-line
-bindkey '^F' forward-char
-bindkey '^G' send-break
-bindkey '^H' backward-delete-char
-bindkey '^I' expand-or-complete
-bindkey '^J' accept-line # '\n' is considered as ^J
-bindkey '^K' kill-line
-bindkey '^L' clear-screen
-bindkey '^M' accept-line
-bindkey '^N' down-line-or-history
-bindkey '^O' accept-line-and-down-history
-bindkey '^P' up-line-or-history
-bindkey '^Q' push-line
-bindkey '^R' history-incremental-search-backward
-bindkey '^S' history-incremental-search-forward
-bindkey '^T' transpose-chars
-bindkey '^U' backward-kill-line
-bindkey '^V' quoted-insert
-bindkey '^W' backward-kill-word
-bindkey '^X^B' vi-match-bracket
-bindkey '^X^F' vi-find-next-char
-bindkey '^X^J' vi-join
-bindkey '^X^K' kill-buffer
-bindkey '^X^N' infer-next-history
-bindkey '^X^O' overwrite-mode
-bindkey '^X^R' _read_comp
-bindkey '^X^U' undo
-bindkey '^X^V' vi-cmd-mode
-#bindkey '^X^X' exchange-point-and-mark
-bindkey '^X*' expand-word
-bindkey '^X=' what-cursor-position
-bindkey '^X?' _complete_debug
-bindkey '^XC' _correct_filename
-bindkey '^XG' list-expand
-bindkey '^Xa' _expand_alias
-bindkey '^Xc' _correct_word
-bindkey '^Xd' _list_expansions
-bindkey '^Xe' _expand_word
-bindkey '^Xg' list-expand
-bindkey '^Xh' _complete_help
-bindkey '^Xm' _most_recent_file
-bindkey '^Xn' _next_tags
-bindkey '^Xr' history-incremental-search-backward
-bindkey '^Xs' history-incremental-search-forward
-bindkey '^Xt' _complete_tag
-bindkey '^Xu' undo
-bindkey '^X~' _bash_list-choices
-bindkey '^Y' yank
-bindkey '^[^D' list-choices
-bindkey '^[^G' send-break
-bindkey '^[^H' backward-kill-word
-bindkey '^[^I' self-insert-unmeta
-bindkey '^[^J' self-insert-unmeta
-bindkey '^[^L' clear-screen
-bindkey '^[^M' self-insert-unmeta
-bindkey '^[^[[3~' kill-region
-bindkey '^[^[[A' history-search-backward
-bindkey '^[^[[B' history-search-forward
-bindkey '^[^[[C' forward-word
-bindkey '^[^[[D' backward-word
-bindkey '^[^_' copy-prev-word
-bindkey '^[ ' magic-space
-bindkey '^[!' expand-history
-bindkey "^['" set-mark-command
-bindkey '^[$' spell-word
-bindkey '^["' exchange-point-and-mark
-bindkey '^[,' _history-complete-newer
-bindkey '^[-' neg-argument
-bindkey '^[.' insert-last-word
-bindkey '^[/' _history-complete-older
-bindkey '^[0' digit-argument
-bindkey '^[1' digit-argument
-bindkey '^[2' digit-argument
-bindkey '^[3' digit-argument
-bindkey '^[4' digit-argument
-bindkey '^[5' digit-argument
-bindkey '^[6' digit-argument
-bindkey '^[7' digit-argument
-bindkey '^[8' digit-argument
-bindkey '^[9' digit-argument
-bindkey '^[<' beginning-of-buffer-or-history
-bindkey '^[>' end-of-buffer-or-history
-bindkey '^[?' which-command
-bindkey '^[A' accept-and-hold
-bindkey '^[B' backward-word
-bindkey '^[C' capitalize-word
-bindkey '^[D' kill-word
-bindkey '^[F' forward-word
-bindkey '^[G' get-line
-bindkey '^[H' run-help
-bindkey '^[L' down-case-word
-bindkey '^[N' history-search-forward
-bindkey '^[OA' up-line-or-history
-bindkey '^[OB' down-line-or-history
-bindkey '^[OC' forward-char
-bindkey '^[OD' backward-char
-bindkey '^[P' history-search-backward
-bindkey '^[Q' push-line
-bindkey '^[S' spell-word
-bindkey '^[T' transpose-words
-bindkey '^[U' up-case-word
-bindkey '^[W' copy-region-as-kill
-bindkey '^[[1~' beginning-of-line
-bindkey '^[[2~' overwrite-mode
-bindkey '^[[3~' delete-char
-bindkey '^[[4~' end-of-line
-bindkey '^[[5~' history-beginning-search-backward-end
-bindkey '^[[6~' history-beginning-search-forward-end
-bindkey '^[[A' up-line-or-history
-bindkey '^[[B' down-line-or-history
-bindkey '^[[C' forward-char
-bindkey '^[[D' backward-char
-bindkey '^[_' insert-last-word
-bindkey '^[a' accept-and-hold
-bindkey '^[b' backward-word
-bindkey '^[c' capitalize-word
-bindkey '^[d' kill-word
-bindkey '^[f' forward-word
-bindkey '^[g' get-line
-bindkey '^[h' run-help
-bindkey '^[l' down-case-word
-bindkey '^[n' history-search-forward
-bindkey '^[p' history-search-backward
-bindkey '^[q' push-line
-bindkey '^[s' spell-word
-bindkey '^[t' transpose-words
-bindkey '^[u' up-case-word
-bindkey '^[w' copy-region-as-kill
-bindkey '^[x' execute-named-cmd
-bindkey '^[y' yank-pop
-bindkey '^[z' execute-last-named-cmd
-bindkey '^[|' vi-goto-column
-bindkey '^[~' _bash_complete-word
-bindkey '^[^?' backward-kill-word
-bindkey '^\^[[A' up-history
-bindkey '^\^[[B' down-history
-bindkey '^\^[[C' forward-char
-bindkey '^\^[[D' backward-char
-bindkey '^_' undo
-bindkey ' '-'~' self-insert
-bindkey '^?' backward-delete-char
-bindkey '\M-^@'-'\M-^?' self-insert
+# This needs to be hooked into `zle-line-finish' to make sure the next
+# newly drawn prompt has the correct mode display.
+function ft-psvx-default() {
+    if [[ ${zle_default_mode} == 'cmd' ]]; then
+        psvar[$psvmodeidx]='ESC'
+    else
+        psvar[$psvmodeidx]=''
+    fi
+}
+# This makes sure the first prompt is drawn correctly.
+ft-psvx-default
 
-#
-#
-
-for keymap in viins vicmd emacs
-do
-	bindkey -M $keymap    '^[r' _rehash
-
-	if ( __cmd_exists when )
-	then
-		bindkey -M $keymap -s '^[w' '^[Q when\n'
-	fi
-
-	if ( __cmd_exists todo )
-	then
-		bindkey -M $keymap -s '^[t' '^[Q todo\n'
-		bindkey -M $keymap -s '^[T' '^[Q todo all -c\n'
-	fi
-
-	bindkey -M $keymap -s '^[c' '^[Q ./configure\n'
-	bindkey -M $keymap -s '^[©' '^[Q !?configure\n'
-
-	bindkey -M $keymap -s '^[m' '^[Q make\n'
-	bindkey -M $keymap -s '^[M' '^[Q make\n'
-
-	bindkey -M $keymap -s '^[l' '^[Q l\n'
-
-	bindkey -M $keymap -s '^[ ' '\\ '
-
-	bindkey -M $keymap -s '^[g' '^[Q git st .\n'
-	bindkey -M $keymap -s '^[G' '^[Q git fetchall\n'
-
-	bindkey -M $keymap -s '^[S' '^[Q sudo !!'
-
-	bindkey -M $keymap -s '^[X' '^[Q up_up ; exec zsh -l\n'
-
-	bindkey -M $keymap -s '^[^[OA' 'up-line-or-history'
-	bindkey -M $keymap -s '^[^[OB' 'down-line-or-history'
-	bindkey -M $keymap -s '^[^[OC' 'forward-word'
-	bindkey -M $keymap -s '^[^[OD' 'backward-word'
-
-	bindkey -M $keymap '^[q' push-input
-	bindkey -M $keymap '^[Q' push-input
-
-	bindkey -M $keymap -s '^[R' '^[Q up_up ; sc blue ; __redefine_prompt\n^[xreset-prompt\n'
-	bindkey -M $keymap -s '^[B' '^[Q __clear $(tput lines)\n'
-done
-
-# redefines push-line for vicmd
-bindkey -M vicmd -s '^[q' 'i^[q'
-bindkey -M vicmd -s '^[Q' 'i^[Q'
-
-# Sets vicmd-mode vim-compliant
-bindkey -M vicmd 'u' 'undo'
-bindkey -M vicmd '^R' 'redo'
-bindkey -M vicmd '^[j' 'history-search-forward'
-bindkey -M viins '^[j' 'history-search-forward'
-bindkey -M vicmd '^[k' 'history-search-backward'
-bindkey -M viins '^[k' 'history-search-backward'
-
-
-menuselect_vi-mode()
-{
-	# Sets menuselect vim-compliant
-	bindkey -M menuselect 'j' 'down-line-or-history'
-	bindkey -M menuselect 'k' 'up-line-or-history'
-	bindkey -M menuselect 'h' 'backward-char'
-	bindkey -M menuselect 'l' 'forward-char'
+# Need to handle SIGINT, too (which is sent by ^C).
+# If we don't do this, being in a minibuffer and pressing ^C confuses
+# the zle state variable; the `minibuffer' state won't be turned off.
+function TRAPINT() {
+    ft_zle_state[minibuffer]=no
+    ft-psvx-default
+    zle reset-prompt 2>/dev/null
+    return 127
 }
 
-# Enters vi-cmd mode at each prompt
-#zle-line-init() { zle vi-cmd-mode }
-#zle -N zle-line-init
+# If a keymap change is done, we do need a status update, obviously.
+zle_keymap_functions=( "${zle_keymap_functions[@]}" ft-psvx )
+# When a command line finishes, the next keyboard mode needs to be set
+# up, so that `psvar[x]' is correct when the next prompt is drawn.
+zle_finish_functions=( "${zle_finish_functions[@]}" ft-psvx-default )
+if [[ ${zle_default_mode} == 'cmd' ]]; then
+    # We cannot simply link `vicmd' to `main'. If we'd do that the
+    # whole input system could not be set into insert mode. See the
+    # zshzle(1) manual for details.  To make vicmd the default mode
+    # for new command lines, we simply turn it on in `zle-line-init()'.
+    zle_init_functions=( "${zle_init_functions[@]}" ft-vi-cmd )
+fi
 
-# Show the current keymap used
-zle-keymap-select()
-{
-	if [ "$KEYMAP" != "main" ]
-	then
-		__term_title " [$KEYMAP]"
-	else
-		__term_title
-	fi
+function zle-line-init() {
+    local w
+    for w in "${zle_init_functions[@]}"; do
+        (( ${+functions[$w]} )) && "$w"
+    done
+}
+zle -N zle-line-init
+function zle-line-finish() {
+    local w
+    for w in "${zle_finish_functions[@]}"; do
+        (( ${+functions[$w]} )) && "$w"
+    done
+}
+zle -N zle-line-finish
+function zle-keymap-select() {
+    local w
+    for w in "${zle_keymap_functions[@]}"; do
+        (( ${+functions[$w]} )) && "$w"
+    done
 }
 zle -N zle-keymap-select
-#zle -N zle-line-init zle-keymap-select ## CRASHES UPON MULTILINE COMMAND...
 
+# Link `viins' to `main'.
+bindkey -v
 
-source $ZDOTDIR/user:hugues/Vim.zsh
+############################################################################
+### VI WIDGETS #############################################################
 
+# This setup may change the `ESC' keybinding to `C-d'. That defeats the
+# possibility to exit zsh by pressing `C-d' (which usually sends EOF).
+# With this widget, you can type `:q<RET>' to exit the shell from vicmd.
+function ft-zshexit {
+    [[ -o hist_ignore_space ]] && BUFFER=' '
+    BUFFER="${BUFFER}exit"
+    zle .accept-line
+}
+zle -N q ft-zshexit
+
+# First the ones that change the input method directly; namely cmd mode,
+# insert mode and replace mode.
+function ft-vi-replace() {
+    ft_zle_state[overwrite]=yes
+    zle vi-replace
+    ft-psvx
+}
+
+function ft-vi-insert() {
+    ft_zle_state[overwrite]=no
+    zle vi-insert
+}
+
+# Since I want to bind `vi-cmd-mode' to Ctrl-D (which is what I'm doing in
+# vim and emacs-viper, too) I need to wrap this widget into a user-widget,
+# because only those have an effect with empty command buffers and bindings
+# to the key, which sends `EOF'. This also needs the ignore_eof option set.
+function ft-vi-cmd() {
+    ft_zle_state[overwrite]=no
+    zle vi-cmd-mode
+}
+
+function ft-vi-cmd-cmd() {
+    zle -M 'Use `:q<RET>'\'' to exit the shell.'
+}
+
+# ...and now the widgets that open minibuffers...
+# Oh, yeah. You cannot wrap `execute-named-cmd', so no minibuffer-signaling
+# for that. See <http://www.zsh.org/mla/workers/2005/msg00384.html>.
+function ft-markminibuf() {
+    ft_zle_state[minibuffer]=yes
+    ft-psvx
+    zle "$1"
+    ft_zle_state[minibuffer]=no
+    ft-psvx
+}
+
+if (( ${+widgets[.history-incremental-pattern-search-backward]} )); then
+    function history-incremental-pattern-search-backward() {
+        ft-markminibuf .history-incremental-pattern-search-backward
+    }
+else
+    function history-incremental-search-backward() {
+        ft-markminibuf .history-incremental-search-backward
+    }
+fi
+
+if (( ${+widgets[.history-incremental-pattern-search-forward]} )); then
+    function history-incremental-pattern-search-forward() {
+        ft-markminibuf .history-incremental-pattern-search-forward
+    }
+else
+    function history-incremental-search-forward() {
+        ft-markminibuf .history-incremental-search-forward
+    }
+fi
+
+function ft-vi-search-back() {
+    ft-markminibuf vi-history-search-backward
+}
+
+function ft-vi-search-fwd() {
+    ft-markminibuf vi-history-search-forward
+}
+
+function ft-replace-pattern() {
+    ft-markminibuf replace-pattern
+}
+
+# register the created widgets
+for w in \
+    ft-replace-pattern \
+    ft-vi-{cmd,cmd-cmd,replace,insert,search-back,search-fwd}
+do
+    zle -N "$w"
+done; unset w
+
+############################################################################
+### ALTERED KEYBINDINGS ####################################################
+
+source $ZDOTDIR/user:hugues/GusBindings.zsh
+
+if [[ ${zle_use_ctrl_d} == 'yes' ]]; then
+    # Remove the escape key binding.
+    bindkey -r '^['
+fi
+bindkey -M viins '^d' ft-vi-cmd
+bindkey -M vicmd '^d' ft-vi-cmd-cmd
+setopt ignore_eof
+
+bindkey -M vicmd '/'   ft-vi-search-fwd
+bindkey -M vicmd '?'   ft-vi-search-back
+bindkey -M vicmd 'i'   ft-vi-insert
+bindkey -M vicmd 'R'   ft-vi-replace
+
+# The following four widgets require something like the following, to
+# load and initialise the `replace-pattern' and `replace-string-again'
+# widgets:
+#
+# zstyle ':zle:replace-pattern' edit-previous false
+# autoload -Uz replace-string
+# autoload -Uz replace-string-again
+# zle -N replace-pattern replace-string
+# zle -N replace-string-again
+#
+# ...and that *before* this file is sourced.
+
+if (( ${+widgets[replace-pattern]} )); then
+    bindkey -M vicmd '^x,' ft-replace-pattern
+    bindkey -M viins '^x,' ft-replace-pattern
+fi
+
+if (( ${+widgets[replace-string-again]} )); then
+    bindkey -M vicmd '^x.' replace-string-again
+    bindkey -M viins '^x.' replace-string-again
+fi
+
+if [[ ${zle_ins_more_like_emacs} == 'yes' ]]; then
+    if (( ${+widgets[.history-incremental-pattern-search-backward]} )); then
+        bindkey -M viins '^r' history-incremental-pattern-search-backward
+        bindkey -M vicmd '^r' history-incremental-pattern-search-backward
+    else
+        bindkey -M viins '^r' history-incremental-search-backward
+        bindkey -M vicmd '^r' history-incremental-search-backward
+    fi
+    if (( ${+widgets[.history-incremental-pattern-search-forward]} )); then
+        bindkey -M viins '^s' history-incremental-pattern-search-forward
+        bindkey -M vicmd '^s' history-incremental-pattern-search-forward
+    else
+        bindkey -M viins '^s' history-incremental-search-forward
+        bindkey -M vicmd '^s' history-incremental-search-forward
+    fi
+    bindkey -M vicmd '^[h' run-help
+    bindkey -M viins '^[h' run-help
+    bindkey -M viins '^p'  up-line-or-history
+    bindkey -M viins '^n'  down-line-or-history
+    bindkey -M viins '^w'  backward-kill-word
+    bindkey -M viins '^h'  backward-delete-char
+    bindkey -M viins '^?'  backward-delete-char
+fi
+
+true
