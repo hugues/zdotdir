@@ -35,7 +35,7 @@ zle -N replace-string-again
 ### CONFIGURATION ##########################################################
 
 # Use either `ins' or `cmd' as the default input mode.
-zle_default_mode='ins'
+zle_default_mode='cmd'
 
 # This defines in which index of `$psvar[]' the information is tracked.
 # The default is `1'. Set this to whatever fits you best.
@@ -85,12 +85,12 @@ function ft-psvx() {
         fi
     else
         case ${KEYMAP} in
-            vicmd) psvar[$psvmodeidx]='ESC';;
+            vicmd) psvar[$psvmodeidx]='';;
             *)
                 if [[ ${ft_zle_state[overwrite]} == yes ]]; then
                     psvar[$psvmodeidx]='REP'
                 else
-                    psvar[$psvmodeidx]=''
+                    psvar[$psvmodeidx]='INS'
                 fi
                 ;;
         esac
@@ -102,9 +102,9 @@ function ft-psvx() {
 # newly drawn prompt has the correct mode display.
 function ft-psvx-default() {
     if [[ ${zle_default_mode} == 'cmd' ]]; then
-        psvar[$psvmodeidx]='ESC'
-    else
         psvar[$psvmodeidx]=''
+    else
+        psvar[$psvmodeidx]='INS'
     fi
 }
 # This makes sure the first prompt is drawn correctly.
