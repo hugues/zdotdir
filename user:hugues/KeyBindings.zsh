@@ -81,7 +81,7 @@ ft_zle_state[overwrite]=no
 function ft-psvx() {
     if [[ ${ft_zle_state[minibuffer]} == yes ]]; then
         if [[ ${psvar[$psvmodeidx]} != *m ]]; then
-            psvar[$psvmodeidx]="${psvar[$psvmodeidx]}m"
+            psvar[$psvmodeidx]="${psvar[$psvmodeidx]}+"
         fi
     else
         case ${KEYMAP} in
