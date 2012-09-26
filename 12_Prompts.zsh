@@ -286,7 +286,7 @@ PS1_TASKBAR+=(__display)
 
 __display_vi_mode()
 {
-    echo -n "$C_$color[bold];$_prompt_colors[bar]$_C%8v"
+    echo -n "$C_$color[bold];33$_C%8v"
 }
 PS1_TASKBAR+=(__display_vi_mode)
 
