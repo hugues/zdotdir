@@ -211,6 +211,11 @@ do
 		bindkey -M $keymap -s '^[t' '^[Q todo\n'
 		bindkey -M $keymap -s '^[T' '^[Q todo all -c\n'
 	fi
+	if ( __cmd_exists rt )
+	then
+		bindkey -M $keymap -s '^[t' '^[Q mytickets.sh\n'
+		bindkey -M $keymap -s '^[T' '^[Q mytickets.sh -a\n'
+	fi
 
 	bindkey -M $keymap -s '^[c' '^[Q ./configure\n'
 	bindkey -M $keymap -s '^[©' '^[Q !?configure\n'
