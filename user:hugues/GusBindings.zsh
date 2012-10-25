@@ -230,6 +230,8 @@ do
 	bindkey -M $keymap -s '^[g' '^[Q git st .\n'
 	bindkey -M $keymap -s '^[G' '^[Q git fetchall\n'
 
+	bindkey -M $keymap -s '^[E' '^[Q eval $( !! )'
+
 	bindkey -M $keymap -s '^[S' '^[Q sudo !!'
 
 	bindkey -M $keymap -s '^[X' '^[Q up_up ; exec zsh -l\n'
