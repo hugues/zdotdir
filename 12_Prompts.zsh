@@ -295,7 +295,7 @@ __two_lines_prompt ()
     ## Le prompt le plus magnifique du monde, et c'est le mien !
     # Affiche l'user, l'host, le tty et le pwd. Rien que ça...
     #
-    PS1_=$HBAR$(print -Pn '\r')
+    PS1_=$(print -Pn '\r')$HBAR$(print -Pn '\r')
     for trigger in $PS1_TASKBAR
     do
         result=$($trigger)
