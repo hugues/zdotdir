@@ -1,4 +1,4 @@
-#compdef sdk-factory.sh sdk-patch.sh sdk-test.sh sdk-qa.sh set-target-build-env.sh
+#compdef sdk-factory.sh sdk-patch.sh sdk-test.sh sdk-qa.sh set-target-build-env.sh sdk-check.sh
 
 _sdk-targets() {
 
