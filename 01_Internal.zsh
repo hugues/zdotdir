@@ -314,7 +314,7 @@ __get_git_status ()
 		fi
 	fi
 
-    if [ $(git status | sed -n '2{/can be fast-forwarded/p};3q' | wc -l) -gt 0 ]
+    if [ $(git status | sed -n '2{/can be fast-forwarded/p;/have diverged/p};3q' | wc -l) -gt 0 ]
     then
         my_git_status+=";$_gcl_colors[ffwd]"
     fi
