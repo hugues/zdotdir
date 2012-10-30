@@ -11,7 +11,7 @@
 if __cmd_exists fortune
 then
 	__preprint "Pensée du jour"
-	fortune fr | fmt -s -w 74
+	fortune linux | fmt -s -w 74
 	__preprint
 	echo
 fi | sed 's/^/   /'
