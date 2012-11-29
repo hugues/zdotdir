@@ -322,7 +322,12 @@ __two_lines_prompt ()
 ZSH_STATUS=$(__zsh_status)
 if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 then
-    __set_prompt_colors "38;5;54"
+	if ( __privileged_user )
+	then
+		__set_prompt_colors "30"
+	else
+		__set_prompt_colors "38;5;14"
+	fi
     echo
     echo -n $c_$_prompt_colors[warning]$_c
     #toilet -f bigmono9 "D1rTY Zsh.."
