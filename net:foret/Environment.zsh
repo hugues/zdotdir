@@ -2,7 +2,7 @@
 export MUSICPLAYER=musicplayer
 
 # ccache
-export CCACHE_DIR=/work/$USER/.ccache
+export CCACHE_DIR=~/Work/.ccache
 
 # proxy
 export http_proxy="http://proxy.foret:3128"
