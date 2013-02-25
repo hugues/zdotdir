@@ -27,7 +27,17 @@ C_="%{$c_"
 _C="$_c%}"
 
 unset has_termcaps
-[ $TERM = "rxvt-unicode" -o $TERM = "screen" ] && has_termcaps="true"
+case "$( _process_tree )" in
+	*":: screen ::"*)
+		# Discards termcaps even if screen is launched from an urxvt..
+		;;
+	*":: urxvt ::"*|\
+	*":: tmux ::"*)
+		has_termcaps="true"
+		;;
+	*)
+		;;
+esac
 T_=${has_termcaps:+$termcap[as]}
 _T=${has_termcaps:+$termcap[ae]}
 _tq_=${${has_termcaps:+"q"}:-"-"}

@@ -428,3 +428,26 @@ _rehash ()
 }
 zle -N _rehash
 
+
+# Process helper
+_process_tree()
+{
+	for leaf in ${@:-$$}
+	do
+		ps -eo pid,ppid,command | awk -v leaf="$leaf" \
+			'{
+				parent[$1]=$2 ;
+				command[$1]=$3 ;
+			}
+			function print_ancestry(pid)
+			{
+				if (pid != 1) { print_ancestry(parent[pid]) ; printf " :: " }
+				printf command[pid];
+			};
+			END {
+				print_ancestry(leaf)
+				print ""
+			}'
+	done
+}
+
