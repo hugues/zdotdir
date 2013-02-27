@@ -63,7 +63,7 @@ bindkey '^M' accept-line
 bindkey '^N' down-line-or-history
 bindkey '^O' accept-line-and-down-history
 bindkey '^P' up-line-or-history
-bindkey '^Q' push-line
+bindkey '^Q' push-line-or-edit
 bindkey '^R' history-incremental-search-backward
 bindkey '^S' history-incremental-search-forward
 bindkey '^T' transpose-chars
@@ -148,7 +148,7 @@ bindkey '^[OB' down-line-or-history
 bindkey '^[OC' forward-char
 bindkey '^[OD' backward-char
 bindkey '^[P' history-search-backward
-bindkey '^[Q' push-line
+bindkey '^[Q' push-line-or-edit
 bindkey '^[S' spell-word
 bindkey '^[T' transpose-words
 bindkey '^[U' up-case-word
