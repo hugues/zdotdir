@@ -286,7 +286,9 @@ PS1_TASKBAR+=(__display)
 
 __display_vi_mode()
 {
+    __debug -n "    	vimode..."
     echo -n "$C_$color[bold];33$_C%8v"
+    __debug
 }
 PS1_TASKBAR+=(__display_vi_mode)
 
@@ -296,26 +298,34 @@ __two_lines_prompt ()
     # Affiche l'user, l'host, le tty et le pwd. Rien que ça...
     #
     PS1_=$(print -Pn '\r')$HBAR$(print -Pn '\r')
+    __debug "-----------------> taskbar..."
     for trigger in $PS1_TASKBAR
     do
+	__debug "              ---> $trigger..."
         result=$($trigger)
         [ -n "$result" ] && PS1_+=$_cuf1_${result}$C_$_prompt_colors[bar]$_C
     done
 
+    __debug "-----------------> date..."
     PS1_+=$(__show_date)
 
+    __debug "-----------------> extra..."
     PS1_+="
 "$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
     for trigger in $PS1_EXTRA_INFO
     do
+	__debug "              ---> $trigger..."
         result=$($trigger)
         [ -n "$result" ] && PS1_+=" "${result}
     done
+    __debug "-----------------> PS1..."
     PS1=$PS1_" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
+    __debug "-----------------> PS2..."
     local lastline="$(__expand_text $PS1 | tail -n1)"
     # Prompt level 2
     PS2="$C_$_prompt_colors[soft_generic]$_C$(for i in {2..$#lastline} ; print -n "·" ; tput sc ; print -n "\r")$C_$color[yellow];$color[bold]$_C%_$(tput rc)$C_$color[none]$_C "
+    __debug "------------------------------"
 
 }
 

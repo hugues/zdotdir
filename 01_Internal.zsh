@@ -140,6 +140,8 @@ __get_git_branch ()
 {
 	local my_git_branch checkouted_branch="yes"
 
+	__debug
+	__debug -n "		repo..."
 	if [ -f ".repo/manifests.git/config" ]
 	then
 		my_git_branch=$(grep merge .repo/manifests.git/config | awk '{print $3}')
@@ -149,7 +151,9 @@ __get_git_branch ()
 			return
 		fi
 	fi
+	__debug
 
+	__debug -n "		branch..."
 	# Get git branch only from git managed folders (not ignored subfolders..)
 	[ "$( ( git ls-files ; git ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \( ! -d .git -o "$(git rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
 
@@ -179,9 +183,11 @@ __get_git_branch ()
 			my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
 		fi
 	fi
+	__debug
 
     my_git_branch="→"$my_git_branch"←"
 
+	__debug -n "		rebase..."
 	# Rebase in progress ?
 	if [ -d $GIT_DIR/rebase-merge -o -d $GIT_DIR/rebase-apply ]
 	then
@@ -211,7 +217,9 @@ __get_git_branch ()
 		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
 	fi
+	__debug
 
+	__debug -n "		stashes..."
     # Show number of stashed commits by appending '+' signs for each
     if [ "$(git rev-parse --is-inside-git-dir)" != "true" -a "$(git config --get core.bare)" != "true" ]
     then
@@ -237,6 +245,8 @@ __get_guilt_series ()
 	#
 	guilt=""
 
+	__debug -n "       Guilt"
+
 	if ( __cmd_exists guilt && guilt status >/dev/null 2>&- )
 	then
 		applied=$(guilt applied 2>/dev/null | wc -l)
@@ -258,6 +268,7 @@ __get_guilt_series ()
 			guilt=$guilt$C_$colors[none]$_C
 		fi
 	fi
+	__debug
 
 	echo $guilt
 }
@@ -275,6 +286,8 @@ __get_git_status ()
 	fi
 
 	my_git_status=$_gcl_colors[uptodate];
+
+	__debug -n "		where to..."
 
 	if [ -f ".repo/manifests.git/config" ]
 	then
@@ -294,6 +307,9 @@ __get_git_status ()
 		changed="yes"
 	fi
 
+	__debug
+
+	__debug -n "		cached/changed..."
 	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
 
 	if [ "$cached" != "" -a "$changed" != "" ]
@@ -314,6 +330,9 @@ __get_git_status ()
 		fi
 	fi
 
+	__debug
+
+	__debug -n "		stashes..."
     if [ $(git status | sed -n '2{/can be fast-forwarded/p;/have diverged/p};3q' | wc -l) -gt 0 ]
     then
         my_git_status+=";$_gcl_colors[ffwd]"
@@ -325,6 +344,7 @@ __get_git_status ()
 	fi
 
 	echo $my_git_status
+	__debug
 }
 
 __zsh_status ()
