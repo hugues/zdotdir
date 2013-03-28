@@ -247,7 +247,7 @@ __get_guilt_series ()
 
 	__debug -n "       Guilt"
 
-	if ( __cmd_exists guilt && guilt status >/dev/null 2>&- )
+	if ( __cmd_exists guilt && test -d $GIT_DIR/patches && guilt status >/dev/null 2>&- )
 	then
 		applied=$(guilt applied 2>/dev/null | wc -l)
 		unapplied=$(guilt unapplied 2>/dev/null | wc -l)
