@@ -64,6 +64,10 @@ _tx_=${${has_termcaps:+"x"}:-"|"}
 PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
 PS1_YEAH="38;5;82"
+if ( __cmd_exists tmux && tmux list-panes -F '#S #{pane_tty}' | grep -q "^pause $(tty)" )
+then
+	PS1_USER=$color[red]
+fi
 
 ## Variables d'environnement ``classiques''
 #
