@@ -8,25 +8,25 @@
 ## NO WARRANTY PROVIDED, USE AT YOUR OWN RISKS
 ##
 
-__cmd_exists git && \
-git () {
-	GIT=$(which -p git)
-	case $1 in
-		init|clone|config)
-			;;
-		*)
-			if [ "$( ( $GIT ls-files ; $GIT ls-tree HEAD . ) 2>&- | head -n1)" = ""\
-				-a \( ! -d .git -o "$($GIT rev-parse --git-dir 2>&-)" != ".git" \)\
-				-a "$($GIT rev-parse --is-inside-git-dir 2>&-)" != "true" ]
-			then
-				echo >&2 "git $1: the current folder is not managed by git"
-				return
-			fi
-			;;
-	esac
-
-	$(which -p git) $@
-}
+#__cmd_exists git && \
+#git () {
+#	GIT=$(which -p git)
+#	case $1 in
+#		init|clone|config|log|status|add)
+#			;;
+#		*)
+#			if [ "$( ( $GIT ls-files ; $GIT ls-tree HEAD . ) 2>&- | head -n1)" = ""\
+#				-a \( ! -d .git -o "$($GIT rev-parse --git-dir 2>&-)" != ".git" \)\
+#				-a "$($GIT rev-parse --is-inside-git-dir 2>&-)" != "true" ]
+#			then
+#				echo >&2 "git $1: the current folder is not managed by git"
+#				return
+#			fi
+#			;;
+#	esac
+#
+#	$(which -p git) $@
+#}
 
 __cmd_exists when && \
 when()
