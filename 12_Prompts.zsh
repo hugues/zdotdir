@@ -334,8 +334,10 @@ if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
 then
 	if ( __privileged_user )
 	then
+		# Black for root
 		__set_prompt_colors "30"
 	else
+		# Poopy for standard user
 		__set_prompt_colors "38;5;14"
 	fi
     echo
