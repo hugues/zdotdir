@@ -300,10 +300,12 @@ __get_git_status ()
 		return
 	fi
 
-	if   [ "$(git diff --cached 2>&- | grep '^diff ' | head -n1 )" != "" ] ; then 
+	if   [ "$(git status --porcelain | cut -c1 | tr -d ' ?\n')" != "" ] ; then 
+		# Got any character but « » or «?» in first column : staged changes
 		cached="yes"
 	fi
-	if [ "$(git ls-files -m 2>&- | head -n1)" != "" ] ; then 
+	if [ "$(git status --porcelain | cut -c2 | tr -d ' ?\n')" != "" ] ; then 
+		# Got any character but « » or «?» in second column : working tree changes
 		changed="yes"
 	fi
 
@@ -353,14 +355,14 @@ __zsh_status ()
 	then
 		cd $ZDOTDIR >/dev/null
 		_status="$(git describe --always)"
-		if [ "$( (git diff --cached ; git diff) | head -n1)" != "" ]
+		if [ "$(git status --porcelain | cut -c1-2 | tr -d ' ?\n')" != "" ]
 		then
-			_status=$_status"-$( (git diff --cached ; git diff) | md5sum | sed 's/^\(.......\).*$/-D1rTY-\1/')"
+			# Dirty
+			return 1
 		fi
-		echo $_status
-	else
-		echo
 	fi
+	# Clean
+	return 0
 }
 
 __normal_user ()

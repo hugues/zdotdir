@@ -329,8 +329,7 @@ __two_lines_prompt ()
 
 }
 
-ZSH_STATUS=$(__zsh_status)
-if ( echo $ZSH_STATUS | grep -q -- "-D1rTY-" )
+if ( ! __zsh_status )
 then
 	if ( __privileged_user )
 	then
