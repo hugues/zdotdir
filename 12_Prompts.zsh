@@ -43,8 +43,10 @@ chpwd()
 
     if ( __cmd_exists git && test -d .git )
     then
-        # Shows tracked branches and modified files
-        git status | sed -n '2{/# Your branch/p};3q'
+		__debug -n "    GIT check..."
+		# Shows tracked branches and modified files
+		git status | sed -n '2{/# Your branch/p;q}'
+		__debug
     fi
 }
 
