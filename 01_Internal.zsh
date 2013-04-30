@@ -300,11 +300,11 @@ __get_git_status ()
 		return
 	fi
 
-	if   [ "$(git status --porcelain | cut -c1 | tr -d ' ?\n')" != "" ] ; then 
+	if   [ "$(git status --porcelain . | cut -c1 | tr -d ' ?\n')" != "" ] ; then 
 		# Got any character but « » or «?» in first column : staged changes
 		cached="yes"
 	fi
-	if [ "$(git status --porcelain | cut -c2 | tr -d ' ?\n')" != "" ] ; then 
+	if [ "$(git status --porcelain . | cut -c2 | tr -d ' ?\n')" != "" ] ; then 
 		# Got any character but « » or «?» in second column : working tree changes
 		changed="yes"
 	fi
@@ -334,8 +334,8 @@ __get_git_status ()
 
 	__debug
 
-	__debug -n "		stashes..."
-    if [ $(git status | sed -n '2{/can be fast-forwarded/p;/have diverged/p};3q' | wc -l) -gt 0 ]
+	__debug -n "		merges..."
+    if [ $(git status . | sed -n '2{/can be fast-forwarded/p;/have diverged/p};3q' | wc -l) -gt 0 ]
     then
         my_git_status+=";$_gcl_colors[ffwd]"
     fi
