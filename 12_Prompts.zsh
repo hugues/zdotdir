@@ -204,6 +204,7 @@ __vcsbranch ()
 
     # get git status
     #
+    export GIT_DIR=$(git rev-parse --git-dir 2>&-)
     GITBRANCH=$(__get_gcl_branch git)
     GITBRANCHSIZE=${#GITBRANCH}
     [ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
