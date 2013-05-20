@@ -157,6 +157,8 @@ __get_git_branch ()
 	# Get git branch only from git managed folders (not ignored subfolders..)
 	[ "$( ( git ls-files ; git ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \( ! -d .git -o "$(git rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
 
+	GIT_DIR=$(git rev-parse --git-dir)
+
 	# Get current working GIT branch
 	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
 
@@ -276,7 +278,7 @@ __get_guilt_series ()
 # a call to `__get_git_branch`
 __get_git_status ()
 {
-	local my_git_status cached changed managment_folder _status
+	local my_git_status cached changed managment_folder
 
 	if [ "$(git config --get zsh.check-status)" = "false" ]
 	then
@@ -285,7 +287,7 @@ __get_git_status ()
 
 	my_git_status=$_gcl_colors[uptodate];
 
-	__debug -n "		repo..."
+	__debug -n "		where to..."
 
 	if [ -f ".repo/manifests.git/config" ]
 	then
@@ -293,20 +295,16 @@ __get_git_status ()
 		return
 	fi
 
-	__debug -n " inside / bare..."
 	if [ "$(git rev-parse --is-inside-git-dir)" = "true" -o "$(git config --get core.bare)" = "true" ] ; then
 		echo "$_gcl_colors[gitdir]"
 		return
 	fi
 
-	_status=$(git status --porcelain .)
-	__debug -n " cached..."
-	if   [ "$(echo $_status | cut -c1 | tr -d ' ?\n')" != "" ] ; then 
+	if   [ "$(git status --porcelain . | cut -c1 | tr -d ' ?\n')" != "" ] ; then 
 		# Got any character but « » or «?» in first column : staged changes
 		cached="yes"
 	fi
-	__debug -n " changed..."
-	if [ "$(echo $_status | cut -c2 | tr -d ' ?\n')" != "" ] ; then 
+	if [ "$(git status --porcelain . | cut -c2 | tr -d ' ?\n')" != "" ] ; then 
 		# Got any character but « » or «?» in second column : working tree changes
 		changed="yes"
 	fi
@@ -314,6 +312,8 @@ __get_git_status ()
 	__debug
 
 	__debug -n "		cached/changed..."
+	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
+
 	if [ "$cached" != "" -a "$changed" != "" ]
 	then
 		my_git_status="$_gcl_colors[mixed]"
