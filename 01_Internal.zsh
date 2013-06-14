@@ -300,7 +300,7 @@ __get_git_status ()
 		return
 	fi
 
-	if   [ "$(git status --porcelain . | cut -c1 | tr -d ' ?\n')" != "" ] ; then 
+	if   [ "$(git status --porcelain | cut -c1 | tr -d ' ?\n')" != "" ] ; then 
 		# Got any character but « » or «?» in first column : staged changes
 		cached="yes"
 	fi
