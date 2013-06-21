@@ -394,8 +394,8 @@ __hbar()
 	then
         __debug -n "	Horizontal bar..."
 		_COLUMNS_OLD=$COLUMNS
-		unset HBAR
-		HBAR=$C_$_prompt_colors[bar]$_C$T_
+		HBAR_COLOR=$C_$_prompt_colors[bar]$_C$T_
+		HBAR=$T_
 		for h in {1..$COLUMNS}
 		do
 			HBAR=${HBAR}$_tq_
