@@ -235,6 +235,34 @@ __get_git_branch ()
             my_git_branch+="$C_$color[blink];$_prompt_colors[soft_generic]$_C·"
         fi
     fi
+	__debug
+
+	__debug -n "		behind/ahead..."
+    # Show number of stashed commits by appending '+' signs for each
+    if [ "$(git rev-parse --is-inside-git-dir)" != "true" -a "$(git config --get core.bare)" != "true" ]
+    then
+        local _ahead=0 ;
+        local _behind=0 ;
+        eval $(git status . | sed -n '
+        /^#$/ { q }
+        s/^# and have \([0-9]\+\) and \([0-9]\+\) different.*/_ahead=\1;\n_behind=\2;\n/p ;
+        s/^# Your branch is \(behind\|ahead\) .* \([0-9]\+\) commit.*/_\1=\2;\n/p ;
+        ')
+
+        [ $(($_ahead + $_behind)) -gt 0 ] && my_git_branch+=" "
+        if [ $_ahead -gt 0 ]
+        then
+            my_git_branch+=$C_$_gcl_colors[cached]$_C"↑"
+            [ $_ahead -gt 1 ] && my_git_branch+="$(echo $_ahead | \
+            sed 's/0/₀/g;s/1/₁/g;s/2/₂/g;s/3/₃/g;s/4/₄/g;s/5/₅/g;s/6/₆/g;s/7/₇/g;s/8/₈/g;s/9/₉/g')"
+        fi
+        if [ $_behind -gt 0 ]
+        then
+            my_git_branch+=$C_$_prompt_colors[bold_generic]$_C"↓"
+            [ $_behind -gt 1 ] && my_git_branch+="$(echo $_behind | \
+            sed 's/0/₀/g;s/1/₁/g;s/2/₂/g;s/3/₃/g;s/4/₄/g;s/5/₅/g;s/6/₆/g;s/7/₇/g;s/8/₈/g;s/9/₉/g')"
+        fi
+    fi
 
 	echo $my_git_branch
 }
@@ -335,7 +363,7 @@ __get_git_status ()
 	__debug
 
 	__debug -n "		merges..."
-    if [ $(git status . | sed -n '2{/can be fast-forwarded/p;/have diverged/p};3q' | wc -l) -gt 0 ]
+    if [ $(git status . | sed -n '2{/can be fast-forwarded/p;/have diverged/p;q}' | wc -l) -gt 0 ]
     then
         my_git_status+=";$_gcl_colors[ffwd]"
     fi
