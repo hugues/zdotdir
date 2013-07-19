@@ -252,7 +252,7 @@ __get_git_branch ()
         [ $(($_ahead + $_behind)) -gt 0 ] && my_git_branch+=" "
         if [ $_ahead -gt 0 ]
         then
-            my_git_branch+=$C_$_gcl_colors[cached]$_C"↑"
+            my_git_branch+=$C_$_gcl_colors[cached]$_C"↑"$C_$_prompt_colors[soft_generic]$_C
             [ $_ahead -gt 1 ] && my_git_branch+="₊$(echo $_ahead | _subscript_number)"
         fi
         if [ $_behind -gt 0 ]
