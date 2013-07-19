@@ -257,7 +257,7 @@ __get_git_branch ()
         fi
         if [ $_behind -gt 0 ]
         then
-            my_git_branch+=$C_$_prompt_colors[bold_generic]$_C"↓"
+            my_git_branch+=$C_$_prompt_colors[bold_generic]";"$color[blink]$_C"↓"$C_$_prompt_colors[bold_generic]$_C
             [ $_behind -gt 1 ] && my_git_branch+="₊$(echo $_behind | _subscript_number)"
         fi
     fi
