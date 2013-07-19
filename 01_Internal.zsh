@@ -226,13 +226,13 @@ __get_git_branch ()
         local _stashed=$(git stash list | wc -l )
         if [ "$_stashed" -gt 0 ]
         then
-            my_git_branch+=$C_$_prompt_colors[soft_generic]$_C
+            my_git_branch+=" "$C_$_prompt_colors[soft_generic]$_C
             while [ $_stashed -gt 1 ]
             do
-                my_git_branch+="·"
+                my_git_branch+="⚡"
                 _stashed=$(( $_stashed - 1 ))
             done
-            my_git_branch+="$C_$color[blink];$_prompt_colors[soft_generic]$_C·"
+            my_git_branch+="$C_$_prompt_colors[bold_generic];$color[white]$_C⚡"
         fi
     fi
 	__debug
