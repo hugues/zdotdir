@@ -253,13 +253,13 @@ __get_git_branch ()
         if [ $_ahead -gt 0 ]
         then
             my_git_branch+=$C_$_gcl_colors[cached]$_C"↑"
-            [ $_ahead -gt 1 ] && my_git_branch+="$(echo $_ahead | \
+            [ $_ahead -gt 1 ] && my_git_branch+="₊$(echo $_ahead | \
             sed 's/0/₀/g;s/1/₁/g;s/2/₂/g;s/3/₃/g;s/4/₄/g;s/5/₅/g;s/6/₆/g;s/7/₇/g;s/8/₈/g;s/9/₉/g')"
         fi
         if [ $_behind -gt 0 ]
         then
             my_git_branch+=$C_$_prompt_colors[bold_generic]$_C"↓"
-            [ $_behind -gt 1 ] && my_git_branch+="$(echo $_behind | \
+            [ $_behind -gt 1 ] && my_git_branch+="₊$(echo $_behind | \
             sed 's/0/₀/g;s/1/₁/g;s/2/₂/g;s/3/₃/g;s/4/₄/g;s/5/₅/g;s/6/₆/g;s/7/₇/g;s/8/₈/g;s/9/₉/g')"
         fi
     fi
