@@ -41,13 +41,13 @@ chpwd()
 
     __cmd_exists todo && todo
 
-    if ( __cmd_exists git && test -d .git )
-    then
-		__debug -n "    GIT check..."
-		# Shows tracked branches and modified files
-		git status | sed -n '2{/# Your branch/p;q}'
-		__debug
-    fi
+    #if ( __cmd_exists git && test -d .git )
+    #then
+	#	__debug -n "    GIT check..."
+	#	# Shows tracked branches and modified files
+	#	git status | sed -n '2{/# Your branch/p;q}'
+	#	__debug
+    #fi
 }
 
 preexec ()

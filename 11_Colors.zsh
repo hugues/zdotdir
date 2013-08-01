@@ -81,11 +81,12 @@ __set_prompt_colors ()
 	_gcl_colors[init]="$color[black];$color[bold]"
 	_gcl_colors[gitdir]="$color[red];$color[bold]"
 	_gcl_colors[uptodate]="$_prompt_colors[generic]"
+	_gcl_colors[changed]="$color[green]"
 	_gcl_colors[cached]="$color[yellow];$color[bold]"
 	_gcl_colors[mixed]="$color[green];$color[bold]"
-	_gcl_colors[changed]="$color[green]"
 	_gcl_colors[merging]="$color[bg-black]"
-	_gcl_colors[ffwd]="$color[standout]"
+	_gcl_colors[ffwd]="$color[red];$color[bold]"
+	_gcl_colors[diverged]="$color[black];$color[bold]"
 
 	_guilt_colors[applied]=$_gcl_colors[cached]
 	_guilt_colors[unapplied]=$color[black]
