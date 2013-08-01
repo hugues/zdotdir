@@ -228,13 +228,13 @@ __get_git_branch ()
         then
 			# ↙ ↯ ↲ ↵
 			local _stash="↙"
-            my_git_branch+=" "$C_$_prompt_colors[soft_generic]$_C
-            while [ $_stashed -gt 1 ]
-            do
-                my_git_branch+=$_stash
-                _stashed=$(( $_stashed - 1 ))
-            done
-            my_git_branch+="$C_$_prompt_colors[bold_generic];$color[white]$_C"$_stash
+            #my_git_branch+=" "$C_$_prompt_colors[soft_generic]$_C
+            #while [ $_stashed -gt 1 ]
+            #do
+            #    my_git_branch+=$_stash
+            #    _stashed=$(( $_stashed - 1 ))
+            #done
+            my_git_branch+=" $C_$_gcl_colors[white]$_C"$_stash
         fi
     fi
 	__debug
@@ -268,7 +268,12 @@ __get_git_branch ()
 		fi
 		if [ $_ahead -gt 0 ]
 		then
-			my_git_branch+=$C_$_gcl_colors[cached]$_C
+			if [ $_behind -gt 0 ]
+			then
+				my_git_branch+=$C_$_prompt_colors[generic]$_C
+			else
+				my_git_branch+=$C_$_gcl_colors[cached]$_C
+			fi
 			my_git_branch+="⬆"
 			[ $_ahead -gt 1 ] && my_git_branch+="$(echo $_ahead | _subscript_number)"
 		fi
