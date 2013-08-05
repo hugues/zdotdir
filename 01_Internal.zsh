@@ -235,6 +235,7 @@ __get_git_branch ()
             #    _stashed=$(( $_stashed - 1 ))
             #done
             my_git_branch+=" $C_$_gcl_colors[white]$_C"$_stash
+			[ $_stashed -gt 1 ] && my_git_branch+="$(echo $_stashed | _subscript_number)"
         fi
     fi
 	__debug
