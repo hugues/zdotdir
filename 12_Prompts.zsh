@@ -245,6 +245,19 @@ __vcsbranch ()
     if [ -n "$GITBRANCH" ]
     then
         GITBRANCH=$C_$_prompt_colors[soft_generic]$_C${${GITBRANCH/→/$C_"$(__get_git_status)"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}"$(__get_guilt_series)$C_$color[none]$_C"
+
+		# Get recursive submodules statuses
+		GIT_DIR=$(git rev-parse --git-dir)
+		for SUBMODULE in $(git config --get core.recursive)
+		do
+			pushd $(dirname $GIT_DIR)/$SUBMODULE >/dev/null
+			SUBBRANCH=${$(__get_git_branch)//→master←/→…←}
+			SUBSTATUS=$(__get_git_status)
+			popd >/dev/null
+			GITBRANCH+=$C_$color[black]$_C"₊"$C_$_prompt_colors[soft_generic]$_C
+			GITBRANCH+=${${SUBBRANCH/→/$C_"$SUBSTATUS"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}
+			GITBRANCH+=$C_$color[none]$_C
+		done
     fi
 
 
