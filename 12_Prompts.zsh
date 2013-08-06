@@ -157,6 +157,13 @@ __ssh_gpg_agents ()
 }
 PS1_TASKBAR+=(__ssh_gpg_agents)
 
+__display ()
+{
+    __debug -n "    Display..."
+    echo ${DISPLAY:+$C_$_prompt_colors[display]$_C"("$DISPLAY")"}
+    __debug
+}
+PS1_TASKBAR+=(__display)
 
 __vcsbranch ()
 {
@@ -204,68 +211,34 @@ __vcsbranch ()
 
     # get git status
     #
-    GITBRANCH=$(__get_gcl_branch git)
-    GITBRANCHSIZE=${#GITBRANCH}
-    [ $GITBRANCHSIZE -gt 0 ] && GITBRANCHSIZE=$(($GITBRANCHSIZE))
-
-    #
-    #__debug -n "    Path..."
-    #PATHSIZE=$(print -Pn $CURDIR)
-    #PATHSIZE=${#PATHSIZE}
-    #__debug
-    #__debug -n "    Resize path / gitbranch..."
-    #spaceleft=`__expand_text "%n@%m${DISPLAY:+($DISPLAY)} $ ls -laCdtrux $DATE"`
-    #spaceleft=$(($COLUMNS - ${#spaceleft}))
-    ##minimalpathsize=`print -Pn "../%1~"`
-    ##minimalpathsize=${#minimalpathsize}
-    #minimalpathsize=10
-    #minimalgitsize=10 # git-abbrev-commit-ish...
-    #if [ $GITBRANCHSIZE -gt 0 ]
-    #then
-    #    if [ $spaceleft -lt $(( $PATHSIZE + $GITBRANCHSIZE )) ]
-    #    then
-    #        CHUNKABLE=${${GITBRANCH/*→/}/←*/}
-    #
-    #        #  reduce the git-branch until it is shrinked to $minimalgitsize characters max.
-    #        if [ $GITBRANCHSIZE -gt $minimalgitsize ]
-    #        then
-    #            GITBRANCHCHUNK=$(( $GITBRANCHSIZE - ($spaceleft - $PATHSIZE) ))
-    #            [ $((${#CHUNKABLE} - $GITBRANCHCHUNK)) -lt $minimalgitsize ] && GITBRANCHCHUNK=$((${#CHUNKABLE} - $minimalgitsize))
-    #        fi
-    #        CHUNKABLE=`print -Pn "%"$(( ${#CHUNKABLE} - ${GITBRANCHCHUNK:-0} ))">¬>"${CHUNKABLE%\~*}`
-    #
-    #        GITBRANCH=${GITBRANCH/→*←/→$CHUNKABLE←}
-    #    fi
-    #fi
-    #  then we reduce the path until it reaches the last path element,
-    #spaceleft=$(($spaceleft - $GITBRANCHSIZE))
-    #[ $spaceleft -lt $minimalpathsize ] && spaceleft=$minimalpathsize
-    #__debug
-
-    if [ -n "$GITBRANCH" ]
-    then
-        GITBRANCH=$C_$_prompt_colors[soft_generic]$_C${${GITBRANCH/→/$C_"$(__get_git_status)"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}"$(__get_guilt_series)$C_$color[none]$_C"
-
-		# Get recursive submodules statuses
-		GIT_DIR=$(git rev-parse --git-dir)
-		for SUBMODULE in $(git config --get core.recursive)
-		do
-			pushd $(dirname $GIT_DIR)/$SUBMODULE >/dev/null
-			SUBBRANCH=${$(__get_git_branch)//→master←/→…←}
-			SUBSTATUS=$(__get_git_status)
-			popd >/dev/null
-			GITBRANCH+=$C_$color[black]$_C"₊"$C_$_prompt_colors[soft_generic]$_C
-			GITBRANCH+=${${SUBBRANCH/→/$C_"$SUBSTATUS"$_C}/←/$C_$_prompt_colors[soft_generic]$_C}
-			GITBRANCH+=$C_$color[none]$_C
-		done
-    fi
-
-
+    GITBRANCH=$(__get_git_fullstatus)
     [ -n "$GITBRANCH" ] && vcsbranch+=${vcsbranch:+ }$GITBRANCH
 
     echo $vcsbranch
 }
 PS1_EXTRA_INFO+=(__vcsbranch)
+
+__subvcsbranches () {
+	local GITBRANCH
+
+	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
+	[ "$( ( git ls-files ; git ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \
+	  \( ! -d .git -o -z "$GIT_DIR" \) -a \
+	  "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
+
+	# Get recursive submodules statuses
+	for SUBMODULE in $(git config --get zsh.recurse-dirs)
+	do
+		if [ -d $(dirname $GIT_DIR)/$SUBMODULE ]
+		then
+			GITBRANCH+=${GITBRANCH:+$(tput cuf1)}
+			GITBRANCH+=$(__get_git_fullstatus $(dirname $GIT_DIR)/$SUBMODULE)
+		fi
+	done
+	echo $GITBRANCH
+
+}
+PS1_TASKBAR+=(__subvcsbranches)
 
 __redefine_prompt ()
 {
@@ -290,14 +263,6 @@ __show_date()
 {
     echo $(tput cub $COLUMNS ; tput cuf $(($COLUMNS - $DATESIZE)))$DATE
 }
-
-__display ()
-{
-    __debug -n "    Display..."
-    echo ${DISPLAY:+$C_$_prompt_colors[display]$_C"("$DISPLAY")"}
-    __debug
-}
-PS1_TASKBAR+=(__display)
 
 __display_vi_mode()
 {

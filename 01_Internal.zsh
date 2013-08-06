@@ -112,7 +112,7 @@ __get_gcl_branch ()
 	case $1 in
 		git)
             __debug -n "	GIT status..."
-			__get_git_branch
+			__get_git_infos
             __debug
 			;;
 		hg)
@@ -136,6 +136,22 @@ __get_hg_branch ()
 
 __cleanup_git_branch_name() { sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,' }
 
+__get_git_fullstatus ()
+{
+	[ -n "$1" ] && pushd $1 >/dev/null
+
+	local _branch _status
+
+	_branch=$(__get_git_branch)
+	_status=$(__get_git_branch_status)
+
+	[ -n "$_branch" ] && _branch=$C_$_prompt_colors[soft_generic]$_C${${_branch/→/$C_$_status$_C}/←/$C_$_prompt_colors[soft_generic]$_C}$C_$color[none]$_C
+
+	[ -n "$1" ] && popd >/dev/null
+
+	echo "$_branch"
+}
+
 __get_git_branch ()
 {
 	local my_git_branch checkouted_branch="yes"
@@ -154,13 +170,15 @@ __get_git_branch ()
 	__debug
 
 	__debug -n "		branch..."
+	GIT_DIR=$(git rev-parse --git-dir 2>&-)
 	# Get git branch only from git managed folders (not ignored subfolders..)
-	[ "$( ( git ls-files ; git ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \( ! -d .git -o "$(git rev-parse --git-dir 2>&-)" != ".git" \) -a "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
-
-	GIT_DIR=$(git rev-parse --git-dir)
+	[ "$( ( git ls-files ; git ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \
+	  \( ! -d .git -o -z "$GIT_DIR" \) -a \
+	  "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
 
 	# Get current working GIT branch
 	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
+
 
 	if [ "$my_git_branch" != "" ]
 	then
@@ -324,26 +342,29 @@ __get_guilt_series ()
 # We *must* have previously checked that
 # we obtained a correct GIT branch with
 # a call to `__get_git_branch`
-__get_git_status ()
+__get_git_branch_status ()
 {
-	local my_git_status cached changed managment_folder
+	local my_git_branch_status cached changed managment_folder
+
+	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
+	[ -z "$GIT_DIR" ] && return
 
 	if [ "$(git config --get zsh.check-status)" = "false" ]
 	then
 		return
 	fi
 
-	my_git_status=$_gcl_colors[uptodate];
+	my_git_branch_status=$_gcl_colors[uptodate];
 
 	__debug -n "		where to..."
 
 	if [ -f ".repo/manifests.git/config" ]
 	then
-		echo $my_git_status
+		echo $my_git_branch_status
 		return
 	fi
 
-	if [ "$(git rev-parse --is-inside-git-dir)" = "true" -o "$(git config --get core.bare)" = "true" ] ; then
+	if [ "$(git rev-parse --is-inside-git-dir 2>/dev/null)" = "true" -o "$(git config --get core.bare)" = "true" ] ; then
 		echo "$_gcl_colors[gitdir]"
 		return
 	fi
@@ -360,23 +381,22 @@ __get_git_status ()
 	__debug
 
 	__debug -n "		cached/changed..."
-	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
 
 	if [ "$cached" != "" -a "$changed" != "" ]
 	then
-		my_git_status="$_gcl_colors[mixed]"
+		my_git_branch_status="$_gcl_colors[mixed]"
 	elif [ "$cached" != "" ]
 	then
-		my_git_status="$_gcl_colors[cached]"
+		my_git_branch_status="$_gcl_colors[cached]"
 	elif [ "$changed" != "" ]
 	then
-		my_git_status="$_gcl_colors[changed]"
+		my_git_branch_status="$_gcl_colors[changed]"
 	elif [ "$(git cat-file -t HEAD 2>/dev/null)" != "commit" ]
 	then
 		if [ ! -z "$(git ls-files)" ] ; then
-			my_git_status="$_gcl_colors[cached]"
+			my_git_branch_status="$_gcl_colors[cached]"
 		else
-			my_git_status="$_gcl_colors[init]"
+			my_git_branch_status="$_gcl_colors[init]"
 		fi
 	fi
 
@@ -385,17 +405,17 @@ __get_git_status ()
 	__debug -n "		diverged..."
     if [ $(git status . | sed -n '2{/have diverged/p;q}' | wc -l) -gt 0 ]
     then
-        my_git_status+=";$color[standout]"
+        my_git_branch_status+=";$color[standout]"
     fi
 	__debug
 
 	__debug -n "		merges..."
 	if [ $(git ls-files --unmerged | wc -l) -gt 0 ]
 	then
-		my_git_status="${_gcl_colors[merging]:+$_gcl_colors[merging];}$my_git_status"
+		my_git_branch_status="${_gcl_colors[merging]:+$_gcl_colors[merging];}$my_git_branch_status"
 	fi
 
-	echo $my_git_status
+	echo $my_git_branch_status
 	__debug
 }
 
