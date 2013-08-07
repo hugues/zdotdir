@@ -87,7 +87,7 @@ __set_prompt_colors ()
 	_gcl_colors[mixed]="$color[green];$color[bold]"
 	_gcl_colors[stashes]="$color[white]"
 	_gcl_colors[ffwd]="$color[red];$color[bold]"
-	_gcl_colors[diverged]="$color[black];$color[bold]"
+	_gcl_colors[untracked]="$color[black];$color[bold]"
 
 	_guilt_colors[applied]=$_gcl_colors[cached]
 	_guilt_colors[unapplied]=$color[black]

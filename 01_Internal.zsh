@@ -154,7 +154,7 @@ __get_git_fullstatus ()
 
 __get_git_branch ()
 {
-	local my_git_branch checkouted_branch="yes"
+	local my_git_branch checkouted_branch
 
 	__debug
 	__debug -n "		repo..."
@@ -178,7 +178,8 @@ __get_git_branch ()
 
 	# Get current working GIT branch
 	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
-
+	# for future use
+	checkouted_branch=$my_git_branch
 
 	if [ "$my_git_branch" != "" ]
 	then
@@ -190,7 +191,7 @@ __get_git_branch ()
 		# If neither on a named commit-ish, show commit-id
 		if [ "$my_git_branch" = "undefined" ]
 		then
-			my_git_branch="$(git rev-parse --verify HEAD 2>&-)"
+			my_git_branch="$(git rev-parse --verify HEAD 2>&- | cut -c-7)…"
 		fi
 	else
 		# Initial commit
@@ -223,17 +224,29 @@ __get_git_branch ()
 		then
 			current=$(< $REBASE_DIR/done wc -l)
 			last=$(( $current + $(< $REBASE_DIR/git-rebase-todo grep -v "^#\|^[[:blank:]]*$" | wc -l) ))
-			rebase=$rebase$rebase_in_progress": "
 		else
 			current=$(cat $REBASE_DIR/next)
 			last=$(cat $REBASE_DIR/last)
 		fi
 
-		my_git_branch="[$current/$last: "$(git name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null | __cleanup_git_branch_name)".."$(echo $my_git_branch)"]"
-		[ -r $REBASE_DIR/head-name ] && my_git_branch=$my_git_branch" "$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')
+		rebase="["$C_$_prompt_colors[bold_generic]$_C
+		#while [ $current -gt 0 ] ; do rebase+=$T_"a"$_T ; current=$(( $current - 1 )) ; done
+		#while [ $last -gt 0 ]    ; do rebase+=$T_"|"$_T ; last=$(( $last - 1 )) ; done
+		rebase+=$current"/"$last
+		rebase+=$C_$_prompt_colors[soft_generic]$_C": "$(git name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null | __cleanup_git_branch_name)".."$my_git_branch"]"
+		[ -r $REBASE_DIR/head-name ] && rebase+=" ("$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')")"
+		my_git_branch=$rebase
 	else
 		# No rebase in progress, put '(' ')' if needed
 		[ ! "$checkouted_branch" ] && my_git_branch="($my_git_branch)"
+	fi
+	__debug
+
+	__debug -n "		tracking..."
+	if [ ! "$checkouted_branch" -o ! "$(git config --get branch.$checkouted_branch.remote)" ]
+	then
+		my_git_branch+=$C_$_gcl_colors[untracked]$_C
+		my_git_branch+=" ✖"
 	fi
 	__debug
 
@@ -274,11 +287,6 @@ __get_git_branch ()
 
         [ $(($_ahead + $_behind)) -gt 0 ] && my_git_branch+=" "
 
-		if [ $_ahead -gt 0 -a $_behind -gt 0 ]
-		then
-			my_git_branch+=$C_$_gcl_colors[diverged]$_C
-			my_git_branch+="✖ "
-		fi
 		if [ $_behind -gt 0 ]
 		then
 			my_git_branch+=$C_$_gcl_colors[ffwd]$_C
@@ -400,13 +408,6 @@ __get_git_branch_status ()
 		fi
 	fi
 
-	__debug
-
-	__debug -n "		diverged..."
-    if [ $(git status . | sed -n '2{/have diverged/p;q}' | wc -l) -gt 0 ]
-    then
-        my_git_branch_status+=";$color[standout]"
-    fi
 	__debug
 
 	__debug -n "		merges..."
