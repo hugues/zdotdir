@@ -243,7 +243,7 @@ __get_git_branch ()
 	__debug
 
 	__debug -n "		tracking..."
-	if [ ! "$checkouted_branch" -o ! "$(git config --get branch.$checkouted_branch.remote)" ]
+	if [ "$checkouted_branch" -a ! "$(git config --get branch.$checkouted_branch.remote)" ]
 	then
 		my_git_branch+=$C_$_gcl_colors[untracked]$_C
 		my_git_branch+=" ✖"
