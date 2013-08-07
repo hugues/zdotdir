@@ -154,7 +154,7 @@ __get_git_fullstatus ()
 
 __get_git_branch ()
 {
-	local my_git_branch checkouted_branch
+	local my_git_branch checkouted_branch commit_ish
 
 	__debug
 	__debug -n "		repo..."
@@ -176,6 +176,9 @@ __get_git_branch ()
 	  \( ! -d .git -o -z "$GIT_DIR" \) -a \
 	  "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
 
+	# commit-ish, for future uses
+	commit_ish=$(git rev-parse --verify HEAD 2>/dev/null)
+
 	# Get current working GIT branch
 	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
 	# for future use
@@ -191,7 +194,7 @@ __get_git_branch ()
 		# If neither on a named commit-ish, show commit-id
 		if [ "$my_git_branch" = "undefined" ]
 		then
-			my_git_branch="$(git rev-parse --verify HEAD 2>&- | cut -c-7)…"
+			my_git_branch="$(echo $commit_ish | cut -c-7)"
 		fi
 	else
 		# Initial commit
