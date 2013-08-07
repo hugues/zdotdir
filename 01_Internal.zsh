@@ -209,6 +209,55 @@ __get_git_branch ()
 
     my_git_branch="→"$my_git_branch"←"
 
+	__debug -n "		bisect..."
+	# Bisect in progress ?
+	if [ -e $GIT_DIR/BISECT_LOG ]
+	then
+		local bisect bisect_good bisect_bad bisect_start
+		# ▶ ▷ ▸ ▹ ► ▻ ◀ ◁ ◂ ◃ ◄ ◅
+
+		eval $(awk '
+			BEGIN {
+				good=""
+				bad=""
+			}
+			/^git bisect good/ { good=$4 }
+			/^git bisect bad/ { bad=$4 }
+			END {
+				print "bisect_good="good 
+				print "bisect_bad="bad
+			}' $GIT_DIR/BISECT_LOG)
+
+		bisect=""
+
+		if [ "$bisect_good" ]
+		then
+			bisect_good=$(( $(git log --oneline $bisect_good..$commit_ish | wc -l) - 1))
+			bisect+="$C_$_gcl_colors[bisect-good]$_C"
+			[ $bisect_good -ge 1 ] && bisect+="₊"$(echo $bisect_good | _subscript_number)
+			bisect+="▸"
+		fi
+
+		#bisect+="→"$commit_ish"←"
+		bisect+=$my_git_branch
+
+		if [ "$bisect_bad" ]
+		then
+			bisect_bad=$(git log --oneline $commit_ish..$bisect_bad | wc -l)
+			bisect+="$C_$_gcl_colors[bisect-bad]$_C"
+			bisect+="◂"
+			[ $bisect_bad -ge 1 ] && bisect+="₊"$(echo $bisect_bad | _subscript_number)
+		fi
+
+		bisect+="$C_$_prompt_colors[soft_generic]$_C ("
+		bisect+=$C_$color[magenta]$_C$(cat $GIT_DIR/BISECT_START)
+		bisect+=$C_$_prompt_colors[soft_generic]$_C")"
+
+		echo $bisect
+		return
+	fi
+	__debug
+
 	__debug -n "		rebase..."
 	# Rebase in progress ?
 	if [ -d $GIT_DIR/rebase-merge -o -d $GIT_DIR/rebase-apply ]
