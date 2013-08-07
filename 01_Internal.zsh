@@ -213,7 +213,7 @@ __get_git_branch ()
 	# Rebase in progress ?
 	if [ -d $GIT_DIR/rebase-merge -o -d $GIT_DIR/rebase-apply ]
 	then
-		local rebase current last
+		local rebase onto amend current last
 		local REBASE_DIR
 
 		if [ -d $GIT_DIR/rebase-merge ]
@@ -236,7 +236,25 @@ __get_git_branch ()
 		#while [ $current -gt 0 ] ; do rebase+=$T_"a"$_T ; current=$(( $current - 1 )) ; done
 		#while [ $last -gt 0 ]    ; do rebase+=$T_"|"$_T ; last=$(( $last - 1 )) ; done
 		rebase+=$current"/"$last
-		rebase+=$C_$_prompt_colors[soft_generic]$_C": "$(git name-rev --name-only "$(cat $REBASE_DIR/onto 2>/dev/null)" 2>/dev/null | __cleanup_git_branch_name)".."$my_git_branch"]"
+
+		# ▶ ▷ ▸ ▹ ► ▻ ◀ ◁ ◂ ◃ ◄ ◅
+
+		# base
+		onto=$(cat $REBASE_DIR/onto | cut -c-7)
+
+		# amended commit
+		amend=$(cat $REBASE_DIR/stopped-sha)
+		if [ "$amend" != "$(echo $commit_ish | cut -c-7)" ]
+		then
+			#amend=$(git name-rev --name-only "$amend" 2>/dev/null | __cleanup_git_branch_name)
+			#[ "$amend" = "undefined" ] &&
+			amend=$(cat $REBASE_DIR/stopped-sha)
+			amend=" ◃ "$C_$color[magenta]$_C$amend$C_$_prompt_colors[soft_generic]$_C
+		else
+			amend=""
+		fi
+
+		rebase+=$C_$_prompt_colors[soft_generic]$_C": $onto..$my_git_branch$amend]"
 		[ -r $REBASE_DIR/head-name ] && rebase+=" ("$(< $REBASE_DIR/head-name sed 's/^refs\///;s/^heads\///')")"
 		my_git_branch=$rebase
 	else
