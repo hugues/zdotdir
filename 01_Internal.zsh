@@ -296,12 +296,14 @@ __get_git_branch ()
 		onto=$(cat $REBASE_DIR/onto | cut -c-7)
 
 		# amended commit
-		amend=$(cat $REBASE_DIR/stopped-sha)
-		if [ "$amend" != "$(echo $commit_ish | cut -c-7)" ]
+		[ -e $REBASE_DIR/original-commit ] && amend=$(cat $REBASE_DIR/original-commit | cut -c-7)
+		[ -e $REBASE_DIR/stopped-sha ] && amend=$(cat $REBASE_DIR/stopped-sha)
+		#
+		if [ "$amend" != "$commit_ish" ]
 		then
 			#amend=$(git name-rev --name-only "$amend" 2>/dev/null | __cleanup_git_branch_name)
 			#[ "$amend" = "undefined" ] &&
-			amend=$(cat $REBASE_DIR/stopped-sha)
+			amend=$(echo $amend | cut -c-7)
 			amend=" ◃ "$C_$color[magenta]$_C$amend$C_$_prompt_colors[soft_generic]$_C
 		else
 			amend=""
