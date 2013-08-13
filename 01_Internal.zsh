@@ -140,16 +140,20 @@ __get_git_fullstatus ()
 {
 	[ -n "$1" ] && pushd $1 >/dev/null
 
-	local _branch _status
+	local _branch _status _tracking _stashes
 
 	_branch=$(__get_git_branch)
 	_status=$(__get_git_branch_status)
 
 	[ -n "$_branch" ] && _branch=$C_$_prompt_colors[soft_generic]$_C${${_branch/→/$C_$_status$_C}/←/$C_$_prompt_colors[soft_generic]$_C}$C_$color[none]$_C
 
+	_tracking=$(__get_git_tracking_status)
+	_stashes=$(__get_git_stashes)
+
 	[ -n "$1" ] && popd >/dev/null
 
-	echo "$_branch"
+	echo $_branch${_tracking:+ $_tracking}${_stashes:+ $_stashes}
+
 }
 
 __get_git_branch ()
@@ -312,14 +316,10 @@ __get_git_branch ()
 	fi
 	__debug
 
-	__debug -n "		tracking..."
-	if [ "$checkouted_branch" -a ! "$(git config --get branch.$checkouted_branch.remote)" ]
-	then
-		my_git_branch+=$C_$_gcl_colors[untracked]$_C
-		my_git_branch+=" ✖"
-	fi
-	__debug
+	echo $my_git_branch
+}
 
+__get_git_stashes() {
 	__debug -n "		stashes..."
     # Show number of stashed commits by appending '+' signs for each
     if [ "$(git rev-parse --is-inside-git-dir)" != "true" -a "$(git config --get core.bare)" != "true" ]
@@ -328,17 +328,22 @@ __get_git_branch ()
         if [ "$_stashed" -gt 0 ]
         then
 			# ↙ ↯ ↲ ↵
-			local _stash="↙"
-            #my_git_branch+=" "$C_$_prompt_colors[soft_generic]$_C
-            #while [ $_stashed -gt 1 ]
-            #do
-            #    my_git_branch+=$_stash
-            #    _stashed=$(( $_stashed - 1 ))
-            #done
-            my_git_branch+=" $C_$_gcl_colors[white]$_C"$_stash
-			[ $_stashed -gt 1 ] && my_git_branch+="$(echo $_stashed | _subscript_number)"
+			echo -n $C_$_gcl_colors[white]$_C"↙"
+			[ $_stashed -gt 1 ] && echo -n "$(echo $_stashed | _subscript_number)"
         fi
     fi
+	__debug
+}
+
+__get_git_tracking_status() {
+	local git_tracking_status=""
+
+	__debug -n "		tracking..."
+	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
+	if [ "$checkouted_branch" -a ! "$(git config --get branch.$checkouted_branch.remote)" ]
+	then
+		git_tracking_status=$C_$_gcl_colors[untracked]$_C"✖"
+	fi
 	__debug
 
 	__debug -n "		behind/ahead..."
@@ -355,28 +360,26 @@ __get_git_branch ()
 
 		# ᛨ ᛪ ⇅ ↟↟ ⇶ ⇶ ⇵ ⌥ ⬆ ⬇ ⬌  ⬍ ⤱ ⤲ ✖ ➠ ➟ ⤴ ⎇⬋⬉⬉⬈⬌⬍⬅⬄
 
-        [ $(($_ahead + $_behind)) -gt 0 ] && my_git_branch+=" "
-
 		if [ $_behind -gt 0 ]
 		then
-			my_git_branch+=$C_$_gcl_colors[ffwd]$_C
-			[ $_behind -gt 1 ] && my_git_branch+="$(echo $_behind | _subscript_number)"
-			my_git_branch+="⬇"
+			git_tracking_status+=$C_$_gcl_colors[ffwd]$_C
+			[ $_behind -gt 1 ] && git_tracking_status+="$(echo $_behind | _subscript_number)"
+			git_tracking_status+="⬇"
 		fi
 		if [ $_ahead -gt 0 ]
 		then
 			if [ $_behind -gt 0 ]
 			then
-				my_git_branch+=$C_$_prompt_colors[generic]$_C
+				git_tracking_status+=$C_$_prompt_colors[generic]$_C
 			else
-				my_git_branch+=$C_$_gcl_colors[cached]$_C
+				git_tracking_status+=$C_$_gcl_colors[cached]$_C
 			fi
-			my_git_branch+="⬆"
-			[ $_ahead -gt 1 ] && my_git_branch+="$(echo $_ahead | _subscript_number)"
+			git_tracking_status+="⬆"
+			[ $_ahead -gt 1 ] && git_tracking_status+="$(echo $_ahead | _subscript_number)"
 		fi
     fi
 
-	echo $my_git_branch
+	echo $git_tracking_status
 }
 
 _subscript_number() {
