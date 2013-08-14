@@ -304,17 +304,25 @@ __get_git_branch ()
 		# ▶ ▷ ▸ ▹ ► ▻ ◀ ◁ ◂ ◃ ◄ ◅
 
 		# base
-		onto=$(cat $REBASE_DIR/onto | cut -c-7)
+		onto=$(git name-rev --name-only $(cat $REBASE_DIR/onto) | __cleanup_git_branch_name)
 
 		# amended commit
-		[ -e $REBASE_DIR/original-commit ] && amend=$(cat $REBASE_DIR/original-commit | cut -c-7)
-		[ -e $REBASE_DIR/stopped-sha ] && amend=$(cat $REBASE_DIR/stopped-sha)
+		if [ -e $REBASE_DIR/amend ]
+		then
+			amend=$(cat $REBASE_DIR/amend)
+		elif [ -e $REBASE_DIR/original-commit ]
+		then
+			amend=$(cat $REBASE_DIR/original-commit)
+		elif [ -e $REBASE_DIR/stopped-sha ]
+		then
+			amend=$(cat $REBASE_DIR/stopped-sha)
+		fi
 		#
 		if [ "$amend" != "$commit_ish" ]
 		then
 			#amend=$(git name-rev --name-only "$amend" 2>/dev/null | __cleanup_git_branch_name)
 			#[ "$amend" = "undefined" ] &&
-			amend=$(echo $amend | cut -c-7)
+			amend=$(git name-rev --name-only $amend | __cleanup_git_branch_name)
 			amend=" ◃ "$C_$color[magenta]$_C$amend$C_$_prompt_colors[soft_generic]$_C
 		else
 			amend=""
