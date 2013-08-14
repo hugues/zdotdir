@@ -361,7 +361,7 @@ __get_git_tracking_status() {
 
 	__debug -n "		tracking..."
 	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
-	if [ "$checkouted_branch" -a ! "$(git config --get branch.$checkouted_branch.remote)" ]
+	if [ "$my_git_branch" != "(no branch)" -a ! "$(git config --get branch.$my_git_branch.remote)" ]
 	then
 		git_tracking_status=$C_$_gcl_colors[untracked]$_C"✖"
 	fi
