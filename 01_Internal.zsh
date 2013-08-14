@@ -134,7 +134,16 @@ __get_hg_branch ()
 	fi
 }
 
-__cleanup_git_branch_name() { sed 's,^tags/,,;s,^remotes/,,;s,\^0$,,' }
+__cleanup_git_branch_name() { sed '
+		s,^tags/\(.*\),[\1],
+		/^remotes/ {
+			s,^remotes/,,
+			s,^devel/,~,
+			s,^origin/,,
+			s,^,%{\\033['$color[standout]'m%},
+		}
+		s,\^0$,,
+	' }
 
 __get_git_fullstatus ()
 {
