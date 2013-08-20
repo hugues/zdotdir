@@ -80,8 +80,8 @@ __makeflags ()
     echo -n $_prompt_colors[soft_generic]";3"$_C${MAKEFLAGS// -/}
 }
 
-PS1_TASKBAR+=(__makeflags __verbose_compilation __nproc_compilation)
-PS1_EXTRA_INFO+=(__static_dynamic __compilation_os __compilation_arch __compilation_target)
+PS1_TASKBAR+=(__makeflags __verbose_compilation __nproc_compilation __static_dynamic __compilation_os __compilation_arch __compilation_target)
+PS1_EXTRA_INFO+=()
 
 __subvcsbranches () {
 	local GITBRANCH
