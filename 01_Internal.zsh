@@ -137,9 +137,9 @@ __get_hg_branch ()
 __cleanup_git_branch_name() { sed '
 		s,^tags/\(.*\),[\1],
 		/^remotes/ {
-			s,^remotes/,,
-			s,^devel/,~,
-			s,^origin/,,
+			s,^remotes/origin/,¬/,
+			s,^remotes/devel/,~,
+			s,^remotes/,…/,
 			s,^,%{\\033['$color[standout]'m%},
 		}
 		s,\^0$,,
