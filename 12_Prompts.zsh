@@ -232,7 +232,7 @@ __subvcsbranches () {
 		if [ -d $(dirname $GIT_DIR)/$SUBMODULE ]
 		then
 			GITBRANCH+=${GITBRANCH:+$(tput cuf1)}
-			GITBRANCH+=$C_$_prompt_colors[bar]$_C"["
+			GITBRANCH+=$C_$_prompt_colors[bar]$_C"[%{%B%}$SUBMODULE%{%b%}:"
 			GITBRANCH+=$(__get_git_fullstatus $(dirname $GIT_DIR)/$SUBMODULE)
 			GITBRANCH+=$C_$_prompt_colors[bar]$_C"]"
 		fi
