@@ -65,11 +65,6 @@ PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
 # Specific color for YeahConsole
 PS1_YEAH="38;5;82"
-# The following sets another std-user color for a specific tmux session
-if ( __cmd_exists tmux && tmux list-panes -F '#S #{pane_tty}' | grep -q "^pause $(tty)" )
-then
-	PS1_USER=$color[red]
-fi
 
 ## Variables d'environnement ``classiques''
 #
