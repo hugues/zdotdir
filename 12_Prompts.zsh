@@ -313,14 +313,6 @@ __two_lines_prompt ()
 
 if ( ! __zsh_status )
 then
-	if ( __privileged_user )
-	then
-		# Black for root
-		__set_prompt_colors "30"
-	else
-		# Poopy for standard user
-		__set_prompt_colors "38;5;14"
-	fi
     echo
     echo -n $c_$_prompt_colors[warning]$_c
     #toilet -f bigmono9 "D1rTY Zsh.."
