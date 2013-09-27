@@ -631,3 +631,8 @@ _process_tree()
 	done
 }
 
+# Asks confirmation before executing parameters
+confirm() {
+	read -q "?Are you sure? " && $@
+}
+

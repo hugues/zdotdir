@@ -164,9 +164,15 @@ bindkey -v
 # This setup may change the `ESC' keybinding to `C-d'. That defeats the
 # possibility to exit zsh by pressing `C-d' (which usually sends EOF).
 # With this widget, you can type `:q<RET>' to exit the shell from vicmd.
+if [ $( _process_tree | grep -o zsh | wc -l ) -gt 1 ]
+then
+	CONFIRM_EXIT=""
+else
+	CONFIRM_EXIT="confirm "
+fi
 function ft-zshexit {
     [[ -o hist_ignore_space ]] && BUFFER=' '
-    BUFFER="${BUFFER}exit"
+    BUFFER="${BUFFER}${CONFIRM_EXIT}exit"
     zle .accept-line
 }
 zle -N q ft-zshexit
