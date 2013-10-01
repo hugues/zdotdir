@@ -95,13 +95,13 @@ __preprint()
 	local _width=74
 	local _space=5
 
-	hbar=$T_${(l:$(( $_width - ${#1} - $_space ))::q:)}$_T
+	hbar=$T_${${(l:$(( $_width - ${#1} - $_space ))::q:)}//q/$_tq_}$_T
 
 	if [ "$1" != "" ]
 	then
 		print -P$newline "${C_}$my_color;1${_C}${hbar}$T_$_tj_$_T${C_}0;$my_color${_C} $1 ${C_}0;$my_color;1${_C}$T_$_tm_$_tq_$_T\r${C_}0${_C}"
 	else
-		print -P$newline "${C_}$my_color;1${_C}${hbar}$T_${(l:${_space}::q:)}$_T${C_}0${_C}"
+		print -P$newline "${C_}$my_color;1${_C}${hbar}$T_${${(l:${_space}::q:)}//q/$_tq_}$_T${C_}0${_C}"
 	fi
 }
 
@@ -558,7 +558,7 @@ __hbar()
         __debug -n "	Horizontal bar..."
 		_COLUMNS_OLD=$COLUMNS
 		HBAR_COLOR=$C_$_prompt_colors[bar]$_C$T_
-		HBAR=$T_${(l:${COLUMNS}::q:)}$_T
+		HBAR=$T_${${(l:${COLUMNS}::q:)}//q/$_tq_}$_T
         __debug
 	fi
 }

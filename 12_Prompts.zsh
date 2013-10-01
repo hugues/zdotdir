@@ -317,7 +317,7 @@ then
     echo -n $c_$_prompt_colors[warning]$_c
     #toilet -f bigmono9 "D1rTY Zsh.."
 
-    HBAR=${(l:13::q:)}
+    HBAR=${${(l:13::q:)}//q/$_tq_}
     VBAR=$T_$_tx_$_T
 
     echo
