@@ -241,7 +241,7 @@ do
 
 	bindkey -M $keymap -s '^[S' '^[Q sudo !!'
 
-	bindkey -M $keymap -s '^[X' '^[Q exec zsh -l\n'
+	bindkey -M $keymap -s '^[X' '^[Q kill -USR1 $$\n'
 
 	bindkey -M $keymap -s '^[^[OA' 'up-line-or-history'
 	bindkey -M $keymap -s '^[^[OB' 'down-line-or-history'

@@ -26,6 +26,8 @@
 ZDOTDIR=${ZDOTDIR:-~/.zsh}
 mkdir -p $ZDOTDIR
 
+trap "source ~/.zshrc" USR1
+
 # Useful environment variables which may be used
 # at any time - We compute them now to avoid calling
 # the required processes each time we'll need.
