@@ -202,13 +202,8 @@ __get_git_branch ()
 		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
 		[ "$my_git_branch" = "(no branch)" ] &&\
 			checkouted_branch="" && \
-			my_git_branch="$(git name-rev --name-only HEAD 2>&- | __cleanup_git_branch_name)"
+			my_git_branch="$(git name-rev --name-only --always --no-undefined HEAD 2>&- | __cleanup_git_branch_name)"
 
-		# If neither on a named commit-ish, show commit-id
-		if [ "$my_git_branch" = "undefined" ]
-		then
-			my_git_branch="$(echo $commit_ish | cut -c-7)"
-		fi
 	else
 		# Initial commit
 		if [ -L $GIT_DIR/HEAD -a ! -f $GIT_DIR/HEAD ]
@@ -302,7 +297,7 @@ __get_git_branch ()
 		# ▶ ▷ ▸ ▹ ► ▻ ◀ ◁ ◂ ◃ ◄ ◅
 
 		# base
-		onto=$(git name-rev --name-only $(cat $REBASE_DIR/onto) | __cleanup_git_branch_name)
+		onto=$(git name-rev --name-only --always --no-undefined $(cat $REBASE_DIR/onto) 2>&- | __cleanup_git_branch_name)
 
 		# amended commit
 		if [ -e $REBASE_DIR/amend ]
@@ -318,9 +313,9 @@ __get_git_branch ()
 		#
 		if [ "$amend" != "$commit_ish" ]
 		then
-			#amend=$(git name-rev --name-only "$amend" 2>/dev/null | __cleanup_git_branch_name)
+			#amend=$(git name-rev --name-only --always --no-undefined "$amend" 2>/dev/null | __cleanup_git_branch_name)
 			#[ "$amend" = "undefined" ] &&
-			amend=$(git name-rev --name-only $amend | __cleanup_git_branch_name)
+			amend=$(git name-rev --name-only --always --no-undefined $amend 2>&- | __cleanup_git_branch_name)
 			amend=" ◃ "$C_$color[magenta]$_C$amend$C_$_prompt_colors[soft_generic]$_C
 		else
 			amend=""
