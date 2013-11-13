@@ -206,22 +206,14 @@ do
 		bindkey -M $keymap -s '^[w' '^[Q when\n'
 	fi
 
-	if ( __cmd_exists todo )
+	if ( __cmd_exists tickets )
 	then
-		if ( __cmd_exists rt && __cmd_exists tickets )
-		then
-			bindkey -M $keymap -s '^[t' '^[Q tickets\n'
-			bindkey -M $keymap -s '^[T' '^[Q todo\n'
-		else
-			bindkey -M $keymap -s '^[t' '^[Q todo\n'
-			bindkey -M $keymap -s '^[T' '^[Q todo all -c\n'
-		fi
-	else
-		if ( __cmd_exists rt && __cmd_exists tickets )
-		then
-			bindkey -M $keymap -s '^[t' '^[Q tickets\n'
-			bindkey -M $keymap -s '^[T' '^[Q tickets -a\n'
-		fi
+		bindkey -M $keymap -s '^[t' '^[Q tickets\n'
+		bindkey -M $keymap -s '^[T' '^[Q !?tickets\n'
+	elif ( __cmd_exists todo )
+	then
+		bindkey -M $keymap -s '^[t' '^[Q todo\n'
+		bindkey -M $keymap -s '^[T' '^[Q todo all -c\n'
 	fi
 
 	bindkey -M $keymap -s '^[c' '^[Q ./configure\n'
