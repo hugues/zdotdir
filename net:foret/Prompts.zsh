@@ -82,26 +82,3 @@ __makeflags ()
 
 PS1_TASKBAR+=(__makeflags __verbose_compilation __nproc_compilation __static_dynamic __compilation_os __compilation_arch __compilation_target)
 PS1_EXTRA_INFO+=()
-
-__subvcsbranches () {
-	local GITBRANCH
-
-	GIT_DIR=$(git rev-parse --git-dir 2>/dev/null)
-	[ "$( ( git ls-files ; git ls-tree HEAD . ) 2>&- | head -n1)" = "" -a \
-	  \( ! -d .git -o -z "$GIT_DIR" \) -a \
-	  "$(git rev-parse --is-inside-git-dir 2>&-)" != "true" ] && return
-
-	# Get recursive submodules statuses
-	for SUBMODULE in $(git config --get zsh.recurse-dirs)
-	do
-		if [ -d $(dirname $GIT_DIR)/$SUBMODULE ]
-		then
-			GITBRANCH+=${GITBRANCH:+$(tput cuf1)}
-			GITBRANCH+=$C_$_prompt_colors[bar]$_C"[%{%B%}$SUBMODULE%{%b%}:"
-			GITBRANCH+=$(__get_git_fullstatus $(dirname $GIT_DIR)/$SUBMODULE | sed 's/_for_\(ixm\|df\)/’/g')
-			GITBRANCH+=$C_$_prompt_colors[bar]$_C"]"
-		fi
-	done
-	echo $GITBRANCH
-
-}
