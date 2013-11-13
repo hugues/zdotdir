@@ -11,3 +11,5 @@
 alias a=alias
 a una=unalias
 
+a S’il te plaît=sudo
+
