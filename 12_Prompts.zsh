@@ -293,7 +293,7 @@ __two_lines_prompt ()
 
     __debug "-----------------> extra..."
     PS1_+="
-"$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
+"$C_$_prompt_colors[user]$_C"${USER:-%n}"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
     for trigger in $PS1_EXTRA_INFO
     do
 	__debug "              ---> $trigger..."
