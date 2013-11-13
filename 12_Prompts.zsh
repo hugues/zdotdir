@@ -229,7 +229,7 @@ __subvcsbranches () {
 	# Get recursive submodules statuses
 	for SUBMODULE in $(git config --get zsh.recurse-dirs)
 	do
-		if [ -d $(dirname $GIT_DIR)/$SUBMODULE ]
+		if [ -d $(dirname $GIT_DIR)/$SUBMODULE/.git -o -d $GIT_DIR/modules/$SUBMODULE ]
 		then
 			GITBRANCH+=${GITBRANCH:+$(tput cuf1)}
 			GITBRANCH+=$C_$_prompt_colors[bar]$_C"[%{%B%}$SUBMODULE%{%b%}:"
