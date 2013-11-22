@@ -193,25 +193,25 @@ __get_git_branch ()
 	commit_ish=$(git rev-parse --verify HEAD 2>/dev/null)
 
 	# Get current working GIT branch
-	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
+	my_git_branch="$(git symbolic-ref --short -q HEAD)"
 	# for future use
 	checkouted_branch=$my_git_branch
 
-	if [ "$my_git_branch" != "" ]
+	if [ ! "$my_git_branch" ]
 	then
-		# If not on a working GIT branch, get the named current commit-ish inside parenthesis
-		[ "$my_git_branch" = "(no branch)" ] &&\
+		# Not on a working GIT branch. Get the named current commit-ish inside parenthesis
+		[ ! "$my_git_branch" ] &&\
 			checkouted_branch="" && \
 			my_git_branch="$(git name-rev --name-only --always --no-undefined HEAD 2>&- | __cleanup_git_branch_name)"
 
-	else
-		# Initial commit
-		if [ -L $GIT_DIR/HEAD -a ! -f $GIT_DIR/HEAD ]
-		then
-			my_git_branch="$(basename $(readlink -f $GIT_DIR/HEAD))"
-		else
-			my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
-		fi
+	#else
+	#	# Initial commit
+	#	if [ -L $GIT_DIR/HEAD -a ! -f $GIT_DIR/HEAD ]
+	#	then
+	#		my_git_branch="$(basename $(readlink -f $GIT_DIR/HEAD))"
+	#	else
+	#		my_git_branch="$(basename $GIT_DIR/$(cat $GIT_DIR/HEAD | sed 's/^\([0-9a-f]\{2\}\)\([0-9a-f]\{38\}\)$/objects\/\1\/\2/;s/^ref: //'))"
+	#	fi
 	fi
 	__debug
 
@@ -353,45 +353,46 @@ __get_git_tracking_status() {
 	local git_tracking_status=""
 
 	__debug -n "		tracking..."
-	my_git_branch="$(git branch 2>&- | grep -E '^\* ' | cut -c3-)"
-	if [ "$my_git_branch" != "(no branch)" -a ! "$(git config --get branch.$my_git_branch.remote)" ]
+	my_git_branch="$(git symbolic-ref --short -q HEAD)"
+	if [ "$my_git_branch" ]
 	then
-		git_tracking_status=$C_$_gcl_colors[untracked]$_C"✖"
-	fi
-	__debug
-
-	__debug -n "		behind/ahead..."
-    # Show number of stashed commits by appending '+' signs for each
-    if [ "$(git rev-parse --is-inside-git-dir)" != "true" -a "$(git config --get core.bare)" != "true" ]
-    then
-        local _ahead=0 ;
-        local _behind=0 ;
-        eval $(git status . | sed -n '
-         /^#$/ { q }
-        s/^# and have \([0-9]\+\) and \([0-9]\+\) different.*/_ahead=\1;\n_behind=\2;\n/p ;
-        s/^# Your branch is \(behind\|ahead\) .* \([0-9]\+\) commit.*/_\1=\2;\n/p ;
-        ')
-
-		# ᛨ ᛪ ⇅ ↟↟ ⇶ ⇶ ⇵ ⌥ ⬆ ⬇ ⬌  ⬍ ⤱ ⤲ ✖ ➠ ➟ ⤴ ⎇⬋⬉⬉⬈⬌⬍⬅⬄
-
-		if [ $_behind -gt 0 ]
+		local _upstream="$(git rev-parse --revs-only HEAD@\{upstream\} 2>/dev/null)"
+		if [ ! "$_upstream" ]
 		then
-			git_tracking_status+=$C_$_gcl_colors[ffwd]$_C
-			[ $_behind -gt 1 ] && git_tracking_status+="$(echo $_behind | _subscript_number)"
-			git_tracking_status+="⬇"
-		fi
-		if [ $_ahead -gt 0 ]
-		then
-			if [ $_behind -gt 0 ]
+			git_tracking_status=$C_$_gcl_colors[untracked]$_C"✖"
+		else
+			__debug
+			__debug -n "		behind/ahead..."
+			# Show number of stashed commits by appending '+' signs for each
+			if [ "$(git rev-parse --is-inside-git-dir)" != "true" -a "$(git config --get core.bare)" != "true" ]
 			then
-				git_tracking_status+=$C_$_prompt_colors[generic]$_C
-			else
-				git_tracking_status+=$C_$_gcl_colors[cached]$_C
+				local _ahead=0 ;
+				local _behind=0 ;
+				_ahead=$( git rev-list --count ${_upstream}..${my_git_branch})
+				_behind=$(git rev-list --count ${my_git_branch}..${_upstream})
+
+				# ᛨ ᛪ ⇅ ↟↟ ⇶ ⇶ ⇵ ⌥ ⬆ ⬇ ⬌  ⬍ ⤱ ⤲ ✖ ➠ ➟ ⤴ ⎇⬋⬉⬉⬈⬌⬍⬅⬄
+
+				if [ $_behind -gt 0 ]
+				then
+					git_tracking_status+=$C_$_gcl_colors[ffwd]$_C
+					[ $_behind -gt 1 ] && git_tracking_status+="$(echo $_behind | _subscript_number)"
+					git_tracking_status+="⬇"
+				fi
+				if [ $_ahead -gt 0 ]
+				then
+					if [ $_behind -gt 0 ]
+					then
+						git_tracking_status+=$C_$_prompt_colors[generic]$_C
+					else
+						git_tracking_status+=$C_$_gcl_colors[cached]$_C
+					fi
+					git_tracking_status+="⬆"
+					[ $_ahead -gt 1 ] && git_tracking_status+="$(echo $_ahead | _subscript_number)"
+				fi
 			fi
-			git_tracking_status+="⬆"
-			[ $_ahead -gt 1 ] && git_tracking_status+="$(echo $_ahead | _subscript_number)"
 		fi
-    fi
+	fi
 
 	echo $git_tracking_status
 }
