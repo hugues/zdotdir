@@ -18,9 +18,11 @@ _endurance() {
 	case "$service" in
 		do.sh)
 		_arguments \
-		':actions:(( $(list-commands) ))' \
-		':tests:(( $(list-tests) ))' \
-		':nodes:(( $(list-nodes) ))'
+			':actions:(( $(list-commands) ))' \
+			':tests:(( $(list-tests) ))' \
+			':nodes:(( $(list-nodes) ))'
+		_alternative \
+			'*:files: _files'
 		;;
 	esac
 
