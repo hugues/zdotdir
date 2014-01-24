@@ -72,6 +72,9 @@ a lc='ls -c'
 a l1='\ls -1'
 
 a gitk='\gitk --date-order'
+a gm='\git mergetool'
+a grc='\git rebase --continue'
+a gra='\git rebase --abort'
 
 __cmd_exists dict && a definition='dict -h dict.org'
 __cmd_exists dict && a traduction='dict -h hiegel.fr -P-'
