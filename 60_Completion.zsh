@@ -28,5 +28,8 @@ zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' use-compctl true
 # End of lines added by compinstall
 
+typeset -A ZLS_COLOURS
+ZLS_COLOURS[ma]=7
+
 autoload -Uz compinit
 compinit -i
