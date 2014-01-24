@@ -10,11 +10,6 @@
 
 _prompt_colors[target]="1;31"
 
-if ( id | grep -q Integration )
-then
-	sc "38;5;54"
-fi
-
 __static_dynamic ()
 {
     [ $(( ${STATIC:-$(( 1 ^ ${DYNAMIC:-0} ))} + ${DYNAMIC:-$(( 1 ^ ${STATIC:-0} ))} )) -lt 2 ] && \
