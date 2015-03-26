@@ -354,14 +354,86 @@ __get_git_stashes() {
 __get_git_tracking_status() {
 	local git_tracking_status=""
 
-	__debug -n "		tracking..."
 	my_git_branch="$(git symbolic-ref --short -q HEAD)"
+
 	if [ "$my_git_branch" ]
 	then
+
+		GIT_DIR=$(git rev-parse --git-dir 2>&-)
+		if [ -d $GIT_DIR/svn ]
+		then
+			__debug -n "		git-svn tracking..."
+			svn_current=$(git svn find-rev HEAD 2>/dev/null)
+
+			# Finds any reference upwards current HEAD, and get the latest possible git-svn-id
+			svn_track=$(git log --grep git-svn-id -1 --pretty=%h $(git branch -a --contains=HEAD | cut -c3-) -- )
+			svn_rev=$(git svn find-rev $svn_track)
+			# eval $( git svn info | awk '/^URL: /              { print "svn_url="$2 }
+			#                             /^Repository UUID: /  { print "svn_repo="$3 }
+			#                             /^Last Changed Rev: / { print "svn_rev="$2 }
+			# ')
+			# svn_track=$(git log --grep="git-svn-id: $svn_url@$svn_rev $svn_repo" --pretty=%h -1)
+
+			if [ "$svn_current" != "" -a "$svn_current" != "$svn_rev" ]
+			then
+				git_tracking_status+=$C_$_gcl_colors[svncurrent]$_C"(r$svn_current) "
+			fi
+
+			if [ "$svn_track" != "" ]
+			then
+
+				local _ahead=0 ;
+				local _behind=0 ;
+				_ahead=$( git rev-list --count ${svn_track}..${my_git_branch})
+				_behind=$(git rev-list --count ${my_git_branch}..${svn_track})
+
+				# ᛨ ᛪ ⇅ ↟↟ ⇶ ⇶ ⇵ ⌥ ⬆ ⬇ ⬌  ⬍ ⤱ ⤲ ✖ ➠ ➟ ⤴ ⎇⬋⬉⬉⬈⬌⬍⬅⬄
+				# ▶ ▷ ▸ ▹ ► ▻ ◀ ◁ ◂ ◃ ◄ ◅
+
+				if [ $_behind -gt 0 ]
+				then
+					git_tracking_status+=$C_$_gcl_colors[ffwd_svn]$_C
+					[ $_behind -gt 1 ] && git_tracking_status+="$(echo $_behind | _subscript_number)"
+					git_tracking_status+="⬇"
+				fi
+
+				if [ $_ahead -gt 0 -a $_behind -gt 0 ]
+				then
+					svncolor="diverged_svn"
+				elif [ $_ahead -gt 0 ]
+				then
+					svncolor="cached_svn"
+				elif [ $_behind -gt 0 ]
+				then
+					svncolor="ffwd_svn"
+				else
+					svncolor="svnrev"
+				fi
+
+				git_tracking_status+=$C_$_gcl_colors[$svncolor]$_C"r$svn_rev"
+
+				if [ $_ahead -gt 0 ]
+				then
+					if [ $_behind -gt 0 ]
+					then
+						git_tracking_status+=$C_$_gcl_colors[svnrev]$_C
+					else
+						git_tracking_status+=$C_$_gcl_colors[cached_svn]$_C
+					fi
+					git_tracking_status+="⬆"
+					[ $_ahead -gt 1 ] && git_tracking_status+="$(echo $_ahead | _subscript_number)"
+				fi
+
+			fi
+			__debug
+			git_tracking_status+=" "
+		fi
+
+		__debug -n "		tracking..."
 		local _upstream="$(git rev-parse --revs-only HEAD@\{upstream\} 2>/dev/null)"
 		if [ ! "$_upstream" ]
 		then
-			git_tracking_status=$C_$_gcl_colors[untracked]$_C"✖"
+			git_tracking_status+=$C_$_gcl_colors[untracked]$_C"✖"
 		else
 			__debug
 			__debug -n "		behind/ahead..."
@@ -394,6 +466,7 @@ __get_git_tracking_status() {
 				fi
 			fi
 		fi
+		__debug
 	fi
 
 	echo $git_tracking_status

@@ -80,7 +80,7 @@ __set_prompt_colors ()
 
 	_gcl_colors[init]="$color[black];$color[bold]"
 	_gcl_colors[gitdir]="$color[red];$color[bold]"
-	_gcl_colors[uptodate]="$_prompt_colors[generic]"
+	_gcl_colors[uptodate]="38;5;39"
 	_gcl_colors[merging]="$color[bg-black]"
 	_gcl_colors[changed]="$color[green]"
 	_gcl_colors[cached]="$color[yellow];$color[bold]"
@@ -90,6 +90,12 @@ __set_prompt_colors ()
 	_gcl_colors[untracked]="$color[black];$color[bold]"
 	_gcl_colors[bisect-good]="$color[blue]"
 	_gcl_colors[bisect-bad]="$color[red];$color[bold]"
+	#svn
+	_gcl_colors[svnrev]="38;5;33"
+	_gcl_colors[svncurrent]="38;5;238"
+	_gcl_colors[ffwd_svn]="38;5;196"
+	_gcl_colors[cached_svn]="38;5;76"
+	_gcl_colors[diverged_svn]="38;5;208"
 
 	_guilt_colors[applied]=$_gcl_colors[cached]
 	_guilt_colors[unapplied]=$color[black]
