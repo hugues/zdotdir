@@ -28,11 +28,11 @@ _C="$_c%}"
 
 unset has_termcaps
 case "$( _process_tree )" in
-	*"screen ::"*)
+	*":: SCREEN ::"*)
 		# Discards termcaps even if screen is launched from an urxvt..
 		;;
-	*"urxvt ::"*|\
-	*"tmux ::"*)
+	*":: "*"urxvt ::"*|\
+	*":: tmux ::"*)
 		has_termcaps="true"
 		;;
 	*)

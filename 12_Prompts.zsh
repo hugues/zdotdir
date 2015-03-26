@@ -19,7 +19,14 @@ then
     _prompt_colors[generic]=${PS1_YEAH}
 fi
 
-__set_prompt_colors
+case "$( _process_tree )" in
+	*":: SCREEN ::"*)
+		__set_prompt_colors "38;5;124"
+		;;
+	*)
+		__set_prompt_colors
+		;;
+esac
 
 ## Prompts
 #
