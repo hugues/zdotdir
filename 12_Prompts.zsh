@@ -284,32 +284,40 @@ __display_vi_mode()
 }
 PS1_TASKBAR+=(__display_vi_mode)
 
+__ps1_taskbar ()
+{
+    for trigger in $PS1_TASKBAR
+    do
+	__debug "              ---> $trigger..."
+        result=$($trigger)
+        [ -n "$result" ] && echo -n $_cuf1_${result}$C_$_prompt_colors[bar]$_C
+    done
+}
+__ps1_extrainfo ()
+{
+    for trigger in $PS1_EXTRA_INFO
+    do
+        __debug "              ---> $trigger..."
+        result=$($trigger)
+        [ -n "$result" ] && echo -n " "${result}
+    done
+}
+
 __two_lines_prompt ()
 {
     ## Le prompt le plus magnifique du monde, et c'est le mien !
     # Affiche l'user, l'host, le tty et le pwd. Rien que ça...
     #
-    PS1_=$(print -Pn '\r')$HBAR_COLOR$HBAR$(print -Pn '\r')
+    PS1_=$(print -Pn '\r\n')$HBAR_COLOR$HBAR$(print -Pn '\r')
     __debug "-----------------> taskbar..."
-    for trigger in $PS1_TASKBAR
-    do
-	__debug "              ---> $trigger..."
-        result=$($trigger)
-        [ -n "$result" ] && PS1_+=$_cuf1_${result}$C_$_prompt_colors[bar]$_C
-    done
-
+    PS1_+=$(__ps1_taskbar)
     __debug "-----------------> date..."
     PS1_+=$(__show_date)
 
-    __debug "-----------------> extra..."
     PS1_+="
-"$C_$_prompt_colors[user]$_C"${USER:-%n}"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
-    for trigger in $PS1_EXTRA_INFO
-    do
-	__debug "              ---> $trigger..."
-        result=$($trigger)
-        [ -n "$result" ] && PS1_+=" "${result}
-    done
+"$C_$_prompt_colors[user]$_C"${USER:-%n}"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M${SSH_CLIENT:+ ← $(host ${SSH_CLIENT/ */} | awk '{ gsub(/\.$/, "", $NF);  print $NF }')} "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
+    __debug "-----------------> extra..."
+    PS1_+=$(__ps1_extrainfo)
     __debug "-----------------> PS1..."
     PS1=$PS1_" "$C_$_prompt_colors[dies]$_C"%#"$C_$_prompt_colors[cmd]$_C" "
 
