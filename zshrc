@@ -54,6 +54,26 @@ export USER HOST DOMAIN UID
 
 if [ -d $ZDOTDIR ]; then
 
+	recurse_load() {
+		local script=$1
+		local root=${2:-$ZDOTDIR}
+
+		for f in \
+		  net:$DOMAIN \
+		  host:$HOST \
+		  sys:$OSNAME \
+		  user:$USER \
+		  user:$SUDO_USER
+		do
+			if test -d $root/$f
+			then
+				local sub=$root/$f/$script
+				test -f $sub && echo $sub
+				recurse_load $script $root/$f
+			fi
+		done
+	}
+
 	for script in $ZDOTDIR/??_*.zsh
 	do
 
@@ -61,42 +81,21 @@ if [ -d $ZDOTDIR ]; then
 		source $script
 		__debug
 
-        for i in	"net:$DOMAIN"\
-					"host:$HOST"\
-					"sys:$OSNAME"\
-					"user:$USER"\
-					"user:$USER/net:$DOMAIN"\
-					"user:$SUDO_USER"\
-					"net:$DOMAIN/host:$HOST"\
-					"net:$DOMAIN/sys:$OSNAME"\
-					"net:$DOMAIN/user:$USER"\
-					"net:$DOMAIN/user:$SUDO_USER"\
-					"net:$DOMAIN/host:$HOST/sys:$OSNAME"\
-					"net:$DOMAIN/host:$HOST/user:$USER"\
-					"net:$DOMAIN/host:$HOST/user:$SUDO_USER"\
-					"net:$DOMAIN/host:$HOST/sys:$OSNAME"\
-					"net:$DOMAIN/host:$HOST/sys:$OSNAME/user:$USER"\
-					"net:$DOMAIN/host:$HOST/sys:$OSNAME/user:$SUDO_USER"\
-					"host:$HOST/sys:$OSNAME"\
-					"host:$HOST/user:$USER"\
-					"host:$HOST/user:$SUDO_USER"\
-					"host:$HOST/sys:$OSNAME/user:$USER"\
-					"host:$HOST/sys:$OSNAME/user:$SUDO_USER"
-        do
-            specific_script=${script:h}/$i/${${script:t}/??_/}
-            if test -f $specific_script
-			then
-                __debug -n "$i/${${specific_script:t:r}/??_/}... ";
-				source $specific_script
-                __debug
-			fi
-            if test -f $specific_script.gpg
-			then
-                __debug -n "$i/${${specific_script:t:r}/??_/} [CRYPTED]... ";
-				eval $(gpg --quiet --decrypt $specific_script.gpg)
-				__debug
-			fi
-        done
+		for f in $(recurse_load ${${script:t}/??_/})
+		do
+			case ${f:e} in
+				gpg)
+					__debug -n "${f#$ZDOTDIR/} [CRYPTED]... "
+					eval $(gpg --quiet --decrypt $f.gpg)
+					__debug
+					;;
+				*)
+					__debug -n "${f#$ZDOTDIR/}... "
+					source $f
+					__debug
+					;;
+			esac
+		done
 	done
 fi
 
