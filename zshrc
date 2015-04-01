@@ -59,10 +59,10 @@ if [ -d $ZDOTDIR ]; then
 		local root=${2:-$ZDOTDIR}
 
 		for f in \
+		  user:$USER \
 		  net:$DOMAIN \
 		  host:$HOST \
 		  sys:$OSNAME \
-		  user:$USER \
 		  user:$SUDO_USER
 		do
 			if test -d $root/$f
