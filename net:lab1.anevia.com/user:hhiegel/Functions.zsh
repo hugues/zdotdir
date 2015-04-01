@@ -1,5 +1,8 @@
 
 __debian_dist() {
+
+	[ -e ~/.pbuilderrc ] || return
+
 	_dist=${DIST:-$(awk < ~/.pbuilderrc '/DIST:=/ { gsub(/^.*{DIST:=/, "") ; gsub(/}$/, "") ; print ; exit }')}
 	print -Pn $C_${_env_colors[dist_$_dist]:-$_env_colors[dist_none]}
 	( export | grep -q '^DIST=' ) && print -Pn ";"$color[bold]
