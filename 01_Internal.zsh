@@ -685,7 +685,7 @@ _process_tree()
 {
 	for leaf in ${@:-$$}
 	do
-		ps -eo pid,ppid,command | awk -v leaf="$leaf" \
+		ps -eo pid,ppid,command 2>&- | awk -v leaf="$leaf" \
 			'{
 				parent[$1]=$2 ;
 				command[$1]=$3 ;

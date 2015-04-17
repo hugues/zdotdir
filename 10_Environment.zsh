@@ -94,7 +94,7 @@ HISTSIZE=$(( $SAVEHIST * 1.10 ))
 export GPG_TTY=`tty`
 
 # YeahConsole..
-if ( ps x | grep $$ -B1 | grep -q yeahconsole )
+if ( ps x 2>&- | grep $$ -B1 | grep -q yeahconsole )
 then
 	_yeahconsole=true
 fi

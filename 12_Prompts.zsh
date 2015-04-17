@@ -315,7 +315,8 @@ __two_lines_prompt ()
     PS1_+=$(__show_date)
 
     PS1_+="
-"$C_$_prompt_colors[user]$_C"${USER:-%n}"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M${SSH_CLIENT:+ ← $(host ${SSH_CLIENT/ */} | awk '{ gsub(/\.$/, "", $NF); gsub(/.'$DOMAIN'$/, "", $NF); print $NF }')} "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
+"$C_$_prompt_colors[user]$_C"${USER:-%n}"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%M${SSH_CLIENT:+ ← $(host ${SSH_CLIENT/ */} | awk '/not found/ { print "'${SSH_CLIENT/ */}'" ; exit } { gsub(/\.$/, "", $NF); gsub(/.'$DOMAIN'$/, "", $NF); print $NF }')} "$CURDIR${VCSBRANCH:+ $VCSBRANCH}
+
     __debug "-----------------> extra..."
     PS1_+=$(__ps1_extrainfo)
     __debug "-----------------> PS1..."
