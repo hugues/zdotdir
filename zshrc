@@ -6,12 +6,12 @@
 #
 # If you want to add a file, name it specifically in the form
 #
-# 	$ZDOTDIR/??_*.zsh
+#	$ZDOTDIR/??_*.zsh
 #
 # Where "??" should be a two-digit number.
 # With that, file ``10_Toto.zsh'' would be parsed before
 # file ``20_Tutu.zsh'', allowing you ordering your scripts.
-# 
+#
 # If you want to make user, host or network specific configurations,
 # add your specific scripts to the folders
 #  - "sys:$(uname -s)" for OS-specific conf,
@@ -38,6 +38,7 @@ HOST=$HOST:r
 HOST=${HOST:-$(hostname -s)}
 DOMAIN=$(hostname -a 2>&-| sed 's/^[^\.]*\.\?//')
 DOMAIN=${DOMAIN:-$(hostname -d 2>&-)}
+DOMAIN=${DOMAIN:-$(hostname -y 2>&-)}
 [ "$DOMAIN" = "" -o "$DOMAIN" = "localdomain" -o "$DOMAIN" = "(none)" ] && DOMAIN=$(grep "^search " /etc/resolv.conf | cut -d' ' -f2)
 
 ## Agent de clefs SSH/GPG
