@@ -59,17 +59,23 @@ chpwd()
 
 preexec ()
 {
-    __term_title "$2"
+	__term_title "$2"
+	case "$_yeahconsole" in
+		"true")
+			;;
+		*)
 
-    __set_prompt_date exec
+			__set_prompt_date exec
 
-    # Only redraws the date, not the full prompt, since we got glitches with BANG_HIST and AUTOCORRECT...
-    tput sc # save cursor position
-    up_up # go to start of current prompt
-    print -Pn "$(__show_date)" # prints date
-    tput rc # restore cursor position
+			# Only redraws the date, not the full prompt, since we got glitches with BANG_HIST and AUTOCORRECT...
+			tput sc # save cursor position
+			up_up # go to start of current prompt
+			print -Pn "$(__show_date)" # prints date
+			tput rc # restore cursor position
+			;;
+	esac
 
-    print -Pn "$C_$_prompt_colors[exec]$_C"
+		print -Pn "$C_$_prompt_colors[exec]$_C"
  }
 
 __set_prompt_date()
@@ -87,11 +93,17 @@ __set_prompt_date()
 
 __update_prompt_elements()
 {
-    __term_title
-    __set_prompt_date
-    __hbar
+	__term_title
+    case "$_yeahconsole" in
+        "true")
+			;;
+		*)
+			__set_prompt_date
+			__hbar
 
-    CURDIR=$C_$_prompt_colors[path]$_C"%(!.%d.%~)"$C_$color[none]$_C
+			CURDIR=$C_$_prompt_colors[path]$_C"%(!.%d.%$(($(tput cols)-80))<…<%~)"$C_$color[none]$_C
+			;;
+	esac
 
 }
 
@@ -267,7 +279,9 @@ zle -N __redefine_prompt
 
 __yeah_prompt ()
 {
-    PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR${VCSBRANCH:+ $VCSBRANCH}" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
+    #PS1=$C_$prompt_color[default]$_C$C_$_prompt_colors[user]$_C"%n"$C_$_prompt_colors[arob]$_C"@"$C_$_prompt_colors[host]$_C"%m "$CURDIR${VCSBRANCH:+ $VCSBRANCH}" "$C_$_prompt_colors[dies]$_C">"$C_$_prompt_colors[cmd]$_C" "
+    PS1=$C_$_prompt_colors[dies]$_C"] "
+    RPS1=$C_$_prompt_colors[path]$_C"%~"
     PS2="$C_$_prompt_colors[soft_generic]$_C$(for i in {2..$#lastline} ; print -n "·" ; tput sc ; print -n "\r")$C_$color[yellow];$color[bold]$_C%_$(tput rc)$C_$color[none]$_C "
 }
 
