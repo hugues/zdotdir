@@ -196,6 +196,7 @@ __get_git_branch ()
 
 	# Get current working GIT branch
 	my_git_branch="$(git symbolic-ref --short -q HEAD)"
+	#my_git_branch="$(git name-rev --name-only HEAD)"
 	# for future use
 	checkouted_branch=$my_git_branch
 
@@ -366,7 +367,8 @@ __get_git_tracking_status() {
 			svn_current=$(git svn find-rev HEAD 2>/dev/null)
 
 			# Finds any reference upwards current HEAD, and get the latest possible git-svn-id
-			svn_track=$(git log --grep git-svn-id -1 --pretty=%h $(git branch -a --contains=HEAD | cut -c3-) -- )
+			#svn_track=$(git log --grep git-svn-id -1 --pretty=%h $(git branch -a --contains=HEAD | cut -c3-) -- )
+			svn_track=$(git log --grep git-svn-id -1 --pretty=%h HEAD)
 			svn_rev=$(git svn find-rev $svn_track)
 			# eval $( git svn info | awk '/^URL: /              { print "svn_url="$2 }
 			#                             /^Repository UUID: /  { print "svn_repo="$3 }
