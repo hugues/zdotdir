@@ -38,6 +38,7 @@ ZSH_HIGHLIGHT_STYLES[function]="fg=cyan,bold,underline"
 ZSH_HIGHLIGHT_STYLES[history-expansion]="fg=blue"
 
 ZSH_HIGHLIGHT_STYLES[path]="fg=blue"
+ZSH_HIGHLIGHT_STYLES[path_approx]="fg=magenta,bg=color106"
 ZSH_HIGHLIGHT_STYLES[globbing]="fg=blue,bold"
 
 ZSH_HIGHLIGHT_STYLES[commandseparator]="none"

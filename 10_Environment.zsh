@@ -64,7 +64,7 @@ _tx_=${${has_termcaps:+"x"}:-"|"}
 PS1_ROOT=${PS1_ROOT:-$color[red]}
 PS1_USER=${PS1_USER:-$color[blue]}
 # Specific color for YeahConsole
-PS1_YEAH="38;5;82"
+PS1_YEAH="38;5;124"
 
 ## Variables d'environnement ``classiques''
 #
