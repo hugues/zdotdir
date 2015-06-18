@@ -683,12 +683,24 @@ zle -N _rehash
 # Process helper
 _process_tree()
 {
+	FULLCMD=0
+	if [ "$1" = "-f" ]
+	then
+		FULLCMD=1
+		shift
+	fi
+
 	for leaf in ${@:-$$}
 	do
-		ps -eo pid,ppid,command | awk -v leaf="$leaf" \
+		ps -wweo pid,ppid,command | awk -v fullcmd=$FULLCMD -v leaf="$leaf" \
 			'{
 				parent[$1]=$2 ;
 				command[$1]=$3 ;
+				if (fullcmd && NF>=4) {
+					for (i=4; i<=NF; i++) {
+					command[$1]=command[$1]" "$i ;
+					}
+				}
 			}
 			function print_ancestry(pid)
 			{
