@@ -18,13 +18,13 @@ ZSH_HIGHLIGHT_STYLES[assign]="fg=cyan"
 ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=yellow,bold"
 ZSH_HIGHLIGHT_STYLES[back-quoted-argument]="green"
 
-ZSH_HIGHLIGHT_STYLES[bracket-error]="fg=red,bold"
+ZSH_HIGHLIGHT_STYLES[bracket-error]="fg=red,bg=black,bold"
 ZSH_HIGHLIGHT_STYLES[bracket-level-1]="fg=yellow,bold"
 ZSH_HIGHLIGHT_STYLES[bracket-level-2]="fg=green"
 ZSH_HIGHLIGHT_STYLES[bracket-level-3]="fg=cyan,bold"
 ZSH_HIGHLIGHT_STYLES[bracket-level-4]="fg=blue"
 ZSH_HIGHLIGHT_STYLES[bracket-level-5]="fg=magenta"
-ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]="fg=white,underline,bold"
+ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]="bg=green,fg=yellow,bold"
 
 ZSH_HIGHLIGHT_STYLES[precommand]="fg=blue,bold"
 
@@ -38,7 +38,7 @@ ZSH_HIGHLIGHT_STYLES[function]="fg=cyan,bold,underline"
 ZSH_HIGHLIGHT_STYLES[history-expansion]="fg=blue"
 
 ZSH_HIGHLIGHT_STYLES[path]="fg=blue"
-ZSH_HIGHLIGHT_STYLES[path_approx]="fg=magenta,bg=color106"
+ZSH_HIGHLIGHT_STYLES[path_approx]="fg=red,bold"
 ZSH_HIGHLIGHT_STYLES[globbing]="fg=blue,bold"
 
 ZSH_HIGHLIGHT_STYLES[commandseparator]="none"
