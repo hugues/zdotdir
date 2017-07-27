@@ -216,10 +216,12 @@ do
 		bindkey -M $keymap -s '^[T' '^[Q todo all -c\n'
 	fi
 
-	bindkey -M $keymap -s '^[c' '^[Q [ ! -e configure ] && ( ./autogen.sh && ./configure ) || ./configure\n'
+	alias configure="[ ! -e configure ] && ( ./autogen.sh && ./configure ) || ./configure"
+	bindkey -M $keymap -s '^[c' '^[Q configure\n'
 	bindkey -M $keymap -s '^[©' '^[Q !?configure\n'
 
-	bindkey -M $keymap -s '^[m' '^[Q [ ! -e Makefile -a ! -e GNUmakefile ] && ( [ ! -e configure ] && ./autogen.sh ; ./configure && make ) || make\n'
+	alias MAKE="[ ! -e Makefile -a ! -e GNUmakefile ] && ( [ ! -e configure ] && ./autogen.sh ; ./configure && make ) || make"
+	bindkey -M $keymap -s '^[m' '^[Q MAKE\n'
 	bindkey -M $keymap -s '^[M' '^[Q make\n'
 
 	bindkey -M $keymap -s '^[l' '^[Q l\n'
