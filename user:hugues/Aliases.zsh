@@ -34,8 +34,6 @@ then
 		a vim='vim --servername `print -P "%l"`'
 fi
 
-__cmd_exists eject && a close='eject -t'
-
 a goto='cd -P' ## Resolve symlinks
 a so='cd -'
 
@@ -45,7 +43,11 @@ a cp && una cp ## Dé-assigne les alias de ``cp''
 autoload zmv
 a mmv='noglob zmv -W'
 
+# Not an alias, but..
+where() { cd $(dirname $(readlink -f $(which $1))) }
+
 __normal_user && __cmd_exists apt-get && a apt-get='sudo apt-get'
+__normal_user && __cmd_exists apt && a apt='sudo apt'
 __normal_user && __cmd_exists pacman && a pacman='sudo pacman'
 __normal_user && __cmd_exists yum && a yum='sudo yum'
 
