@@ -128,7 +128,7 @@ __ssh_gpg_agents ()
     if [ -S "$SSH_AUTH_SOCK" ]
     then
         # Get keylist
-        SSH_AGENT_KEYLIST="$( ssh-add -l | grep "^[[:digit:]]\+ \([[:digit:]a-f]\{2\}:\)\{15\}[[:digit:]a-f]\{2\} .* (.*)$" )"
+        SSH_AGENT_KEYLIST="$( ssh-add -l | grep "^[[:digit:]]\+ \([[:alnum:]]\+:\)\(.*\)\{43\} .* (.*)$" )"
         # Check if it is a forwarded agent
         if [ "$SSH_AGENT_PID" -gt 0 -a -e /proc/$SSH_AGENT_PID/cmdline ]
         then
