@@ -176,6 +176,64 @@ __ssh_gpg_agents ()
 }
 PS1_TASKBAR+=(__ssh_gpg_agents)
 
+__battery() {
+	__debug -n "	Battery..."
+
+	# POWERADAPTER=$(grep "^AC Power" /proc/pmu/info | cut -c26)
+
+	# typeset -A battery
+	# battery[remaining]=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
+	# battery[remain_hrs]=$(( $battery[remaining] / 3600 ))
+	# battery[remain_min]=$(( ($battery[remaining] - ( $battery[remain_hrs] * 3600 )) / 60 ))
+	# [ "$battery[remain_min]" -lt 10 ] && battery[remain_min]="0"$battery[remain_min]
+	# battery[remains]=$battery[remain_hrs]"h"$battery[remain_min]
+
+	# BATTERYSIZE=$(( ${#battery[remains]} + 1 ))
+
+	# battery[load]=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
+
+	# if [ $POWERADAPTER -ne 0 ]
+	# then
+	# 	battery[color]="charging"
+	# 	if [ $battery[load] -eq 0 ]
+	# 	then
+	# 		## Battery full
+	# 		BATTERYSIZE=2
+	# 		battery[remains]="⚡"
+	# 	fi
+	# else
+	# 	if [ $battery[remaining] -lt 659 ]
+	# 	then
+	# 		battery[color]="critical"
+	# 	else
+	# 		battery[color]="uncharging"
+	# 	fi
+	# fi
+
+	BATTPERCENT=$(acpi -b | cut -d, -f2 | tr -d ' %')
+	echo -n $termcap[as]"u"
+	if [ $BATTPERCENT -le 10 ]
+	then
+		echo -n $C_"31"$_C
+	elif [ $BATTPERCENT -le 25 ]
+	then
+		echo -n $C_"33"$_C
+	fi
+	for i in {0..9}
+	do
+		if [ $i -le $(($BATTPERCENT / 10)) ]
+		then
+			echo -n "a"
+		else
+			echo -n " "
+		fi
+	done
+	echo -n $C_$_prompt_colors[generic]$_C
+	echo -n "t"$termcap[ae]
+	__debug
+}
+which acpi && PS1_TASKBAR+=(__battery)
+
 __display ()
 {
     __debug -n "    Display..."
