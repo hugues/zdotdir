@@ -52,7 +52,7 @@ __term_title()
 			print -Pn "\e]l%n@%m %~$@\e\\"				# Never tested..
 			;;
 		  *term*|rxvt*|putty)
-			print -Pn "\e]0;%n@%m (%l) %~${@//%/%%}\a"			# Sets term title
+			print -Pn "\e]0;%n@%m (%l) %~${@//\%/%%}\a"			# Sets term title
 			;;
 		  screen*)
 			local _sep=""
