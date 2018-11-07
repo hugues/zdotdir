@@ -8,13 +8,4 @@
 ## these files with or without this notice.
 ## 
 
-if __cmd_exists fortune
-then
-	__preprint "Pensée du jour"
-	fortune | fmt -s -w 74
-	__preprint
-	echo
-fi | sed 's/^/   /'
-
-chpwd
-
+cd .

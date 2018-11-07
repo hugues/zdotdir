@@ -176,64 +176,6 @@ __ssh_gpg_agents ()
 }
 PS1_TASKBAR+=(__ssh_gpg_agents)
 
-__battery() {
-	__debug -n "	Battery..."
-
-	# POWERADAPTER=$(grep "^AC Power" /proc/pmu/info | cut -c26)
-
-	# typeset -A battery
-	# battery[remaining]=$(grep "^time rem" /proc/pmu/battery_0 | cut -c14- )
-	# battery[remain_hrs]=$(( $battery[remaining] / 3600 ))
-	# battery[remain_min]=$(( ($battery[remaining] - ( $battery[remain_hrs] * 3600 )) / 60 ))
-	# [ "$battery[remain_min]" -lt 10 ] && battery[remain_min]="0"$battery[remain_min]
-	# battery[remains]=$battery[remain_hrs]"h"$battery[remain_min]
-
-	# BATTERYSIZE=$(( ${#battery[remains]} + 1 ))
-
-	# battery[load]=$(grep "^current" /proc/pmu/battery_0 | cut -c14- )
-
-	# if [ $POWERADAPTER -ne 0 ]
-	# then
-	# 	battery[color]="charging"
-	# 	if [ $battery[load] -eq 0 ]
-	# 	then
-	# 		## Battery full
-	# 		BATTERYSIZE=2
-	# 		battery[remains]="⚡"
-	# 	fi
-	# else
-	# 	if [ $battery[remaining] -lt 659 ]
-	# 	then
-	# 		battery[color]="critical"
-	# 	else
-	# 		battery[color]="uncharging"
-	# 	fi
-	# fi
-
-	BATTPERCENT=$(acpi -b | cut -d, -f2 | tr -d ' %')
-	echo -n $termcap[as]"u"
-	if [ $BATTPERCENT -le 10 ]
-	then
-		echo -n $C_"31"$_C
-	elif [ $BATTPERCENT -le 25 ]
-	then
-		echo -n $C_"33"$_C
-	fi
-	for i in {0..9}
-	do
-		if [ $i -le $(($BATTPERCENT / 10)) ]
-		then
-			echo -n "a"
-		else
-			echo -n " "
-		fi
-	done
-	echo -n $C_$_prompt_colors[generic]$_C
-	echo -n "t"$termcap[ae]
-	__debug
-}
-which acpi && PS1_TASKBAR+=(__battery)
-
 __display ()
 {
     __debug -n "    Display..."
@@ -241,6 +183,50 @@ __display ()
     __debug
 }
 PS1_TASKBAR+=(__display)
+
+__battery() {
+	__debug -n "	Battery..."
+
+	BATTPERCENT=$(acpi -b | cut -d, -f2 | tr -d ' %')
+    POWER=$(acpi -a | grep -q 'on-line' ; echo $?)
+    BATTCHARGING=$(acpi -b | grep -q 'Charging' ; echo $?)
+
+    if [ "$POWER" -eq 0 -a ! "$BATTCHARGING" -eq 0 ]
+    then
+        return
+    fi
+
+	echo -n $termcap[as]
+    echo -n "u"
+	if [ $BATTPERCENT -le 10 ]
+	then
+		echo -n $C_"31"$_C
+	elif [ $BATTPERCENT -le 25 ]
+	then
+        echo -n $C_"33;1"$_C
+    else
+        if [ $POWER -eq 0 ]
+        then
+            echo -n $C_"44;34;1"$_C
+        else
+            echo -n $C_"34;1"$_C
+        fi
+	fi
+	for i in {0..4}
+	do
+		if [ $i -le $(($BATTPERCENT / 20)) ]
+		then
+			echo -n "a"
+		else
+			echo -n " "
+		fi
+	done
+	echo -n $C_$_prompt_colors[generic]$_C
+    echo -n "t"
+	echo -n $termcap[ae]
+	__debug
+}
+__cmd_exists acpi && PS1_TASKBAR+=(__battery)
 
 __vcsbranch ()
 {
@@ -320,7 +306,7 @@ __subvcsbranches () {
 	echo $GITBRANCH
 
 }
-PS1_TASKBAR+=(__subvcsbranches)
+#PS1_TASKBAR+=(__subvcsbranches)
 
 __redefine_prompt ()
 {
@@ -332,6 +318,7 @@ __redefine_prompt ()
             __two_lines_prompt
             ;;
     esac
+    setterm -cursor on
 }
 zle -N __redefine_prompt
 
@@ -402,32 +389,6 @@ __two_lines_prompt ()
 
 }
 
-if ( ! __zsh_status )
-then
-    echo
-    echo -n $c_$_prompt_colors[warning]$_c
-    #toilet -f bigmono9 "D1rTY Zsh.."
-
-    HBAR=${${(l:13::q:)}//q/$_tq_}
-    VBAR=$T_$_tx_$_T
-
-    echo
-    echo -n "    "
-    echo -n $T_$_tl_
-    echo -n $HBAR
-    echo -n $_tk_$_T
-    echo
-    echo "    $VBAR WARNING !!  $VBAR"
-    echo "    $VBAR D1rTY Zsh.. $VBAR"
-
-    echo -n "    "
-    echo -n $T_$_tm_
-    echo -n $HBAR
-    echo -n $_tj_$_T
-    echo
-    echo $c_$_prompt_colors[none]$_c
-fi
-
 precmd()
 {
     # Catchs ERROR code
@@ -436,8 +397,6 @@ precmd()
     __update_prompt_elements
     __redefine_prompt
 }
-
-
 
 # Prompt level 3
 PS3="?# "

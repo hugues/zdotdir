@@ -35,8 +35,8 @@ export LESS="-R -F -X"
 export NULLCMD=cat
 
 # Locale en français unicode
-export LC_ALL=${LC_ALL:-fr_FR.UTF-8}
-export LC_MESSAGES=${LC_MESSAGES:-fr_FR}
+export LC_ALL=${LC_ALL:-br_FR.UTF-8}
+export LC_MESSAGES=${LC_MESSAGES:-br_FR}
 unset LANG # Unuseful
 
 # Utilisation des commandes git-*

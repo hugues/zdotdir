@@ -43,6 +43,7 @@ DOMAIN=${DOMAIN:-$(hostname -y 2>&-)}
 
 ## Agent de clefs SSH/GPG
 KEYCHAIN=~/.keychain/$(hostname)-sh
+keychain -q
 [ -r "${KEYCHAIN}"     ] && source ${KEYCHAIN}
 [ -r "${KEYCHAIN}-gpg" ] && source ${KEYCHAIN}-gpg
 

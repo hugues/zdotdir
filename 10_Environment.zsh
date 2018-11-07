@@ -26,28 +26,33 @@ _c=m
 C_="%{$c_"
 _C="$_c%}"
 
-unset has_termcaps
+unset _has_tcaps
 case "$( _process_tree )" in
 	*":: SCREEN ::"*)
 		# Discards termcaps even if screen is launched from an urxvt..
 		;;
 	*":: "*"urxvt ::"*|\
 	*":: tmux ::"*)
-		has_termcaps="true"
+		has_termcaps=${has_termcaps:-true}
 		;;
 	*)
 		;;
 esac
-T_=${has_termcaps:+$termcap[as]}
-_T=${has_termcaps:+$termcap[ae]}
-_tq_=${${has_termcaps:+"q"}:-"-"}
-_tj_=${${has_termcaps:+"j"}:-"'"}
-_tk_=${${has_termcaps:+"k"}:-"."}
-_tl_=${${has_termcaps:+"l"}:-","}
-_tm_=${${has_termcaps:+"m"}:-"\`"}
-_tt_=${${has_termcaps:+"t"}:-"]"}
-_tu_=${${has_termcaps:+"u"}:-"["}
-_tx_=${${has_termcaps:+"x"}:-"|"}
+_has_tcaps="${has_termcaps}"
+[ "${_has_tcaps}" != "true" ] && unset _has_tcaps
+
+T_=${_has_tcaps:+$termcap[as]}
+_T=${_has_tcaps:+$termcap[ae]}
+_tq_=${${_has_tcaps:+"q"}:-"-"}
+_tj_=${${_has_tcaps:+"j"}:-"'"}
+_tk_=${${_has_tcaps:+"k"}:-"."}
+_tl_=${${_has_tcaps:+"l"}:-","}
+_tm_=${${_has_tcaps:+"m"}:-"\`"}
+_tt_=${${_has_tcaps:+"t"}:-"]"}
+_tu_=${${_has_tcaps:+"u"}:-"["}
+_tx_=${${_has_tcaps:+"x"}:-"|"}
+# Not needed anymore
+unset _has_tcaps
 
 # I hate kik00l0l colorized prompts, so I'm using a way to
 # give a dominant color for each part of the prompt, each of
@@ -94,9 +99,11 @@ HISTSIZE=$(( $SAVEHIST * 1.10 ))
 export GPG_TTY=`tty`
 
 # YeahConsole..
-if ( ps x 2>&- | grep $$ -B1 | grep -q yeahconsole )
+if ( ps 2>&- | grep $$ -B1 | grep -q yeahconsole )
 then
 	_yeahconsole=true
+else
+	_yeahconsole=false
 fi
 
 # Display guess

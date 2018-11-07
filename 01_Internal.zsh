@@ -26,6 +26,8 @@ __cmd_exists ()
 	which -p $1 >/dev/null 2>&1
 }
 
+__cmd_exists keychain && eval $(keychain --inherit any --eval --quiet)
+
 __term_title()
 {
     __debug -n "	Term title..."
@@ -49,12 +51,15 @@ __term_title()
 	then
 		case $TERM in
 		  sun-cmd)
+            __debug -n "\n		- sun"
 			print -Pn "\e]l%n@%m %~$@\e\\"				# Never tested..
 			;;
 		  *term*|rxvt*|putty)
+            __debug -n "\n		- term/rxvt/putty"
 			print -Pn "\e]0;%n@%m (%l) %~${@//\%/%%}\a"			# Sets term title
 			;;
 		  screen*)
+            __debug -n "\n		- screen"
 			local _sep=""
 			[ $# -gt 0 ] && _sep=$1 && shift # gets and discards the separator, if any.
 			# Tmux
@@ -303,15 +308,15 @@ __get_git_branch ()
 		onto=$(git name-rev --name-only --always --no-undefined $(cat $REBASE_DIR/onto) 2>&- | __cleanup_git_branch_name)
 
 		# amended commit
-		if [ -e $REBASE_DIR/amend ]
+		if [ -e $REBASE_DIR/stopped-sha ]
+		then
+			amend=$(cat $REBASE_DIR/stopped-sha)
+		elif [ -e $REBASE_DIR/amend ]
 		then
 			amend=$(cat $REBASE_DIR/amend)
 		elif [ -e $REBASE_DIR/original-commit ]
 		then
 			amend=$(cat $REBASE_DIR/original-commit)
-		elif [ -e $REBASE_DIR/stopped-sha ]
-		then
-			amend=$(cat $REBASE_DIR/stopped-sha)
 		fi
 		#
 		if [ "$amend" != "$commit_ish" ]
